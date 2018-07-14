@@ -6,7 +6,7 @@ pairs contributions. Using **guet** allows for that functionality.
 
 
 ## Installation
-**guet** can be installed from pypi:
+**guet** can be installed from [pypi](https://pypi.org/project/guet/):
 
 ```
 pip install guet
@@ -38,5 +38,6 @@ following commits.
 
 ## Contribution
 
-Guidelines for contributions can be found [here](./docs/CONTRIBUTING.md). Feel free to open an issue if there are
-problems with **guet** or you want to submit a feature request.
+Guidelines for contributions can be found [here](./docs/CONTRIBUTING.md). Feel free to 
+[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** or you want to submit a
+feature request.
