@@ -26,6 +26,7 @@ class TestInitDataSourceCommand(CommandTest):
 
         file_gateway = FileGateway()
         file_gateway.initialize = Mock()
+        file_gateway.path_exists = Mock(return_value=False)
 
         command = InitDataSourceCommand(['init'], file_gateway)
         command.execute()
