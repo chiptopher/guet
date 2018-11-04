@@ -220,3 +220,27 @@ class TestFileGateway(unittest.TestCase):
         with open(join(parent_directory, const.APP_FOLDER_NAME, const.COMMITTER_NAMES)) as commiter_file:
             content = commiter_file.readlines()
         self.assertEqual('{} <{}>\n'.format(name, email), content[0])
+
+    def test_set_author_name(self):
+        parent_directory = abspath(join(__file__, pardir))
+        self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
+        file_gateway = FileGateway(parent_directory)
+        file_gateway.initialize()
+
+        name = 'name'
+        file_gateway.set_author_name(name)
+        with open(join(self.settings_folder_path, const.AUTHOR_NAME)) as author_name_file:
+            content = author_name_file.readline()
+        self.assertEqual(name, content)
+
+    def test_set_author_email(self):
+        parent_directory = abspath(join(__file__, pardir))
+        self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
+        file_gateway = FileGateway(parent_directory)
+        file_gateway.initialize()
+
+        email = 'email'
+        file_gateway.set_author_email(email)
+        with open(join(self.settings_folder_path, const.AUTHOR_EMAIL)) as author_email_file:
+            content = author_email_file.readline()
+        self.assertEqual(email, content)

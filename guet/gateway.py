@@ -96,7 +96,7 @@ class UserGateway:
     def get_user(self, initials: str):
         self._connection = sqlite3.connect(self._connection_path)
         cursor = self._connection.cursor()
-        cursor.execute("SELECT * FROM committer WHERE initials=?", (initials, ))
+        cursor.execute("SELECT * FROM committer WHERE initials=?", (initials,))
         result = cursor.fetchone()
         self._connection.close()
         if result:
@@ -105,7 +105,7 @@ class UserGateway:
     def delete_user(self, initials):
         self._connection = sqlite3.connect(self._connection_path)
         cursor = self._connection.cursor()
-        cursor.execute("DELETE FROM committer WHERE initials=?", (initials, ))
+        cursor.execute("DELETE FROM committer WHERE initials=?", (initials,))
         self._connection.commit()
         self._connection.close()
 
@@ -115,8 +115,6 @@ class FileGateway:
         self._path = path
 
     def initialize(self):
-
-
         app_folder_path = self._create_app_path()
         mkdir(app_folder_path)
         connection = sqlite3.connect(join(app_folder_path, constants.DATA_SOURCE_NAME))
@@ -129,6 +127,7 @@ class FileGateway:
         def create_fule_with_name(file_name: str):
             f = open(file_name, 'w+')
             f.close()
+
         create_fule_with_name(join(app_folder_path, constants.COMMITTER_NAMES))
         create_fule_with_name(join(app_folder_path, constants.AUTHOR_EMAIL))
         create_fule_with_name(join(app_folder_path, constants.AUTHOR_NAME))
@@ -150,3 +149,15 @@ class FileGateway:
     @staticmethod
     def home_dir(file_dir):
         return abspath(join(file_dir, pardir))
+
+    def set_author_name(self, name: str):
+        with open(join(self._path, constants.APP_FOLDER_NAME, constants.AUTHOR_NAME), 'w') as author_name_file:
+            author_name_file.seek(0)
+            author_name_file.truncate()
+            author_name_file.write(name)
+
+    def set_author_email(self, email: str):
+        with open(join(self._path, constants.APP_FOLDER_NAME, constants.AUTHOR_EMAIL), 'w') as author_email_file:
+            author_email_file.seek(0)
+            author_email_file.truncate()
+            author_email_file.write(email)

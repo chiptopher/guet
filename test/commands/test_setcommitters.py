@@ -7,6 +7,16 @@ from unittest.mock import Mock
 
 class TestSetCommittersCommand(CommandTest):
 
+    def setUp(self):
+        self.mock_file_gateway = FileGateway()
+        self.mock_file_gateway.set_committers = Mock()
+        self.mock_file_gateway.set_author_email = Mock()
+        self.mock_file_gateway.set_author_name = Mock()
+
+        self.mock_user_gateway = UserGateway()
+        self.mock_user_gateway.get_user = Mock()
+
+
     def test_validate(self):
         cases = [
             create_test_case(['set', 'extra'], True, 'Should return true when the correct number of args'),
@@ -18,9 +28,6 @@ class TestSetCommittersCommand(CommandTest):
             self._validate_test(case, SetCommittersCommand)
 
     def test_execute_adds_the_people_with_the_initials_to_the_committers_file(self):
-        mock_file_gateway = FileGateway()
-        mock_file_gateway.set_committers = Mock()
-
         initials = 'initials'
         name = 'name'
         email = 'email'
@@ -29,10 +36,23 @@ class TestSetCommittersCommand(CommandTest):
             if initials is initials:
                 return committer_result(name=name, email=email, initials=initials)
 
-        mock_user_gateway = UserGateway()
-        mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
+        self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
 
-        command = SetCommittersCommand(['set', initials], mock_user_gateway, mock_file_gateway)
+        command = SetCommittersCommand(['set', initials], self.mock_user_gateway, self.mock_file_gateway)
         command.execute()
 
-        mock_file_gateway.set_committers.assert_called_once_with([CommitterInput(email=email, name=name)])
+        self.mock_file_gateway.set_committers.assert_called_once_with([CommitterInput(email=email, name=name)])
+
+    def test_execute_adds_the_fist_person_in_the_list_as_the_author_email_and_name(self):
+        expected_initials = 'initials'
+
+        def _mock_user_return(initials: str):
+            if initials is expected_initials:
+                return committer_result(name='name', email='email', initials=expected_initials)
+
+        self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
+
+        command = SetCommittersCommand(['set', expected_initials], self.mock_user_gateway, self.mock_file_gateway)
+        command.execute()
+        self.mock_file_gateway.set_author_email.assert_called_once_with('email')
+        self.mock_file_gateway.set_author_name.assert_called_once_with('name')
