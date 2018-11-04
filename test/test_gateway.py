@@ -116,8 +116,6 @@ class TestUserGateway(unittest.TestCase):
 
 class TestFileGateway(unittest.TestCase):
 
-    settings_folder_path = None
-
     def setUp(self):
         self.settings_folder_path = None
 
@@ -184,13 +182,28 @@ class TestFileGateway(unittest.TestCase):
     def test_initialize_creates_committer_names_file(self):
 
         parent_directory = abspath(join(__file__, pardir))
+        self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
+
+        if isdir(self.settings_folder_path):
+            from shutil import rmtree
+            rmtree(self.settings_folder_path)
+
+        file_gateway = FileGateway(parent_directory)
+        file_gateway.initialize()
+
+        committer_messages_path = join(self.settings_folder_path, const.COMMITTER_NAMES)
+        self.assertTrue(isfile(committer_messages_path))
+
+    def test_initialize_creates_author_name_and_author_email_file(self):
+
+        parent_directory = abspath(join(__file__, pardir))
         settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
 
         file_gateway = FileGateway(parent_directory)
         file_gateway.initialize()
 
-        committer_messages_path = join(settings_folder_path, const.COMMITTER_NAMES)
-        self.assertTrue(isfile(committer_messages_path))
+        author_names_path = abspath(join(settings_folder_path, const.AUTHOR_NAME))
+        self.assertTrue(isfile(author_names_path))
 
     def test_set_committers_adds_the_given_committers_to_the_file(self):
 
