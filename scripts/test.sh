@@ -34,6 +34,8 @@ echo "
 
 "
 
+pip list
+
 python -m unittest discover test 2>&1 | tee unit_out.txt
 if cat unit_out.txt| grep 'FAILED'
 then

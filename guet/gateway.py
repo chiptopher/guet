@@ -81,8 +81,8 @@ class GitGateway:
 
     def _create_author_manager_script(self):
         lines = [
-            '#! /usr/bin/python3',
-            'from guet import CommitManager',
+            '#! /usr/bin/env python',
+            'from guet.commit import CommitManager',
             'cm = CommitManager()',
             'cm.manage()',
         ]
@@ -135,8 +135,9 @@ class UserGateway:
 
 
 class FileGateway:
-    def __init__(self, path: str = expanduser("~")):
+    def __init__(self, path: str = expanduser("~"), subprocess_module=subprocess):
         self._path = path
+        self._subprocess = subprocess_module
 
     def initialize(self):
         app_folder_path = self._create_app_path()
@@ -188,7 +189,7 @@ class FileGateway:
             author_name_file.seek(0)
             author_name_file.truncate()
             author_name_file.write(name)
-            process = subprocess.Popen(['git', 'config', 'user.name', name])
+            process = self._subprocess.Popen(['git', 'config', 'user.name', name])
             process.wait()
 
     def set_author_email(self, email: str):
@@ -196,5 +197,5 @@ class FileGateway:
             author_email_file.seek(0)
             author_email_file.truncate()
             author_email_file.write(email)
-            process = subprocess.Popen(['git', 'config', 'user.email', email])
+            process = self._subprocess.Popen(['git', 'config', 'user.email', email])
             process.wait()
