@@ -50,6 +50,15 @@ class TestGitGateway(unittest.TestCase):
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'commit-msg')))
 
+    def test_add_commit_msg_hook_adds_author_manager_scpript(self):
+        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
+        git_init_process.wait()
+
+        git_gateway = GitGateway(self.parent_dir)
+        git_gateway.add_commit_msg_hook()
+
+        self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'post-commit')))
+
     def test_commit_msg_hook_exists(self):
         git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
         git_init_process.wait()
@@ -244,3 +253,18 @@ class TestFileGateway(unittest.TestCase):
         with open(join(self.settings_folder_path, const.AUTHOR_EMAIL)) as author_email_file:
             content = author_email_file.readline()
         self.assertEqual(email, content)
+
+    def test_get_committers_gets_the_list_of_current_committers(self):
+        parent_directory = abspath(join(__file__, pardir))
+        self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
+        file_gateway = FileGateway(parent_directory)
+        file_gateway.initialize()
+
+        commiter1 = committer_result(initials='a', name='name name', email='email')
+        commiter2 = committer_result(initials='b', name='name2', email='email2')
+
+        expected1 = committer_result(initials='', name='name name', email='email')
+        expected2 = committer_result(initials='', name='name2', email='email2')
+
+        file_gateway.set_committers([commiter1, commiter2])
+        self.assertListEqual([expected1, expected2], file_gateway.get_committers())

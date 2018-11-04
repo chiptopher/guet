@@ -22,6 +22,7 @@ import sqlite3
 from collections import namedtuple
 from . import constants
 from .stdout_manager import StdoutManager
+import subprocess
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
 
@@ -51,10 +52,18 @@ class GitGateway:
         self._parent_dir = parent_dir
 
     def add_commit_msg_hook(self):
+        self._create_commit_hook()
+        self._create_author_manager_script()
+
+    def _create_commit_hook(self):
         lines = [
-            "#!/bin/sh", "FILE_LOCATION=~/.guet/committernames", 'CO_AUTHOR="Co-authored-by:"',
-            'echo "\\n\\n" >> "$1"', 'while read committer; do',
-            '	echo "$CO_AUTHOR $committer" >> "$1"', 'done <$FILE_LOCATION'
+            "#!/bin/sh",
+            "FILE_LOCATION=~/.guet/committernames",
+            'CO_AUTHOR="Co-authored-by:"',
+            'echo "\\n\\n" >> "$1"',
+            'while read committer; do',
+            '	echo "$CO_AUTHOR $committer" >> "$1"',
+            'done <$FILE_LOCATION'
         ]
         hook_path = join(self._parent_dir, '.git', 'hooks', 'commit-msg')
         f = open(hook_path, "w+")
@@ -69,6 +78,21 @@ class GitGateway:
 
     def git_present(self):
         return isdir(join(os.getcwd(), '.git'))
+
+    def _create_author_manager_script(self):
+        lines = [
+            '#! /usr/bin/python3',
+            'from guet import CommitManager',
+            'cm = CommitManager()',
+            'cm.manage()',
+        ]
+        hook_path = join(self._parent_dir, '.git', 'hooks', 'post-commit')
+        f = open(hook_path, "w+")
+        st = os.stat(hook_path)
+        os.chmod(hook_path, st.st_mode | 0o111)
+        for line in lines:
+            f.write(line + '\n')
+        f.close()
 
 
 class UserGateway:
@@ -140,6 +164,15 @@ class FileGateway:
             for committer in committers:
                 committers_file.write('{} <{}>\n'.format(committer.name, committer.email))
 
+    def get_committers(self):
+        committers = []
+        with open(join(self._path, constants.APP_FOLDER_NAME, constants.COMMITTER_NAMES), 'r') as commiters_file:
+            for committer in commiters_file.readlines():
+                split = committer.split(' ')
+                name = ' '.join(split[:len(split)-1])
+                committers.append(committer_result(name=name, email=split[len(split)-1].strip().strip('<').strip('>'), initials=''))
+        return committers
+
     def _create_app_path(self):
         return join(abspath(self._path), constants.APP_FOLDER_NAME)
 
@@ -155,9 +188,13 @@ class FileGateway:
             author_name_file.seek(0)
             author_name_file.truncate()
             author_name_file.write(name)
+            process = subprocess.Popen(['git', 'config', 'user.name', name])
+            process.wait()
 
     def set_author_email(self, email: str):
         with open(join(self._path, constants.APP_FOLDER_NAME, constants.AUTHOR_EMAIL), 'w') as author_email_file:
             author_email_file.seek(0)
             author_email_file.truncate()
             author_email_file.write(email)
+            process = subprocess.Popen(['git', 'config', 'user.email', email])
+            process.wait()
