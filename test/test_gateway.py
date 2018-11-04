@@ -1,6 +1,7 @@
 import sys
 from io import StringIO
 import unittest
+from unittest.mock import Mock
 from guet.gateway import *
 from os.path import isfile, join, isdir, pardir, abspath, expanduser
 import subprocess
@@ -75,7 +76,7 @@ class TestUserGateway(unittest.TestCase):
         self.parent_directory = FileGateway.home_dir(__file__)
         self.settings_folder_path = join(self.parent_directory, const.APP_FOLDER_NAME)
         self.data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
-        self.file_gateway = FileGateway(self.parent_directory)
+        self.file_gateway = FileGateway(self.parent_directory, subprocess_module=Mock())
         self.file_gateway.initialize()
         self.connection = None
 
@@ -148,7 +149,7 @@ class TestFileGateway(unittest.TestCase):
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
         data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
 
-        FileGateway(parent_directory).initialize()
+        FileGateway(parent_directory, subprocess_module=Mock()).initialize()
 
         self.assertTrue(isdir(self.settings_folder_path))
         self.assertTrue(isfile(data_source_path))
@@ -159,7 +160,7 @@ class TestFileGateway(unittest.TestCase):
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
         data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
 
-        FileGateway(parent_directory).initialize()
+        FileGateway(parent_directory, subprocess_module=Mock()).initialize()
 
         import sqlite3
 
@@ -183,7 +184,7 @@ class TestFileGateway(unittest.TestCase):
 
         data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
 
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         self.assertTrue(file_gateway.path_exists())
@@ -197,7 +198,7 @@ class TestFileGateway(unittest.TestCase):
             from shutil import rmtree
             rmtree(self.settings_folder_path)
 
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         committer_messages_path = join(self.settings_folder_path, const.COMMITTER_NAMES)
@@ -208,7 +209,7 @@ class TestFileGateway(unittest.TestCase):
         parent_directory = abspath(join(__file__, pardir))
         settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
 
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         author_names_path = abspath(join(settings_folder_path, const.AUTHOR_NAME))
@@ -218,7 +219,7 @@ class TestFileGateway(unittest.TestCase):
 
         parent_directory = abspath(join(__file__, pardir))
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         email = 'email'
@@ -233,7 +234,7 @@ class TestFileGateway(unittest.TestCase):
     def test_set_author_name(self):
         parent_directory = abspath(join(__file__, pardir))
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         name = 'name'
@@ -245,7 +246,7 @@ class TestFileGateway(unittest.TestCase):
     def test_set_author_email(self):
         parent_directory = abspath(join(__file__, pardir))
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         email = 'email'
@@ -257,7 +258,7 @@ class TestFileGateway(unittest.TestCase):
     def test_get_committers_gets_the_list_of_current_committers(self):
         parent_directory = abspath(join(__file__, pardir))
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
-        file_gateway = FileGateway(parent_directory)
+        file_gateway = FileGateway(parent_directory, subprocess_module=Mock())
         file_gateway.initialize()
 
         commiter1 = committer_result(initials='a', name='name name', email='email')

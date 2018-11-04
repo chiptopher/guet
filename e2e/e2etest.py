@@ -21,24 +21,24 @@ from os.path import abspath, join, expanduser, isdir
 from guet import constants as const
 import subprocess
 
-
 class E2ETest(unittest.TestCase):
 
     def _test_dir(self):
         return 'test-env'
 
     def setUp(self):
-        process = subprocess.Popen(['python', 'setup.py', 'install'], cwd='..')
-        process.wait()
-        path = abspath(join(getcwd(), self._test_dir()))
+        path = join(expanduser('~'), self._test_dir())
+        if isdir(path):
+            rmtree(path)
         mkdir(path)
         self.testcwd = abspath(path)
-        chdir(self._test_dir())
+        self.current_cwd = getcwd()
+        chdir(self.testcwd)
         self.before()
 
     def tearDown(self):
-        chdir('..')
-        rmtree(self._test_dir())
+        chdir(self.current_cwd)
+        rmtree(join(expanduser('~'), self._test_dir()))
         self.after()
 
     def after(self):
