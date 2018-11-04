@@ -19,6 +19,7 @@ from shutil import rmtree
 from os import mkdir, chdir, getcwd
 from os.path import abspath, join, expanduser, isdir
 from guet import constants as const
+import subprocess
 
 
 class E2ETest(unittest.TestCase):
@@ -27,6 +28,8 @@ class E2ETest(unittest.TestCase):
         return 'test-env'
 
     def setUp(self):
+        process = subprocess.Popen(['python', 'setup.py', 'install'], cwd='..')
+        process.wait()
         path = abspath(join(getcwd(), self._test_dir()))
         mkdir(path)
         self.testcwd = abspath(path)

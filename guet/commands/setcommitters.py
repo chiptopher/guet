@@ -35,7 +35,10 @@ class SetCommittersCommand(Command):
         for committer_initial in committer_initials:
             committer = self._user_gateway.get_user(committer_initial)
             committers.append(CommitterInput(name=committer.name, email=committer.email))
+        author = self._user_gateway.get_user(committer_initials[0])
         self._file_gateway.set_committers(committers)
+        self._file_gateway.set_author_email(author.email)
+        self._file_gateway.set_author_name(author.name)
 
     def help(self):
         pass

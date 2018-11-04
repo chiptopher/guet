@@ -40,6 +40,14 @@ class TestGuetSet(E2ETest):
 
         self.assertEqual('{} <{}>\n'.format(name, email), content[0])
 
+        with open(join(expanduser('~'), const.APP_FOLDER_NAME, const.AUTHOR_EMAIL)) as auther_email:
+            content = auther_email.readline()
+        self.assertEquals(email, content)
+
+        with open(join(expanduser('~'), const.APP_FOLDER_NAME, const.AUTHOR_NAME)) as auther_name:
+            content = auther_name.readline()
+        self.assertEquals(name, content)
+
     def test_set_adds_multiple_users_to_committers_file(self):
         process = subprocess.Popen(['guet', 'init'])
         process.wait()
