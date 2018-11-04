@@ -115,6 +115,8 @@ class FileGateway:
         self._path = path
 
     def initialize(self):
+
+
         app_folder_path = self._create_app_path()
         mkdir(app_folder_path)
         connection = sqlite3.connect(join(app_folder_path, constants.DATA_SOURCE_NAME))
@@ -123,9 +125,13 @@ class FileGateway:
                                name TEXT NOT NULL,
                                email TEXT NOT NULL)""")
         connection.close()
-        committer_names = join(app_folder_path, constants.COMMITTER_NAMES)
-        f = open(committer_names, "w+")
-        f.close()
+
+        def create_fule_with_name(file_name: str):
+            f = open(file_name, 'w+')
+            f.close()
+        create_fule_with_name(join(app_folder_path, constants.COMMITTER_NAMES))
+        create_fule_with_name(join(app_folder_path, constants.AUTHOR_EMAIL))
+        create_fule_with_name(join(app_folder_path, constants.AUTHOR_NAME))
 
     def set_committers(self, committers: list):
         with open(join(self._path, constants.APP_FOLDER_NAME, constants.COMMITTER_NAMES),

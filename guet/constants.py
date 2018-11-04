@@ -17,3 +17,5 @@ limitations under the License.
 APP_FOLDER_NAME = '.guet'
 DATA_SOURCE_NAME = 'guet.db'
 COMMITTER_NAMES = 'committernames'
+AUTHOR_NAME = 'authornames'
+AUTHOR_EMAIL = 'authoremails'
