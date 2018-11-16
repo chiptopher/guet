@@ -19,13 +19,13 @@ class TestStartCommand(CommandTest):
 
     def test_execute_adds_the_hook(self):
         mock_git_gateway = GitGateway()
-        mock_git_gateway.add_commit_msg_hook = Mock()
+        mock_git_gateway.add_hooks = Mock()
         mock_git_gateway.git_present = Mock(return_value=True)
 
         command = StartCommand([], mock_git_gateway)
         command.execute()
 
-        mock_git_gateway.add_commit_msg_hook.assert_called_once()
+        mock_git_gateway.add_hooks.assert_called_once()
 
     def test_get_short_help_message(self):
         self.assertEqual('Start guet usage in the repository at current directory', StartCommand.get_short_help_message())
