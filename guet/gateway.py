@@ -51,9 +51,10 @@ class GitGateway:
     def __init__(self, parent_dir: str = getcwd()):
         self._parent_dir = parent_dir
 
-    def add_commit_msg_hook(self):
+    def add_hooks(self):
         self._create_commit_hook()
         self._create_author_manager_script()
+        self._create_pre_commit_hook()
 
     def _create_commit_hook(self):
         lines = [
@@ -72,6 +73,19 @@ class GitGateway:
         for line in lines:
             f.write(line + '\n')
         f.close()
+
+    def _create_pre_commit_hook(self):
+        lines = [
+            "#!/bin/sh"
+        ]
+        hook_path = join(self._parent_dir, '.git', 'hooks', 'pre-commit')
+        f = open(hook_path, 'w+')
+        st = os.stat(hook_path)
+        os.chmod(hook_path, st.st_mode | 0o111)
+        for line in lines:
+            f.write(line + '\n')
+        f.close()
+
 
     def commit_msg_hook_exists(self):
         return isfile(join(self._parent_dir, '.git', 'hooks', 'commit-msg'))

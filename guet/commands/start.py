@@ -30,7 +30,7 @@ class StartCommand(Command):
 
     def execute(self):
         if self._git_gateway.git_present():
-            self._git_gateway.add_commit_msg_hook()
+            self._git_gateway.add_hooks()
         else:
             self._print_gateway.print('Git not initialized in this directory.')
 

@@ -47,7 +47,7 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_commit_msg_hook()
+        git_gateway.add_hooks()
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'commit-msg')))
 
@@ -56,7 +56,7 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_commit_msg_hook()
+        git_gateway.add_hooks()
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'post-commit')))
 
@@ -65,9 +65,19 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_commit_msg_hook()
+        git_gateway.add_hooks()
 
         self.assertTrue(git_gateway.commit_msg_hook_exists())
+
+    def test_pre_commit_hook_added_as_a_hook(self):
+        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
+        git_init_process.wait()
+
+        git_gateway = GitGateway(self.parent_dir)
+        git_gateway.add_hooks()
+
+        self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'pre-commit')))
+
 
 
 class TestUserGateway(unittest.TestCase):
