@@ -139,6 +139,12 @@ class PairSetGateway(_SQLGateway):
         self._connection.close()
         return pair_set_result(id=id, set_time=result[1])
 
+    def get_most_recent_pair_set(self):
+        self._connection = sqlite3.connect(self._connection_path)
+        query = "SELECT * FROM pair_set ORDER BY set_time DESC"
+        result = self._connection.execute(query).fetchone()
+        return pair_set_result(id=result[0], set_time=result[1])
+
 
 class UserGateway(_SQLGateway):
 
