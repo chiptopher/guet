@@ -118,6 +118,12 @@ class TestPairSetGateway(unittest.TestCase):
         found_pair_set = pair_set_gateway.get_pair_set(1)
         self.assertEqual(100, found_pair_set.set_time)
 
+    def test_get_most_recent_set_pair_returns_result_with_highest_set_time(self):
+        pair_set_gateway = PairSetGateway(self.parent_directory)
+        pair_set_gateway.add_pair_set(100)
+        pair_set_gateway.add_pair_set(200)
+        self.assertEqual(2, pair_set_gateway.get_most_recent_pair_set().id)
+
 
 class TestUserGateway(unittest.TestCase):
 
