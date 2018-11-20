@@ -23,8 +23,10 @@ from collections import namedtuple
 from . import constants
 from .stdout_manager import StdoutManager
 import subprocess
+import datetime
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
+pair_set_result = namedtuple('PairSet', 'id set_time')
 
 
 class CommitterInput:
@@ -117,6 +119,25 @@ class _SQLGateway:
     @classmethod
     def _append_data_source_to(cls, path):
         return join(path, join(constants.APP_FOLDER_NAME, constants.DATA_SOURCE_NAME))
+
+
+class PairSetGateway(_SQLGateway):
+    def add_pair_set(self, set_timestamp: int = round(datetime.datetime.utcnow().timestamp() * 1000)):
+        self._connection = sqlite3.connect(self._connection_path)
+        query = "INSERT INTO pair_set(`set_time`) VALUES (?)"
+        self._connection.cursor().execute(query, (
+            set_timestamp,
+        ))
+        self._connection.commit()
+        self._connection.close()
+
+    def get_pair_set(self, id: int):
+        self._connection = sqlite3.connect(self._connection_path)
+        query = "SELECT * FROM pair_set WHERE id=?"
+        result = self._connection.cursor().execute(query, (id, )).fetchone()
+        self._connection.commit()
+        self._connection.close()
+        return pair_set_result(id=id, set_time=result[1])
 
 
 class UserGateway(_SQLGateway):

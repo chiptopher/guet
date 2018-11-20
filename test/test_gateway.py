@@ -7,6 +7,7 @@ from os.path import isfile, join, isdir, pardir, abspath, expanduser
 import subprocess
 from guet import constants as const
 from guet.stdout_manager import StdoutManager
+import datetime
 
 
 class TestPrintGateway(unittest.TestCase):
@@ -78,6 +79,44 @@ class TestGitGateway(unittest.TestCase):
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'pre-commit')))
 
+
+class TestPairSetGateway(unittest.TestCase):
+    def setUp(self):
+        self.parent_directory = FileGateway.home_dir(__file__)
+        self.settings_folder_path = join(self.parent_directory, const.APP_FOLDER_NAME)
+        self.data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
+        self.file_gateway = FileGateway(self.parent_directory, subprocess_module=Mock())
+        self.file_gateway.initialize()
+        self.connection = None
+
+    def tearDown(self):
+        if self.connection:
+            self.connection.close()
+        if isdir(self.settings_folder_path):
+            from shutil import rmtree
+            rmtree(self.settings_folder_path)
+
+    def test_add_pair_set_creates_record_with_current_time_in_millis(self):
+        pair_set_gateway = PairSetGateway(self.parent_directory)
+        pair_set_gateway.add_pair_set()
+
+        result = pair_set_gateway.get_pair_set(1)
+        self.assertEqual(1, result.id)
+        self.assertAlmostEqual(round(datetime.datetime.utcnow().timestamp()*1000), result.set_time, -4)
+
+    def test_add_pair_when_given_timestamp_creates_record_with_that_set_time(self):
+        pair_set_gateway = PairSetGateway(self.parent_directory)
+        pair_set_gateway.add_pair_set(100)
+
+        result = pair_set_gateway.get_pair_set(1)
+        self.assertEqual(1, result.id)
+        self.assertEqual(100, result.set_time)
+
+    def test_get_set_pair_by_id_returns_expected_result_set(self):
+        pair_set_gateway = PairSetGateway(self.parent_directory)
+        pair_set_gateway.add_pair_set(100)
+        found_pair_set = pair_set_gateway.get_pair_set(1)
+        self.assertEqual(100, found_pair_set.set_time)
 
 
 class TestUserGateway(unittest.TestCase):
