@@ -136,6 +136,13 @@ class TestUserGateway(unittest.TestCase):
 
 class TestFileGateway(unittest.TestCase):
 
+    def _has_table(self, expected, result_set):
+        found = False
+        for result in result_set:
+            if expected == result[0]:
+                found = True
+        return found
+
     def setUp(self):
         self.settings_folder_path = None
 
@@ -165,11 +172,18 @@ class TestFileGateway(unittest.TestCase):
         self.assertTrue(isfile(data_source_path))
 
     def test_init_creates_data_source_properly(self):
+        self.assertHasTableWithName('committer')
 
+    def test_initialize_creates_pair_set_table(self):
+        self.assertHasTableWithName('pair_set')
+
+    def test_initialize_creates_pair_set_committer_relationship_table(self):
+        self.assertHasTableWithName('pair_set_committer')
+
+    def assertHasTableWithName(self, table_name):
         parent_directory = abspath(join(__file__, pardir))
         self.settings_folder_path = join(parent_directory, const.APP_FOLDER_NAME)
         data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
-
         FileGateway(parent_directory, subprocess_module=Mock()).initialize()
 
         import sqlite3
@@ -179,9 +193,7 @@ class TestFileGateway(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         result = cursor.fetchall()
-        self.assertEqual(1, len(result))
-        self.assertEqual('committer', result[0][0])
-        connection.close()
+        self.assertTrue(self._has_table(table_name, result))
 
     def test_path_exists_returns_true_when_the_path_exists(self):
 
