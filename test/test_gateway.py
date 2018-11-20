@@ -80,7 +80,7 @@ class TestGitGateway(unittest.TestCase):
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'pre-commit')))
 
 
-class TestPairSetGateway(unittest.TestCase):
+class _SQLGatewayTest(unittest.TestCase):
     def setUp(self):
         self.parent_directory = FileGateway.home_dir(__file__)
         self.settings_folder_path = join(self.parent_directory, const.APP_FOLDER_NAME)
@@ -95,6 +95,9 @@ class TestPairSetGateway(unittest.TestCase):
         if isdir(self.settings_folder_path):
             from shutil import rmtree
             rmtree(self.settings_folder_path)
+
+
+class TestPairSetGateway(_SQLGatewayTest):
 
     def test_add_pair_set_creates_record_with_current_time_in_millis(self):
         pair_set_gateway = PairSetGateway(self.parent_directory)
@@ -125,22 +128,7 @@ class TestPairSetGateway(unittest.TestCase):
         self.assertEqual(2, pair_set_gateway.get_most_recent_pair_set().id)
 
 
-class TestUserGateway(unittest.TestCase):
-
-    def setUp(self):
-        self.parent_directory = FileGateway.home_dir(__file__)
-        self.settings_folder_path = join(self.parent_directory, const.APP_FOLDER_NAME)
-        self.data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
-        self.file_gateway = FileGateway(self.parent_directory, subprocess_module=Mock())
-        self.file_gateway.initialize()
-        self.connection = None
-
-    def tearDown(self):
-        if self.connection:
-            self.connection.close()
-        if isdir(self.settings_folder_path):
-            from shutil import rmtree
-            rmtree(self.settings_folder_path)
+class TestUserGateway(_SQLGatewayTest):
 
     def test_default_connection_path_is_data_source_in_user_home_directory(self):
         user_gateway = UserGateway()
