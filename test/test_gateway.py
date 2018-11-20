@@ -97,6 +97,37 @@ class _SQLGatewayTest(unittest.TestCase):
             rmtree(self.settings_folder_path)
 
 
+class TestPairSetCommitterGateway(_SQLGatewayTest):
+
+    def test_add_pair_set_committer_creates_record(self):
+        pair_set_committer_gateway = PairSetGatewayCommitterGateway(self.parent_directory)
+        committer_initials = 'cb'
+        pair_set_id = 1
+        pair_set_committer_gateway.add_pair_set_committer(committer_initials, pair_set_id)
+
+        import sqlite3
+
+        connection = sqlite3.connect(self.data_source_path)
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM pair_set_committer;")
+        result = cursor.fetchall()
+        self.assertEqual(1, result[0][0])
+        self.assertEqual(committer_initials, result[0][1])
+        self.assertEqual(pair_set_id, result[0][2])
+
+    def test_read_pair_set_committer_by_pair_set_id(self):
+        pair_set_committer_gateway = PairSetGatewayCommitterGateway(self.parent_directory)
+        committer_initials = 'cb'
+        pair_set_id = 1
+        pair_set_committer_gateway.add_pair_set_committer(committer_initials, pair_set_id)
+        result = pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(pair_set_id)
+        self.assertEqual(1, len(result))
+        self.assertEqual(1, result[0].id)
+        self.assertEqual(pair_set_id, result[0].pair_set_id)
+        self.assertEqual(committer_initials, result[0].committer_initials)
+
+
 class TestPairSetGateway(_SQLGatewayTest):
 
     def test_add_pair_set_creates_record_with_current_time_in_millis(self):
