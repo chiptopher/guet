@@ -161,6 +161,18 @@ class FileGateway:
                               (initials TEXT NOT NULL PRIMARY KEY,
                                name TEXT NOT NULL,
                                email TEXT NOT NULL)""")
+        connection.execute("""CREATE TABLE pair_set
+                              (id INTEGER NOT NULL PRIMARY KEY,
+                              set_time INTEGER NOT NULL)
+                              """)
+        connection.execute("""CREATE TABLE pair_set_committer
+                              (id INTEGER NOT NULL PRIMARY KEY,
+                              committer_initials TEXT NOT NULL,
+                              pair_set_id INTEGER NOT NULL,
+                              FOREIGN KEY (pair_set_id) REFERENCES pair_set(id),
+                              FOREIGN KEY (committer_initials) REFERENCES comitter(initials)
+                              )
+                              """)
         connection.close()
 
         def create_fule_with_name(file_name: str):
