@@ -1,4 +1,3 @@
-
 from test.commands.test_command import CommandTest, create_test_case
 from guet.commands.setcommitters import SetCommittersCommand
 from guet.gateway import *
@@ -15,7 +14,6 @@ class TestSetCommittersCommand(CommandTest):
 
         self.mock_user_gateway = UserGateway()
         self.mock_user_gateway.get_user = Mock()
-
 
     def test_validate(self):
         cases = [
@@ -38,7 +36,8 @@ class TestSetCommittersCommand(CommandTest):
 
         self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
 
-        command = SetCommittersCommand(['set', initials], self.mock_user_gateway, self.mock_file_gateway)
+        command = self._create_set_committers_command_with_all_mocks(['set', initials], self.mock_user_gateway,
+                                                                     self.mock_file_gateway)
         command.execute()
 
         self.mock_file_gateway.set_committers.assert_called_once_with([CommitterInput(email=email, name=name)])
@@ -52,7 +51,21 @@ class TestSetCommittersCommand(CommandTest):
 
         self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
 
-        command = SetCommittersCommand(['set', expected_initials], self.mock_user_gateway, self.mock_file_gateway)
+        command = self._create_set_committers_command_with_all_mocks(['set', expected_initials], self.mock_user_gateway,
+                                                                     self.mock_file_gateway)
         command.execute()
         self.mock_file_gateway.set_author_email.assert_called_once_with('email')
         self.mock_file_gateway.set_author_name.assert_called_once_with('name')
+
+    def test_execute_will_add_a_pair_set_and_committers_to_it(self):
+        # def _mock_user_return(initials: str):
+            # return committer_result(name='name', email=)
+
+    def _create_set_committers_command_with_all_mocks(self,
+                                                      args,
+                                                      mock_user_gateway: UserGateway = Mock(),
+                                                      mock_file_gateway: FileGateway = Mock(),
+                                                      mock_pair_set_gateway: PairSetGateway = Mock(),
+                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = Mock()):
+        return SetCommittersCommand(args, mock_user_gateway, mock_file_gateway, mock_pair_set_gateway,
+                                    mock_pair_set_committers_gateway)
