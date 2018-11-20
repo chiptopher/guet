@@ -109,7 +109,7 @@ class GitGateway:
         f.close()
 
 
-class UserGateway:
+class _SQLGateway:
     def __init__(self, connection_path: str = expanduser('~')):
         self._connection_path = self._append_data_source_to(connection_path)
         self._connection = None
@@ -117,6 +117,9 @@ class UserGateway:
     @classmethod
     def _append_data_source_to(cls, path):
         return join(path, join(constants.APP_FOLDER_NAME, constants.DATA_SOURCE_NAME))
+
+
+class UserGateway(_SQLGateway):
 
     def add_user(self, initials: str, name: str, email: str):
         if self.get_user(initials):
