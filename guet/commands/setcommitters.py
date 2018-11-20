@@ -24,8 +24,12 @@ class SetCommittersCommand(Command):
     def __init__(self,
                  args,
                  user_gateway: UserGateway = UserGateway(),
-                 file_gateway: FileGateway = FileGateway()):
+                 file_gateway: FileGateway = FileGateway(),
+                 pair_set_gateway: PairSetGateway = PairSetGateway(),
+                 pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway()):
         super().__init__(args)
+        self.pair_set_committers_gateway = pair_set_committers_gateway
+        self.pair_set_gateway = pair_set_gateway
         self._user_gateway = user_gateway
         self._file_gateway = file_gateway
 
