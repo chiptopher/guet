@@ -27,6 +27,7 @@ import datetime
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
 pair_set_result = namedtuple('PairSet', 'id set_time')
+pair_set_committer_result = namedtuple('PairSetCommitter', 'id committer_initials pair_set_id')
 
 
 class CommitterInput:
@@ -119,6 +120,27 @@ class _SQLGateway:
     @classmethod
     def _append_data_source_to(cls, path):
         return join(path, join(constants.APP_FOLDER_NAME, constants.DATA_SOURCE_NAME))
+
+
+class PairSetGatewayCommitterGateway(_SQLGateway):
+    def add_pair_set_committer(self, committer_initials, pair_set_id):
+        self._connection = sqlite3.connect(self._connection_path)
+        query = "INSERT INTO pair_set_committer(`committer_initials`, `pair_set_id`) VALUES (?, ?)"
+        self._connection.cursor().execute(query, (
+            committer_initials,
+            pair_set_id,
+        ))
+        self._connection.commit()
+        self._connection.close()
+
+    def get_pair_set_committers_by_pair_set_id(self, pair_set_id: int):
+        self._connection = sqlite3.connect(self._connection_path)
+        query = "SELECT * FROM pair_set_committer WHERE pair_set_id=?"
+        result = self._connection.cursor().execute(query, (pair_set_id,)).fetchall()
+        self._connection.commit()
+        self._connection.close()
+        return list(map(lambda i: pair_set_committer_result(id=i[0], pair_set_id=i[2], committer_initials=i[1]), result))
+
 
 
 class PairSetGateway(_SQLGateway):
