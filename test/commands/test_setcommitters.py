@@ -68,15 +68,22 @@ class TestSetCommittersCommand(CommandTest):
         self.mock_file_gateway.set_author_name.assert_called_once_with('name')
 
     def test_execute_will_add_a_pair_set_and_committers_to_it(self):
+        pair_set_id = 2
         def _mock_user_return(initials: str):
             return committer_result(name='name', email='email', initials='initials')
 
         self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
+
+        def _mock_add_pair(pair_set_time: int):
+            return pair_set_id
+
+        self.mock_pair_set_gateway.add_pair_set = Mock(side_effect=_mock_add_pair)
         command = self._create_set_committers_command_with_all_mocks(['set', 'initials'], self.mock_user_gateway)
         command.execute()
 
         call = self.mock_pair_set_gateway.add_pair_set.call_args_list[0]
-        self.assertAlmostEqual(datetime.datetime.utcnow().timestamp()*1000, call[1], -2)
+        self.assertAlmostEqual(round(datetime.datetime.utcnow().timestamp()*1000), call[0][0], -2)
+        self.mock_pair_set_committer_gateway.add_pair_set_committer.assert_called_once_with('initials', pair_set_id)
 
     def _create_set_committers_command_with_all_mocks(self,
                                                       args: list,
