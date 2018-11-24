@@ -16,8 +16,8 @@ limitations under the License.
 
 
 from .addcommitter import AddUserCommand
+from .command import Command
 from .help import HelpCommand
 from .init import InitDataSourceCommand
 from .setcommitters import SetCommittersCommand
 from .start import StartCommand
-from .command import Command

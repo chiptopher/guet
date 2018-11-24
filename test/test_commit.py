@@ -1,10 +1,11 @@
 
-import unittest
 import datetime
-from unittest.mock import Mock
-from guet.gateway import FileGateway, committer_result, PairSetGateway, pair_set_result, PrintGateway
-from guet.commit import PostCommitManager, PreCommitManager
 import sys
+import unittest
+from unittest.mock import Mock
+
+from guet.commit import PostCommitManager, PreCommitManager
+from guet.gateway import FileGateway, committer_result, PairSetGateway, pair_set_result, PrintGateway
 
 
 class PostCommitManagerTest(unittest.TestCase):

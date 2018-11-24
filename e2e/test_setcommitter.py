@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from e2e.e2etest import E2ETest
-from os.path import join, expanduser
-from guet import constants as const
 import subprocess
-from guet.gateway import PairSetGateway, PairSetGatewayCommitterGateway
+from os.path import join, expanduser
+
+from e2e.e2etest import E2ETest
+from guet import constants as const
+from guet.gateway import PairSetGatewayCommitterGateway
 
 
 class TestGuetSet(E2ETest):

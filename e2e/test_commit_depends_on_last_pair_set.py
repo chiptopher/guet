@@ -1,11 +1,11 @@
-from e2e.e2etest import E2ETest
-from os.path import join, expanduser, isdir
-from guet import constants as const
-import subprocess
-import os
-from shutil import rmtree
-from guet.gateway import PairSetGateway
 import datetime
+import os
+import subprocess
+from os.path import join, expanduser, isdir
+from shutil import rmtree
+
+from e2e.e2etest import E2ETest
+from guet.gateway import PairSetGateway
 
 
 class TestGuetCommitRotatesAuthor(E2ETest):

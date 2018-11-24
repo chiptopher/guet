@@ -16,6 +16,7 @@ limitations under the License.
 
 import subprocess
 from os.path import join, expanduser, isfile
+
 from e2e.e2etest import E2ETest
 from guet import constants as const
 from guet.commands.init import InitDataSourceCommand

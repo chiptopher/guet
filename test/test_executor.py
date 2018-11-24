@@ -1,9 +1,10 @@
 
 import unittest
 from unittest.mock import Mock
+
+from guet.commands.command import Command
 from guet.executor import Executor
 from guet.factory import CommandFactory
-from guet.commands.command import Command
 
 
 class TestExecutor(unittest.TestCase):

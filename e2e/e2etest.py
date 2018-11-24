@@ -15,11 +15,12 @@ limitations under the License.
 """
 
 import unittest
-from shutil import rmtree
 from os import mkdir, chdir, getcwd
 from os.path import abspath, join, expanduser, isdir
+from shutil import rmtree
+
 from guet import constants as const
-import subprocess
+
 
 class E2ETest(unittest.TestCase):
 

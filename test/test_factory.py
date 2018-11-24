@@ -1,8 +1,9 @@
 
 import unittest
-from guet.factory import CommandFactory
+
 from guet.commands.command import Command
 from guet.commands.help import HelpCommand
+from guet.factory import CommandFactory
 
 
 class MockCommand(Command):

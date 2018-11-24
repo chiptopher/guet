@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from test.commands.test_command import CommandTest, create_test_case
+from unittest.mock import Mock
+
 from guet.commands.init import InitDataSourceCommand
 from guet.gateway import *
-from unittest.mock import Mock
+from test.commands.test_command import CommandTest, create_test_case
 
 
 class TestInitDataSourceCommand(CommandTest):

@@ -14,16 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import sys
-from os.path import expanduser, abspath, join, pardir, isdir, isfile
+import datetime
 import os
-from os import mkdir, getcwd
 import sqlite3
+import subprocess
+import sys
 from collections import namedtuple
+from os import mkdir, getcwd
+from os.path import expanduser, abspath, join, pardir, isdir, isfile
+
 from . import constants
 from .stdout_manager import StdoutManager
-import subprocess
-import datetime
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
 pair_set_result = namedtuple('PairSet', 'id set_time')

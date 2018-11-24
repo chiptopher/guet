@@ -1,8 +1,9 @@
 
-from test.commands.test_command import CommandTest, create_test_case
+from unittest.mock import Mock
+
 from guet.commands.start import StartCommand
 from guet.gateway import *
-from unittest.mock import Mock
+from test.commands.test_command import CommandTest, create_test_case
 
 
 class TestStartCommand(CommandTest):

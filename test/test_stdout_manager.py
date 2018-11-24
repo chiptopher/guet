@@ -1,5 +1,6 @@
 
 import unittest
+
 from guet.stdout_manager import StdoutManager
 
 

@@ -1,8 +1,9 @@
 
-from guet.main import main
-from unittest.mock import Mock
-from guet.executor import Executor
 import unittest
+from unittest.mock import Mock
+
+from guet.executor import Executor
+from guet.main import main
 
 
 class TestMain(unittest.TestCase):

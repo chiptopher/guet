@@ -1,5 +1,6 @@
-from guet.gateway import FileGateway, PairSetGateway, PrintGateway
 import datetime
+
+from guet.gateway import FileGateway, PairSetGateway, PrintGateway
 
 
 class PostCommitManager:

@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from e2e.e2etest import E2ETest
-from guet.gateway import UserGateway
-from guet.commands.addcommitter import AddUserCommand
 import subprocess
+
+from e2e.e2etest import E2ETest
+from guet.commands.addcommitter import AddUserCommand
+from guet.gateway import UserGateway
 
 
 class TestAddUser(E2ETest):

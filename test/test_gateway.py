@@ -1,13 +1,13 @@
-import sys
-from io import StringIO
-import unittest
-from unittest.mock import Mock
-from guet.gateway import *
-from os.path import isfile, join, isdir, pardir, abspath, expanduser
-import subprocess
-from guet import constants as const
-from guet.stdout_manager import StdoutManager
 import datetime
+import subprocess
+import unittest
+from io import StringIO
+from os.path import isfile, join, isdir, pardir, abspath, expanduser
+from unittest.mock import Mock
+
+from guet import constants as const
+from guet.gateway import *
+from guet.stdout_manager import StdoutManager
 
 
 class TestPrintGateway(unittest.TestCase):

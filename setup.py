@@ -1,5 +1,6 @@
-import guet
 from setuptools import setup
+
+import guet
 
 with open("README.md", "r") as fh:
     long_description = fh.read()

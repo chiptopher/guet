@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import unittest
-from guet.commands.command import *
 import collections
+import unittest
 
+from guet.commands.command import *
 
 test_case = collections.namedtuple('TestCase', 'input expected_output explanation')
 

@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from test.commands.test_command import CommandTest, create_test_case
+from unittest.mock import Mock, call
+
 from guet.commands.addcommitter import AddUserCommand
 from guet.gateway import *
-from unittest.mock import Mock, call
+from test.commands.test_command import CommandTest, create_test_case
 
 
 class TestAddUserCommand(CommandTest):

@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from e2e.e2etest import E2ETest
 import subprocess
 from os.path import join
+
+from e2e.e2etest import E2ETest
 
 
 class TestStart(E2ETest):
