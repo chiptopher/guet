@@ -99,8 +99,8 @@ class GitGateway:
     def _create_author_manager_script(self):
         lines = [
             '#! /usr/bin/env python',
-            'from guet.commit import CommitManager',
-            'cm = CommitManager()',
+            'from guet.commit import PostCommitManager',
+            'cm = PostCommitManager()',
             'cm.manage()',
         ]
         hook_path = join(self._parent_dir, '.git', 'hooks', 'post-commit')
