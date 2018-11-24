@@ -1,5 +1,4 @@
-
-from guet.gateway import FileGateway, PairSetGateway
+from guet.gateway import FileGateway, PairSetGateway, PrintGateway
 import datetime
 
 
@@ -19,7 +18,9 @@ class PostCommitManager:
 
 class PreCommitManager:
 
-    def __init__(self, pair_set_gateway: PairSetGateway=PairSetGateway(), exit_method=exit):
+    def __init__(self, pair_set_gateway: PairSetGateway = PairSetGateway(),
+                 print_gateway: PrintGateway = PrintGateway(), exit_method=exit):
+        self._print_gateway = print_gateway
         self._pair_set_gateway = pair_set_gateway
         self._exit_method = exit_method
 
@@ -28,6 +29,7 @@ class PreCommitManager:
         twenty_four_hours = 86400000
         twenty_four_hours_ago = now - twenty_four_hours
         if self._pair_set_gateway.get_most_recent_pair_set().set_time < twenty_four_hours_ago:
+            self._print_gateway.print('Must set pairs again')
             self._exit_method(1)
         else:
             self._exit_method(0)

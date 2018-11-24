@@ -79,7 +79,10 @@ class GitGateway:
 
     def _create_pre_commit_hook(self):
         lines = [
-            "#!/bin/sh"
+            '#! /usr/bin/env python',
+            'from guet.commit import PreCommitManager',
+            'cm = PreCommitManager()',
+            'cm.manage()',
         ]
         hook_path = join(self._parent_dir, '.git', 'hooks', 'pre-commit')
         f = open(hook_path, 'w+')
