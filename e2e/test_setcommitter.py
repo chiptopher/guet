@@ -35,7 +35,7 @@ class TestGuetSet(E2ETest):
         pair_set_committer_gateway = PairSetGatewayCommitterGateway()
         self.assertEqual('initials1', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[0].committer_initials)
         self.assertEqual('initials2', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[1].committer_initials)
-        
+
     def test_set_adds_given_users_to_committers_file(self):
         process = subprocess.Popen(['guet', 'init'])
         process.wait()

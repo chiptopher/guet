@@ -2,7 +2,7 @@
 from guet.gateway import FileGateway
 
 
-class CommitManager:
+class PostCommitManager:
 
     def __init__(self, file_gateway: FileGateway = FileGateway()):
         self._file_gateway = file_gateway
