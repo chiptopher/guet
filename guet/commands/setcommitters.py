@@ -28,8 +28,8 @@ class SetCommittersCommand(Command):
                  pair_set_gateway: PairSetGateway = PairSetGateway(),
                  pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway()):
         super().__init__(args)
-        self.pair_set_committers_gateway = pair_set_committers_gateway
-        self.pair_set_gateway = pair_set_gateway
+        self._pair_set_committers_gateway = pair_set_committers_gateway
+        self._pair_set_gateway = pair_set_gateway
         self._user_gateway = user_gateway
         self._file_gateway = file_gateway
 
@@ -40,6 +40,7 @@ class SetCommittersCommand(Command):
             committer = self._user_gateway.get_user(committer_initial)
             committers.append(CommitterInput(name=committer.name, email=committer.email))
         author = self._user_gateway.get_user(committer_initials[0])
+        self._pair_set_gateway.add_pair_set(round(datetime.datetime.utcnow().timestamp()*1000))
         self._file_gateway.set_committers(committers)
         self._file_gateway.set_author_email(author.email)
         self._file_gateway.set_author_name(author.name)
