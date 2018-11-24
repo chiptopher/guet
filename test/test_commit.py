@@ -1,8 +1,9 @@
 
 import unittest
+import datetime
 from unittest.mock import Mock
-from guet.gateway import FileGateway, committer_result
-from guet.commit import PostCommitManager
+from guet.gateway import FileGateway, committer_result, PairSetGateway, pair_set_result
+from guet.commit import PostCommitManager, PreCommitManager
 
 
 class PostCommitManagerTest(unittest.TestCase):
@@ -34,3 +35,35 @@ class PostCommitManagerTest(unittest.TestCase):
         self.commit_manager.manage()
         self.mock_file_gateway.set_author_email.assert_called_once_with(committer2.email)
         self.mock_file_gateway.set_author_name.assert_called_once_with(committer2.name)
+
+
+class PreCommitManagerTest(unittest.TestCase):
+    def setUp(self):
+        self.mock_pair_set_gateway = PairSetGateway()
+        self.mock_pair_set_gateway.get_pair_set = Mock()
+        self.mock_pair_set_gateway.add_pair_set = Mock()
+        self.mock_pair_set_gateway.get_most_recent_pair_set = Mock()
+
+        self.mock_exit_method = Mock()
+
+    def test_manage_checks_for_most_recent_pair_set_and_exits_1_if_it_is_over_24_hours(self):
+        twenty_four_hours = 86400000
+        # offset timestamp by 1 so because test might complete in under a second, causing it to fail
+        now = round((datetime.datetime.utcnow().timestamp()-1)*1000)
+
+        def _mock_most_recent_pair_set():
+            return pair_set_result(id=1, set_time=now - twenty_four_hours)
+        self.mock_pair_set_gateway.get_most_recent_pair_set = Mock(side_effect=_mock_most_recent_pair_set)
+        subject = PreCommitManager(self.mock_pair_set_gateway, self.mock_exit_method)
+        subject.manage()
+        self.mock_exit_method.assert_called_once_with(1)
+
+    def test_manage_checks_for_most_recent_pair_set_and_exits_0_if_it_is_under_24_hours(self):
+        ten_hours = 36000000
+        now = round(datetime.datetime.utcnow().timestamp()*1000)
+        def _mock_most_recent_pair_set():
+            return pair_set_result(id=1, set_time=now - ten_hours)
+        self.mock_pair_set_gateway.get_most_recent_pair_set = Mock(side_effect=_mock_most_recent_pair_set)
+        subject = PreCommitManager(self.mock_pair_set_gateway, self.mock_exit_method)
+        subject.manage()
+        self.mock_exit_method.assert_called_once_with(0)
