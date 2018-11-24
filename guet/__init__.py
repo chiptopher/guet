@@ -16,4 +16,4 @@ limitations under the License.
 
 __version__ = '1.0.0'
 
-from guet.commit import CommitManager
+from guet.commit import PostCommitManager

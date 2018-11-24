@@ -2,10 +2,10 @@
 import unittest
 from unittest.mock import Mock
 from guet.gateway import FileGateway, committer_result
-from guet.commit import CommitManager
+from guet.commit import PostCommitManager
 
 
-class CommitManagerTest(unittest.TestCase):
+class PostCommitManagerTest(unittest.TestCase):
 
     def setUp(self):
         self.mock_file_gateway = FileGateway()
@@ -14,7 +14,7 @@ class CommitManagerTest(unittest.TestCase):
         self.mock_file_gateway.set_author_name = Mock()
         self.mock_file_gateway.set_author_email = Mock()
 
-        self.commit_manager = CommitManager(self.mock_file_gateway)
+        self.commit_manager = PostCommitManager(self.mock_file_gateway)
 
     def test_manage_rotates_the_commit_names(self):
         committer1 = committer_result(name='Name', email='email', initials='')
