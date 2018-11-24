@@ -2,6 +2,7 @@ from test.commands.test_command import CommandTest, create_test_case
 from guet.commands.setcommitters import SetCommittersCommand
 from guet.gateway import *
 from unittest.mock import Mock
+import datetime
 
 
 class TestSetCommittersCommand(CommandTest):
@@ -14,6 +15,15 @@ class TestSetCommittersCommand(CommandTest):
 
         self.mock_user_gateway = UserGateway()
         self.mock_user_gateway.get_user = Mock()
+
+        self.mock_pair_set_gateway = PairSetGateway()
+        self.mock_pair_set_gateway.add_pair_set = Mock()
+        self.mock_pair_set_gateway.get_pair_set = Mock()
+        self.mock_pair_set_gateway.get_most_recent_pair_set = Mock()
+
+        self.mock_pair_set_committer_gateway = PairSetGatewayCommitterGateway()
+        self.mock_pair_set_committer_gateway.add_pair_set_committer = Mock()
+        self.mock_pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id = Mock()
 
     def test_validate(self):
         cases = [
@@ -58,14 +68,24 @@ class TestSetCommittersCommand(CommandTest):
         self.mock_file_gateway.set_author_name.assert_called_once_with('name')
 
     def test_execute_will_add_a_pair_set_and_committers_to_it(self):
-        # def _mock_user_return(initials: str):
-            # return committer_result(name='name', email=)
+        def _mock_user_return(initials: str):
+            return committer_result(name='name', email='email', initials='initials')
+
+        self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
+        command = self._create_set_committers_command_with_all_mocks(['set', 'initials'], self.mock_user_gateway)
+        command.execute()
+
+        call = self.mock_pair_set_gateway.add_pair_set.call_args_list[0]
+        self.assertAlmostEqual(datetime.datetime.utcnow().timestamp()*1000, call[1], -2)
 
     def _create_set_committers_command_with_all_mocks(self,
-                                                      args,
-                                                      mock_user_gateway: UserGateway = Mock(),
-                                                      mock_file_gateway: FileGateway = Mock(),
-                                                      mock_pair_set_gateway: PairSetGateway = Mock(),
-                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = Mock()):
-        return SetCommittersCommand(args, mock_user_gateway, mock_file_gateway, mock_pair_set_gateway,
-                                    mock_pair_set_committers_gateway)
+                                                      args: list,
+                                                      mock_user_gateway: UserGateway = None,
+                                                      mock_file_gateway: FileGateway = None,
+                                                      mock_pair_set_gateway: PairSetGateway = None,
+                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = None):
+        ug = mock_user_gateway if None else self.mock_user_gateway
+        fg = mock_file_gateway if None else self.mock_file_gateway
+        psg = mock_pair_set_gateway if None else self.mock_pair_set_gateway
+        pscg = mock_pair_set_committers_gateway if None else self.mock_pair_set_committer_gateway
+        return SetCommittersCommand(args, ug, fg, psg, pscg)
