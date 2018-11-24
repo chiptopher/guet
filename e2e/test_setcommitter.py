@@ -18,10 +18,24 @@ from e2e.e2etest import E2ETest
 from os.path import join, expanduser
 from guet import constants as const
 import subprocess
+from guet.gateway import PairSetGateway, PairSetGatewayCommitterGateway
 
 
 class TestGuetSet(E2ETest):
 
+    def test_set_committers_creates_a_pair_set_for_the_users(self):
+        process = subprocess.Popen(['guet', 'init'])
+        process.wait()
+        process = subprocess.Popen(['guet', 'add', 'initials1', 'name1', 'email1@localhost'])
+        process.wait()
+        process = subprocess.Popen(['guet', 'add', 'initials2', 'name2', 'email2@localhost'])
+        process.wait()
+        process = subprocess.Popen(['guet', 'set', 'initials1', 'initials2'])
+        process.wait()
+        pair_set_committer_gateway = PairSetGatewayCommitterGateway()
+        self.assertEqual('initials1', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[0].committer_initials)
+        self.assertEqual('initials2', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[1].committer_initials)
+        
     def test_set_adds_given_users_to_committers_file(self):
         process = subprocess.Popen(['guet', 'init'])
         process.wait()
