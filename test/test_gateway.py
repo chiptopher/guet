@@ -146,6 +146,13 @@ class TestPairSetGateway(_SQLGatewayTest):
         self.assertEqual(1, result.id)
         self.assertEqual(100, result.set_time)
 
+    def test_add_pair_returns_the_row_id_of_the_inserted_row(self):
+        pair_set_gateway = PairSetGateway(self.parent_directory)
+        rowId1 = pair_set_gateway.add_pair_set()
+        self.assertEqual(1, rowId1)
+        rowId2 = pair_set_gateway.add_pair_set()
+        self.assertEqual(2, rowId2)
+
     def test_get_set_pair_by_id_returns_expected_result_set(self):
         pair_set_gateway = PairSetGateway(self.parent_directory)
         pair_set_gateway.add_pair_set(100)

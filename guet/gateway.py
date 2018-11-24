@@ -147,11 +147,14 @@ class PairSetGateway(_SQLGateway):
     def add_pair_set(self, set_timestamp: int = round(datetime.datetime.utcnow().timestamp() * 1000)):
         self._connection = sqlite3.connect(self._connection_path)
         query = "INSERT INTO pair_set(`set_time`) VALUES (?)"
-        self._connection.cursor().execute(query, (
+        cursor = self._connection.cursor()
+        cursor.execute(query, (
             set_timestamp,
         ))
+        row_id = cursor.lastrowid
         self._connection.commit()
         self._connection.close()
+        return row_id
 
     def get_pair_set(self, id: int):
         self._connection = sqlite3.connect(self._connection_path)
