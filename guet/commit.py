@@ -1,5 +1,6 @@
 
-from guet.gateway import FileGateway
+from guet.gateway import FileGateway, PairSetGateway
+import datetime
 
 
 class PostCommitManager:
@@ -14,3 +15,19 @@ class PostCommitManager:
         self._file_gateway.set_committers(committers)
         self._file_gateway.set_author_name(committers[0].name)
         self._file_gateway.set_author_email(committers[0].email)
+
+
+class PreCommitManager:
+
+    def __init__(self, pair_set_gateway: PairSetGateway=PairSetGateway(), exit_method=exit):
+        self._pair_set_gateway = pair_set_gateway
+        self._exit_method = exit_method
+
+    def manage(self):
+        now = round(datetime.datetime.utcnow().timestamp() * 1000)
+        twenty_four_hours = 86400000
+        twenty_four_hours_ago = now - twenty_four_hours
+        if self._pair_set_gateway.get_most_recent_pair_set().set_time < twenty_four_hours_ago:
+            self._exit_method(1)
+        else:
+            self._exit_method(0)
