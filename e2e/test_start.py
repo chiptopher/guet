@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import subprocess
-from os.path import join
+from os.path import join, isfile
 
 from e2e.e2etest import E2ETest
 
@@ -39,3 +39,29 @@ class TestStart(E2ETest):
         output = self._parse_output(process)
         process.stdout.close()
         self.assertEqual('Git not initialized in this directory.\n', output)
+
+    def test_start_tells_user_when_there_is_already_a_pre_commit_hook_and_gives_options_and_can_choose_to_cancel(self):
+        process = subprocess.Popen(['git', 'init'])
+        process.wait()
+        f = open(join(self.testcwd, '.git', 'hooks', 'pre-commit'), 'w+')
+        f.close()
+        process = subprocess.Popen(['guet', 'start'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        output = process.communicate('x'.encode())
+        process.wait()
+        self.assertEqual('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?\n', output[0].decode('utf-8'))
+
+    def test_start_tells_user_when_there_is_already_a_pre_commit_hook_and_gives_options_and_can_choose_to_overwrite(self):
+        process = subprocess.Popen(['git', 'init'])
+        process.wait()
+        f = open(join(self.testcwd, '.git', 'hooks', 'pre-commit'), 'w+')
+        f.write('Text')
+        f.close()
+        process = subprocess.Popen(['guet', 'start'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        output = process.communicate('o'.encode())
+        process.wait()
+        self.assertEqual('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?\n', output[0].decode('utf-8'))
+
+        f = open(join(self.testcwd, '.git', 'hooks', 'pre-commit'), 'r')
+        data = f.readlines()
+        f.close()
+        self.assertNotEqual(1, len(data), 'Should have more than one line because pre-commit file is being overwritten')

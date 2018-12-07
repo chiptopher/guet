@@ -19,7 +19,8 @@ setup(
         ]
     },
     packages=[
-      'guet',
-      'guet.commands'
+        'guet',
+        'guet.commands',
+        'guet.gateways'
     ]
 )

@@ -18,13 +18,11 @@ import datetime
 import os
 import sqlite3
 import subprocess
-import sys
 from collections import namedtuple
 from os import mkdir, getcwd
 from os.path import expanduser, abspath, join, pardir, isdir, isfile
 
-from . import constants
-from .stdout_manager import StdoutManager
+from guet import constants
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
 pair_set_result = namedtuple('PairSet', 'id set_time')
@@ -40,27 +38,22 @@ class CommitterInput:
         return self.email is other.email and self.name is other.name
 
 
-class PrintGateway:
-    def __init__(self, stdout_manager=StdoutManager.get_instance()):
-        self._stdout_manager = stdout_manager
-
-    def print(self, text):
-        original_stdout = sys.stdout
-        sys.stdout = self._stdout_manager.get_stdout()
-        print(text)
-        sys.stdout = original_stdout
-
-
 class GitGateway:
+    DEFAULT = 'default'
+    CREATE_ALONGSIDE = 'create_alongside'
+    OVERWRITE = 'overwrite'
+    CANCEL = 'candel'
+
     def __init__(self, parent_dir: str = getcwd()):
         self._parent_dir = parent_dir
 
-    def add_hooks(self):
-        self._create_commit_hook()
-        self._create_author_manager_script()
-        self._create_pre_commit_hook()
+    def add_hooks(self, flag):
+        if not flag is self.CANCEL:
+            self._create_commit_hook(flag)
+            self._create_author_manager_script(flag)
+            self._create_pre_commit_hook(flag)
 
-    def _create_commit_hook(self):
+    def _create_commit_hook(self, flag):
         lines = [
             "#!/bin/sh",
             "FILE_LOCATION=~/.guet/committernames",
@@ -70,29 +63,28 @@ class GitGateway:
             '	echo "$CO_AUTHOR $committer" >> "$1"',
             'done <$FILE_LOCATION'
         ]
-        hook_path = join(self._parent_dir, '.git', 'hooks', 'commit-msg')
-        f = open(hook_path, "w+")
+        hook_path = join(self._parent_dir, '.git', 'hooks', self._format_file_name_from_flag('commit-msg', flag))
+        f = open(hook_path, "w")
         st = os.stat(hook_path)
         os.chmod(hook_path, st.st_mode | 0o111)
         for line in lines:
             f.write(line + '\n')
         f.close()
 
-    def _create_pre_commit_hook(self):
+    def _create_pre_commit_hook(self, flag):
         lines = [
             '#! /usr/bin/env python',
             'from guet.commit import PreCommitManager',
             'cm = PreCommitManager()',
             'cm.manage()',
         ]
-        hook_path = join(self._parent_dir, '.git', 'hooks', 'pre-commit')
-        f = open(hook_path, 'w+')
+        hook_path = join(self._parent_dir, '.git', 'hooks', self._format_file_name_from_flag('pre-commit', flag))
+        f = open(hook_path, 'w')
         st = os.stat(hook_path)
         os.chmod(hook_path, st.st_mode | 0o111)
         for line in lines:
             f.write(line + '\n')
         f.close()
-
 
     def commit_msg_hook_exists(self):
         return isfile(join(self._parent_dir, '.git', 'hooks', 'commit-msg'))
@@ -100,20 +92,31 @@ class GitGateway:
     def git_present(self):
         return isdir(join(os.getcwd(), '.git'))
 
-    def _create_author_manager_script(self):
+    def _create_author_manager_script(self, flag):
         lines = [
             '#! /usr/bin/env python',
             'from guet.commit import PostCommitManager',
             'cm = PostCommitManager()',
             'cm.manage()',
         ]
-        hook_path = join(self._parent_dir, '.git', 'hooks', 'post-commit')
-        f = open(hook_path, "w+")
+        hook_path = join(self._parent_dir, '.git', 'hooks', self._format_file_name_from_flag('post-commit', flag))
+        f = open(hook_path, "w")
         st = os.stat(hook_path)
         os.chmod(hook_path, st.st_mode | 0o111)
         for line in lines:
             f.write(line + '\n')
         f.close()
+
+    def any_hook_present(self):
+        return self.hook_present('pre-commit') or self.hook_present('post-commit') or self.hook_present('commit-msg')
+
+    def hook_present(self, file_name: str):
+        return isfile(join(self._parent_dir, '.git', 'hooks', file_name))
+
+    def _format_file_name_from_flag(self, default_name, flag):
+        if flag == self.CREATE_ALONGSIDE:
+            return 'guet-{}'.format(default_name)
+        return default_name
 
 
 class _SQLGateway:
@@ -143,8 +146,8 @@ class PairSetGatewayCommitterGateway(_SQLGateway):
         result = self._connection.cursor().execute(query, (pair_set_id,)).fetchall()
         self._connection.commit()
         self._connection.close()
-        return list(map(lambda i: pair_set_committer_result(id=i[0], pair_set_id=i[2], committer_initials=i[1]), result))
-
+        return list(
+            map(lambda i: pair_set_committer_result(id=i[0], pair_set_id=i[2], committer_initials=i[1]), result))
 
 
 class PairSetGateway(_SQLGateway):
@@ -163,7 +166,7 @@ class PairSetGateway(_SQLGateway):
     def get_pair_set(self, id: int):
         self._connection = sqlite3.connect(self._connection_path)
         query = "SELECT * FROM pair_set WHERE id=?"
-        result = self._connection.cursor().execute(query, (id, )).fetchone()
+        result = self._connection.cursor().execute(query, (id,)).fetchone()
         self._connection.commit()
         self._connection.close()
         return pair_set_result(id=id, set_time=result[1])
@@ -255,8 +258,9 @@ class FileGateway:
         with open(join(self._path, constants.APP_FOLDER_NAME, constants.COMMITTER_NAMES), 'r') as commiters_file:
             for committer in commiters_file.readlines():
                 split = committer.split(' ')
-                name = ' '.join(split[:len(split)-1])
-                committers.append(committer_result(name=name, email=split[len(split)-1].strip().strip('<').strip('>'), initials=''))
+                name = ' '.join(split[:len(split) - 1])
+                committers.append(
+                    committer_result(name=name, email=split[len(split) - 1].strip().strip('<').strip('>'), initials=''))
         return committers
 
     def _create_app_path(self):

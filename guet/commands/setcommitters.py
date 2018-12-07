@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
+from guet.gateways.io import PrintGateway
 from .command import Command
-from ..gateway import *
+from guet.gateways.gateway import *
 
 
 class SetCommittersCommand(Command):

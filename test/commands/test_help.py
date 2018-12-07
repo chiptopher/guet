@@ -18,7 +18,7 @@ from unittest.mock import Mock
 
 from guet.commands.command import Command
 from guet.commands.help import HelpCommand
-from guet.gateway import *
+from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 

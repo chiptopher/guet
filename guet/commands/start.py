@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
-from .command import Command
-from ..gateway import *
+from guet.gateways.io import PrintGateway, InputGateway
+from guet.commands.command import Command
+from guet.gateways.gateway import *
 
 
 class StartCommand(Command):
@@ -24,13 +24,29 @@ class StartCommand(Command):
     def __init__(self,
                  args,
                  git_gateway: GitGateway = GitGateway(),
-                 print_gateway: PrintGateway = PrintGateway()):
+                 print_gateway: PrintGateway = PrintGateway(),
+                 input_gateway: InputGateway = InputGateway()):
         super().__init__(args, print_gateway)
+        self._input_gateway = input_gateway
         self._git_gateway = git_gateway
 
     def execute(self):
         if self._git_gateway.git_present():
-            self._git_gateway.add_hooks()
+            if not self._git_gateway.any_hook_present():
+                self._git_gateway.add_hooks(GitGateway.DEFAULT)
+            else:
+                flag = None
+                while not flag:
+                    self._print_gateway.print('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
+                    val = self._input_gateway.input()
+                    if val == 'o':
+                        flag = GitGateway.OVERWRITE
+                    elif val == 'c':
+                        flag = GitGateway.CREATE_ALONGSIDE
+                    elif val == 'x':
+                        flag = GitGateway.CANCEL
+                self._git_gateway.add_hooks(flag)
+
         else:
             self._print_gateway.print('Git not initialized in this directory.')
 
