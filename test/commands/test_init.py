@@ -17,7 +17,8 @@ limitations under the License.
 from unittest.mock import Mock
 
 from guet.commands.init import InitDataSourceCommand
-from guet.gateway import *
+from guet.gateways.gateway import *
+from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 

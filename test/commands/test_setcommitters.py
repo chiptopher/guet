@@ -1,8 +1,8 @@
-import datetime
 from unittest.mock import Mock
 
 from guet.commands.setcommitters import SetCommittersCommand
-from guet.gateway import *
+from guet.gateways.gateway import *
+from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 

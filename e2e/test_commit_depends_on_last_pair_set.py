@@ -5,7 +5,7 @@ from os.path import join, expanduser, isdir
 from shutil import rmtree
 
 from e2e.e2etest import E2ETest
-from guet.gateway import PairSetGateway
+from guet.gateways.gateway import PairSetGateway
 
 
 class TestGuetCommitRotatesAuthor(E2ETest):

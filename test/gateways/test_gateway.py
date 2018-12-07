@@ -1,35 +1,10 @@
-import datetime
-import subprocess
 import unittest
-from io import StringIO
-from os.path import isfile, join, isdir, pardir, abspath, expanduser
 from unittest.mock import Mock
 
 from guet import constants as const
-from guet.gateway import *
+from guet.gateways.gateway import *
+from guet.gateways.io import PrintGateway
 from guet.stdout_manager import StdoutManager
-
-
-class TestPrintGateway(unittest.TestCase):
-
-    def setUp(self):
-        self.original_stdout = sys.stdout
-
-    def tearDown(self):
-        sys.stdout = self.original_stdout
-
-    def test_init_set_the_stdout_as_the_default_system_stdout(self):
-        print_gateway = PrintGateway()
-        self.assertEqual(StdoutManager.get_instance(), print_gateway._stdout_manager)
-
-    def test_print_writes_to_stdout(self):
-        stdout = StringIO()
-        stdout_manager = StdoutManager.get_instance()
-        stdout_manager.set_stdout(stdout)
-        print_gateway = PrintGateway(stdout_manager)
-        text = 'text'
-        print_gateway.print(text)
-        self.assertEqual(text + '\n', stdout.getvalue())
 
 
 class TestGitGateway(unittest.TestCase):
@@ -48,7 +23,7 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks()
+        git_gateway.add_hooks(GitGateway.DEFAULT)
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'commit-msg')))
 
@@ -57,7 +32,7 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks()
+        git_gateway.add_hooks(GitGateway.DEFAULT)
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'post-commit')))
 
@@ -66,7 +41,7 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks()
+        git_gateway.add_hooks(GitGateway.DEFAULT)
 
         self.assertTrue(git_gateway.commit_msg_hook_exists())
 
@@ -75,9 +50,51 @@ class TestGitGateway(unittest.TestCase):
         git_init_process.wait()
 
         git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks()
+        git_gateway.add_hooks(GitGateway.DEFAULT)
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'pre-commit')))
+
+    def test_hook_exists_can_tell_if_given_hook_exists(self):
+        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
+        git_init_process.wait()
+
+        git_gateway = GitGateway(self.parent_dir)
+        git_gateway.add_hooks(GitGateway.DEFAULT)
+
+        self.assertTrue(git_gateway.hook_present('pre-commit'))
+        self.assertFalse(git_gateway.hook_present('not-a-hook'))
+
+    def test_add_hooks_creates_hook_files_with_guet_prependend_to_name_when_given_create_alongside_flag(self):
+        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
+        git_init_process.wait()
+
+        git_gateway = GitGateway(self.parent_dir)
+        git_gateway.add_hooks(GitGateway.CREATE_ALONGSIDE)
+        self.assertTrue(git_gateway.hook_present('guet-pre-commit'))
+
+    def test_add_hooks_doesnt_create_hook_files_when_given_cancel_flag(self):
+        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
+        git_init_process.wait()
+
+        git_gateway = GitGateway(self.parent_dir)
+        git_gateway.add_hooks(GitGateway.CANCEL)
+        self.assertFalse(git_gateway.hook_present('pre-commit'))
+
+    def test_add_hooks_overwrites_previous_hook_when_given_overwrite_flag(self):
+        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
+        git_init_process.wait()
+
+        f = open(join(self.parent_dir, '.git', 'hooks', 'pre-commit'), 'w+')
+        f.write('Text')
+        f.close()
+
+        git_gateway = GitGateway(self.parent_dir)
+        git_gateway.add_hooks(GitGateway.OVERWRITE)
+
+        f = open(join(self.parent_dir, '.git', 'hooks', 'pre-commit'), 'r')
+        data = f.readlines()
+        f.close()
+        self.assertNotEqual(1, len(data), 'Should have more than one line because pre-commit file is being overwritten')
 
 
 class _SQLGatewayTest(unittest.TestCase):

@@ -19,7 +19,7 @@ from os.path import join, expanduser
 
 from e2e.e2etest import E2ETest
 from guet import constants as const
-from guet.gateway import PairSetGatewayCommitterGateway
+from guet.gateways.gateway import PairSetGatewayCommitterGateway
 
 
 class TestGuetSet(E2ETest):
@@ -57,11 +57,11 @@ class TestGuetSet(E2ETest):
 
         with open(join(expanduser('~'), const.APP_FOLDER_NAME, const.AUTHOR_EMAIL)) as auther_email:
             content = auther_email.readline()
-        self.assertEquals(email, content)
+        self.assertEqual(email, content)
 
         with open(join(expanduser('~'), const.APP_FOLDER_NAME, const.AUTHOR_NAME)) as auther_name:
             content = auther_name.readline()
-        self.assertEquals(name, content)
+        self.assertEqual(name, content)
 
     def test_set_adds_multiple_users_to_committers_file(self):
         process = subprocess.Popen(['guet', 'init'])

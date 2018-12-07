@@ -5,7 +5,8 @@ import unittest
 from unittest.mock import Mock
 
 from guet.commit import PostCommitManager, PreCommitManager
-from guet.gateway import FileGateway, committer_result, PairSetGateway, pair_set_result, PrintGateway
+from guet.gateways.gateway import FileGateway, committer_result, PairSetGateway, pair_set_result
+from guet.gateways.io import PrintGateway
 
 
 class PostCommitManagerTest(unittest.TestCase):
