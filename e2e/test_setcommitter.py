@@ -84,3 +84,11 @@ class TestGuetSet(E2ETest):
 
         self.assertEqual('{} <{}>\n'.format(name, email), content[0])
         self.assertEqual('{} <{}>\n'.format(name, email), content[1])
+
+    def test_set_gracefully_displays_error_message_when_setting_committer_with_unknown_initials(self):
+        process = subprocess.Popen(['guet', 'init'])
+        process.wait()
+        process = subprocess.Popen(['guet', 'set', 'ui'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        full_output = process.communicate()
+        output = full_output[0].decode('utf-8')
+        self.assertEqual("No committer exists with initials 'ui'\n", output)

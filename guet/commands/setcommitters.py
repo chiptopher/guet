@@ -26,25 +26,33 @@ class SetCommittersCommand(Command):
                  user_gateway: UserGateway = UserGateway(),
                  file_gateway: FileGateway = FileGateway(),
                  pair_set_gateway: PairSetGateway = PairSetGateway(),
-                 pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway()):
+                 pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway(),
+                 print_gateway: PrintGateway = PrintGateway()):
         super().__init__(args)
         self._pair_set_committers_gateway = pair_set_committers_gateway
         self._pair_set_gateway = pair_set_gateway
         self._user_gateway = user_gateway
         self._file_gateway = file_gateway
+        self._print_gateway = print_gateway
 
     def execute(self):
         committer_initials = self._args[1:]
         committers = []
+        should_set_committers = True
         pair_set_id = self._pair_set_gateway.add_pair_set(round(datetime.datetime.utcnow().timestamp()*1000))
         for committer_initial in committer_initials:
             committer = self._user_gateway.get_user(committer_initial)
+            if committer is None:
+                self._print_gateway.print("No committer exists with initials '{}'".format(committer_initial))
+                should_set_committers = False
+                break
             committers.append(CommitterInput(name=committer.name, email=committer.email))
             self._pair_set_committers_gateway.add_pair_set_committer(committer_initial, pair_set_id)
-        author = self._user_gateway.get_user(committer_initials[0])
-        self._file_gateway.set_committers(committers)
-        self._file_gateway.set_author_email(author.email)
-        self._file_gateway.set_author_name(author.name)
+        if should_set_committers:
+            author = self._user_gateway.get_user(committer_initials[0])
+            self._file_gateway.set_committers(committers)
+            self._file_gateway.set_author_email(author.email)
+            self._file_gateway.set_author_name(author.name)
 
     def help(self):
         pass

@@ -26,6 +26,9 @@ class TestSetCommittersCommand(CommandTest):
         self.mock_pair_set_committer_gateway.add_pair_set_committer = Mock()
         self.mock_pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id = Mock()
 
+        self.mock_print_gateway = PrintGateway()
+        self.mock_print_gateway.print = Mock()
+
     def test_validate(self):
         cases = [
             create_test_case(['set', 'extra'], True, 'Should return true when the correct number of args'),
@@ -86,14 +89,38 @@ class TestSetCommittersCommand(CommandTest):
         self.assertAlmostEqual(round(datetime.datetime.utcnow().timestamp()*1000), call[0][0], -2)
         self.mock_pair_set_committer_gateway.add_pair_set_committer.assert_called_once_with('initials', pair_set_id)
 
+    def test_execute_prints_out_error_message_when_the_given_initials_arent_in_the_system(self):
+        self.mock_user_gateway.get_user = Mock(return_value=None)
+        command = self._create_set_committers_command_with_all_mocks(['set', 'initials'])
+        command.execute()
+        self.mock_print_gateway.print.assert_called_once_with("No committer exists with initials 'initials'")
+
+    def test_execute_failing_doesnt_set_committers_still(self):
+        expected_initials = 'initials'
+        name = 'name'
+        email = 'email'
+
+        def _mock_user_return(initials: str, ):
+            if initials is expected_initials:
+                return committer_result(name=name, email=email, initials=initials)
+
+        self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
+
+        command = self._create_set_committers_command_with_all_mocks(['set', expected_initials, 'initials2'])
+        command.execute()
+
+        self.mock_file_gateway.set_committers.assert_not_called()
+
     def _create_set_committers_command_with_all_mocks(self,
                                                       args: list,
                                                       mock_user_gateway: UserGateway = None,
                                                       mock_file_gateway: FileGateway = None,
                                                       mock_pair_set_gateway: PairSetGateway = None,
-                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = None):
+                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = None,
+                                                      mock_print_gateway: PrintGateway = None):
         ug = mock_user_gateway if None else self.mock_user_gateway
         fg = mock_file_gateway if None else self.mock_file_gateway
         psg = mock_pair_set_gateway if None else self.mock_pair_set_gateway
         pscg = mock_pair_set_committers_gateway if None else self.mock_pair_set_committer_gateway
-        return SetCommittersCommand(args, ug, fg, psg, pscg)
+        pg = mock_print_gateway if None else self.mock_print_gateway
+        return SetCommittersCommand(args, ug, fg, psg, pscg, pg)
