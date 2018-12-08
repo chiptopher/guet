@@ -111,6 +111,27 @@ class TestSetCommittersCommand(CommandTest):
 
         self.mock_file_gateway.set_committers.assert_not_called()
 
+    def test_execute_should_add_all_pair_set_committers_only_when_all_of_the_committers_exist(self):
+        user1 = committer_result(name='name1', email='email1', initials='initials1')
+        user2 = committer_result(name='name2', email='email2', initials='initials2')
+        users = {
+            'initials1': user1,
+            'initials2': user2
+        }
+
+        def _mock_user_return(initials: str):
+            try:
+                return users[initials]
+            except KeyError:
+                return None
+
+        self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
+
+        command = self._create_set_committers_command_with_all_mocks(['set', 'initials1', 'initials2', 'initials3'])
+        command.execute()
+
+        self.mock_pair_set_committer_gateway.add_pair_set_committer.assert_not_called()
+
     def _create_set_committers_command_with_all_mocks(self,
                                                       args: list,
                                                       mock_user_gateway: UserGateway = None,
