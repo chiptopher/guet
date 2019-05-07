@@ -10,7 +10,7 @@ pairs contributions. Using **guet** allows for that functionality.
 **guet** can be installed from [pypi](https://pypi.org/project/guet/):
 
 ```
-pip install guet
+pip3 install guet
 ```
 
 #### Development Version
