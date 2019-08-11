@@ -28,21 +28,18 @@ class TestInit(E2ETest):
         return 'test-env'
 
     def test_successful_init(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
         self.assertTrue(join(expanduser('~'), '.guet'))
 
     def test_multiple_calls_to_init_tells_user_config_folder_already_exists(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
         process = subprocess.Popen(['guet', 'init'], stdout=subprocess.PIPE)
         process.wait()
         self.assertEqual('Config folder already exists.\n', self._parse_output(process))
         process.stdout.close()
 
     def test_init_creates_guet_authors_file(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
         path = join(expanduser('~'), const.APP_FOLDER_NAME, const.COMMITTER_NAMES)
         file_exists = isfile(path)
         self.assertTrue(file_exists)

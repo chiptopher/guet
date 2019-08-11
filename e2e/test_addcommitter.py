@@ -24,36 +24,31 @@ from guet.gateways.gateway import UserGateway
 class TestAddUser(E2ETest):
 
     def test_add_committer(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
+
         initials = 'usr'
         name = 'User McUser'
         email = 'usr@localhost'
-        process = subprocess.Popen(['guet', 'add', initials, name, email])
-        process.wait()
+        self.guet_add(initials, name, email)
+
         user_gateway = UserGateway()
         user = user_gateway.get_user(initials)
         self.assertEqual(user.email, email)
         self.assertEqual(user.name, name)
 
     def test_add_committer_overwrites_existing_committer(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
-        initials = 'usr'
-        name = 'User McUser'
-        email = 'usr@localhost'
-        process = subprocess.Popen(['guet', 'add', initials, name, email])
-        process.wait()
-        new_name = 'New Name'
-        process = subprocess.Popen(['guet', 'add', initials, new_name, email])
-        process.wait()
+        self.guet_init()
+
+        self.guet_add('usr', 'User McUser', 'usr@localhost')
+        self.guet_add('usr', 'New Name', 'usr@localhost')
+
         user_gateway = UserGateway()
-        user = user_gateway.get_user(initials)
-        self.assertEqual(user.name, new_name)
+        user = user_gateway.get_user('usr')
+        self.assertEqual(user.name, 'New Name')
 
     def test_add_committer_too_many_arguments_prints_error_message(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
+
         initials = 'usr'
         name = 'User McUser'
         email = 'usr@localhost'
@@ -63,8 +58,7 @@ class TestAddUser(E2ETest):
         process.stdout.close()
 
     def test_add_committer_not_enough_args_prints_the_error_message_and_help_for_command(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
         initials = 'usr'
         name = 'User McUser'
         process = subprocess.Popen(['guet', 'add', initials, name], stdout=subprocess.PIPE)

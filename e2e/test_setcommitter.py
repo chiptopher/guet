@@ -25,28 +25,23 @@ from guet.gateways.gateway import PairSetGatewayCommitterGateway
 class TestGuetSet(E2ETest):
 
     def test_set_committers_creates_a_pair_set_for_the_users(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
-        process = subprocess.Popen(['guet', 'add', 'initials1', 'name1', 'email1@localhost'])
-        process.wait()
-        process = subprocess.Popen(['guet', 'add', 'initials2', 'name2', 'email2@localhost'])
-        process.wait()
-        process = subprocess.Popen(['guet', 'set', 'initials1', 'initials2'])
-        process.wait()
+        self.guet_init()
+        self.guet_add('initials1', 'name1', 'email1@localhost')
+        self.guet_add('initials2', 'name2', 'email2@localhost')
+        self.guet_set(['initials1', 'initials2'])
+
         pair_set_committer_gateway = PairSetGatewayCommitterGateway()
         self.assertEqual('initials1', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[0].committer_initials)
         self.assertEqual('initials2', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[1].committer_initials)
 
     def test_set_adds_given_users_to_committers_file(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+
+        self.guet_init()
         initials = 'initials'
         name = 'name'
         email = 'user@localhost'
-        process = subprocess.Popen(['guet', 'add', initials, name, email])
-        process.wait()
-        process = subprocess.Popen(['guet', 'set', initials])
-        process.wait()
+        self.guet_add(initials, name, email)
+        self.guet_set([initials])
 
         data_source_path = join(expanduser('~'), const.APP_FOLDER_NAME, const.COMMITTER_NAMES)
 
@@ -64,18 +59,16 @@ class TestGuetSet(E2ETest):
         self.assertEqual(name, content)
 
     def test_set_adds_multiple_users_to_committers_file(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
+
         initials = 'initials'
         initials2 = 'initials2'
         name = 'name'
         email = 'user@localhost'
-        process = subprocess.Popen(['guet', 'add', initials, name, email])
-        process.wait()
-        process = subprocess.Popen(['guet', 'add', initials2, name, email])
-        process.wait()
-        process = subprocess.Popen(['guet', 'set', initials, initials2])
-        process.wait()
+
+        self.guet_add(initials, name, email)
+        self.guet_add(initials2, name, email)
+        self.guet_set([initials, initials2])
 
         data_source_path = join(expanduser('~'), const.APP_FOLDER_NAME, const.COMMITTER_NAMES)
 
@@ -86,8 +79,7 @@ class TestGuetSet(E2ETest):
         self.assertEqual('{} <{}>\n'.format(name, email), content[1])
 
     def test_set_gracefully_displays_error_message_when_setting_committer_with_unknown_initials(self):
-        process = subprocess.Popen(['guet', 'init'])
-        process.wait()
+        self.guet_init()
         process = subprocess.Popen(['guet', 'set', 'ui'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         full_output = process.communicate()
         output = full_output[0].decode('utf-8')
