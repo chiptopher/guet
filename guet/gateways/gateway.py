@@ -47,11 +47,11 @@ class GitGateway:
     def __init__(self, parent_dir: str = getcwd()):
         self._parent_dir = parent_dir
 
-    def add_hooks(self, flag):
+    def add_hooks(self, flag, use_python3_as_interpreter: bool = False):
         if not flag is self.CANCEL:
             self._create_commit_hook(flag)
-            self._create_author_manager_script(flag)
-            self._create_pre_commit_hook(flag)
+            self._create_author_manager_script(flag, use_python3_as_interpreter)
+            self._create_pre_commit_hook(flag, use_python3_as_interpreter)
 
     def _create_commit_hook(self, flag):
         lines = [
@@ -71,9 +71,12 @@ class GitGateway:
             f.write(line + '\n')
         f.close()
 
-    def _create_pre_commit_hook(self, flag):
+    def _create_pre_commit_hook(self, flag, use_python3_as_interpreter: bool = False):
+        shebang = '#! /usr/bin/env python'
+        if use_python3_as_interpreter:
+            shebang = shebang + '3'
         lines = [
-            '#! /usr/bin/env python',
+            shebang,
             'from guet.commit import PreCommitManager',
             'cm = PreCommitManager()',
             'cm.manage()',
@@ -92,8 +95,12 @@ class GitGateway:
     def git_present(self):
         return isdir(join(os.getcwd(), '.git'))
 
-    def _create_author_manager_script(self, flag):
+    def _create_author_manager_script(self, flag, use_python3_as_interpreter: bool = False):
+        shebang = '#! /usr/bin/env python'
+        if use_python3_as_interpreter:
+            shebang = shebang + '3'
         lines = [
+            shebang,
             '#! /usr/bin/env python',
             'from guet.commit import PostCommitManager',
             'cm = PostCommitManager()',

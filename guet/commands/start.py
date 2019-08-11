@@ -32,8 +32,11 @@ class StartCommand(Command):
 
     def execute(self):
         if self._git_gateway.git_present():
+            init_with_python3_shebang = False
+            if '--python3' in self._args:
+                init_with_python3_shebang = True
             if not self._git_gateway.any_hook_present():
-                self._git_gateway.add_hooks(GitGateway.DEFAULT)
+                self._git_gateway.add_hooks(GitGateway.DEFAULT, init_with_python3_shebang)
             else:
                 flag = None
                 while not flag:
@@ -45,7 +48,7 @@ class StartCommand(Command):
                         flag = GitGateway.CREATE_ALONGSIDE
                     elif val == 'x':
                         flag = GitGateway.CANCEL
-                self._git_gateway.add_hooks(flag)
+                self._git_gateway.add_hooks(flag, init_with_python3_shebang)
 
         else:
             self._print_gateway.print('Git not initialized in this directory.')

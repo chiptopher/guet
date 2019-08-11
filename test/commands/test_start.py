@@ -57,8 +57,19 @@ class TestStartCommand(CommandTest):
     def test_get_short_help_message(self):
         self.assertEqual('Start guet usage in the repository at current directory', StartCommand.get_short_help_message())
 
+    def test_executing_with_python3_flag_initializes_hooks_with_python3_shebang(self):
+        mock_git_gateway = GitGateway()
+        mock_git_gateway.add_hooks = Mock()
+        mock_git_gateway.git_present = Mock(return_value=True)
+
+        command = StartCommand(['--python3'], mock_git_gateway)
+        command.execute()
+
+        mock_git_gateway.add_hooks.assert_called_once_with(GitGateway.DEFAULT, True)
+
     def _create_command(self, args: list, git_gateway: GitGateway = None, print_gateway: PrintGateway = None, input_gateway: InputGateway = None):
         gg = git_gateway if None else self.mock_git_gateway
         pg = print_gateway if None else self.mock_print_gateway
         ig = input_gateway if None else self.mock_input_gateway
         return StartCommand(args, gg, pg, ig)
+

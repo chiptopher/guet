@@ -41,7 +41,7 @@ class TestGuetCommitRotatesAuthor(E2ETest):
         twenty_four_hours_ago = round((datetime.datetime.utcnow().timestamp() - 1) * 1000) - twenty_four_hours
         pair_set_gateway = PairSetGateway()
         pair_set_gateway.add_pair_set(twenty_four_hours_ago)
-        process = subprocess.Popen(['guet', 'start', pair1['initials'], pair2['initials']], cwd=join(expanduser('~'), 'test'))
+        process = subprocess.Popen(['guet', 'start', '--python3', pair1['initials'], pair2['initials']], cwd=join(expanduser('~'), 'test'))
         process.wait()
         process = subprocess.Popen(['git', 'add', '.'], cwd=join(expanduser('~'), 'test'))
         process.wait()

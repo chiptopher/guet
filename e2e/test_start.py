@@ -65,3 +65,26 @@ class TestStart(E2ETest):
         data = f.readlines()
         f.close()
         self.assertNotEqual(1, len(data), 'Should have more than one line because pre-commit file is being overwritten')
+
+    def test_creates_pre_commit_and_post_commit_with_python_shebang_by_default(self):
+        process = subprocess.Popen(['git', 'init'], stdout=subprocess.PIPE)
+        process.wait()
+        process.stdout.close()
+        process = subprocess.Popen(['guet', 'start'])
+        process.wait()
+        self._file_should_have_shell_as_shebang('pre-commit', 'python')
+        self._file_should_have_shell_as_shebang('post-commit', 'python')
+
+    def test_start_can_be_given_python3_flag_to_chhange_shebang_to_python3(self):
+        process = subprocess.Popen(['git', 'init'], stdout=subprocess.PIPE)
+        process.wait()
+        process.stdout.close()
+        process = subprocess.Popen(['guet', 'start', '--python3'])
+        process.wait()
+        self._file_should_have_shell_as_shebang('pre-commit', 'python3')
+        self._file_should_have_shell_as_shebang('post-commit', 'python3')
+
+    def _file_should_have_shell_as_shebang(self, file_name: str, interpreter: str):
+        with open(join(self.testcwd, '.git', 'hooks', file_name)) as f:
+            first_line = f.readline().rstrip()
+        self.assertTrue(first_line.endswith(interpreter), '{} should end in {}'.format(first_line, 'python'))

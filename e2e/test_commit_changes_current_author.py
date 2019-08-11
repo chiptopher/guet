@@ -38,7 +38,7 @@ class TestGuetCommitRotatesAuthor(E2ETest):
         process.wait()
         process = subprocess.Popen(['guet', 'set', pair1['initials'], pair2['initials']], cwd=join(expanduser('~'), 'test'))
         process.wait()
-        process = subprocess.Popen(['guet', 'start', pair1['initials'], pair2['initials']], cwd=join(expanduser('~'), 'test'))
+        process = subprocess.Popen(['guet', 'start', '--python3'], cwd=join(expanduser('~'), 'test'))
         process.wait()
         process = subprocess.Popen(['git', 'add', '.'], cwd=join(expanduser('~'), 'test'))
         process.wait()
@@ -94,7 +94,7 @@ class TestGuetCommitRotatesAuthor(E2ETest):
         process.wait()
         process = subprocess.Popen(['guet', 'set', pair1['initials'], pair2['initials'], pair3['initials']], cwd=join(expanduser('~'), 'test'))
         process.wait()
-        process = subprocess.Popen(['guet', 'start', pair1['initials'], pair2['initials']],
+        process = subprocess.Popen(['guet', 'start', '--python3'],
                                    cwd=join(expanduser('~'), 'test'))
         process.wait()
         process = subprocess.Popen(['git', 'add', '.'], cwd=join(expanduser('~'), 'test'))
@@ -148,7 +148,7 @@ class TestGuetCommitRotatesAuthor(E2ETest):
         process.wait()
         process = subprocess.Popen(['guet', 'set', pair1['initials'], pair2['initials']], cwd=join(expanduser('~'), 'test'))
         process.wait()
-        process = subprocess.Popen(['guet', 'start', pair1['initials'], pair2['initials']],
+        process = subprocess.Popen(['guet', 'start', '--python3'],
                                    cwd=join(expanduser('~'), 'test'))
         process.wait()
         process = subprocess.Popen(['git', 'add', '.'], cwd=join(expanduser('~'), 'test'))
