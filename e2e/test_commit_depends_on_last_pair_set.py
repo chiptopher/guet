@@ -35,6 +35,6 @@ class TestGuetCommitRotatesAuthor(E2ETest):
 
         process = subprocess.Popen(['git', 'commit', '-m', '\"Initial commit\"'], cwd=test_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         res = process.communicate()
-        expected_output = 'Must set pairs again\n'
+        expected_output = "\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n\n"
         self.assertEqual(expected_output, res[1].decode('utf-8'))
         rmtree(test_directory)

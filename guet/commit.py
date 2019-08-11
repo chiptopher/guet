@@ -31,7 +31,7 @@ class PreCommitManager:
         twenty_four_hours = 86400000
         twenty_four_hours_ago = now - twenty_four_hours
         if self._pair_set_gateway.get_most_recent_pair_set().set_time < twenty_four_hours_ago:
-            self._print_gateway.print('Must set pairs again')
+            self._print_gateway.print("\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n")
             self._exit_method(1)
         else:
             self._exit_method(0)

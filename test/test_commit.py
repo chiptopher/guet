@@ -68,7 +68,7 @@ class PreCommitManagerTest(unittest.TestCase):
         subject = PreCommitManager(self.mock_pair_set_gateway, self.mock_print_gateway, self.mock_exit_method)
         subject.manage()
         self.mock_exit_method.assert_called_once_with(1)
-        self.mock_print_gateway.print.assert_called_once_with('Must set pairs again')
+        self.mock_print_gateway.print.assert_called_once_with("\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n")
 
     def test_manage_checks_for_most_recent_pair_set_and_exits_0_if_it_is_under_24_hours(self):
         ten_hours = 36000000
