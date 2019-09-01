@@ -23,6 +23,7 @@ from os import mkdir, getcwd
 from os.path import expanduser, abspath, join, pardir, isdir, isfile
 
 from guet import constants
+from guet.gateways.errors import UninitializedError
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
 pair_set_result = namedtuple('PairSet', 'id set_time')
@@ -135,6 +136,9 @@ class _SQLGateway:
     def _append_data_source_to(cls, path):
         return join(path, join(constants.APP_FOLDER_NAME, constants.DATA_SOURCE_NAME))
 
+    def has_been_initialized(self):
+        return isfile(self._connection_path)
+
 
 class PairSetGatewayCommitterGateway(_SQLGateway):
     def add_pair_set_committer(self, committer_initials, pair_set_id):
@@ -188,17 +192,20 @@ class PairSetGateway(_SQLGateway):
 class UserGateway(_SQLGateway):
 
     def add_user(self, initials: str, name: str, email: str):
-        if self.get_user(initials):
-            self.delete_user(initials)
-        self._connection = sqlite3.connect(self._connection_path)
-        query = "INSERT INTO committer(`initials`, `name`, `email`) VALUES (?, ?, ?)"
-        self._connection.cursor().execute(query, (
-            initials,
-            name,
-            email,
-        ))
-        self._connection.commit()
-        self._connection.close()
+        if self.has_been_initialized():
+            if self.get_user(initials):
+                self.delete_user(initials)
+            self._connection = sqlite3.connect(self._connection_path)
+            query = "INSERT INTO committer(`initials`, `name`, `email`) VALUES (?, ?, ?)"
+            self._connection.cursor().execute(query, (
+                initials,
+                name,
+                email,
+            ))
+            self._connection.commit()
+            self._connection.close()
+        else:
+            raise UninitializedError()
 
     def get_user(self, initials: str):
         self._connection = sqlite3.connect(self._connection_path)

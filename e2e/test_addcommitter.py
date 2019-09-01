@@ -66,3 +66,9 @@ class TestAddUser(E2ETest):
         expected = 'Not enough arguments.\n\n{}\n\n'.format(AddUserCommand([]).help())
         self.assertEqual(expected, self._parse_output(process))
         process.stdout.close()
+
+    def test_add_commiter_requires_that_you_guet_init_first(self):
+        process = subprocess.Popen(['guet', 'add', 'usr', 'user', 'email'], stdout=subprocess.PIPE)
+        process.wait()
+        self.assertEqual('guet has not been initialized yet! Please do so by running the command "guet init".\n', self._parse_output(process))
+        process.stdout.close()

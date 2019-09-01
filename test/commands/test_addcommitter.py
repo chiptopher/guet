@@ -84,3 +84,20 @@ class TestAddUserCommand(CommandTest):
 
     def test_get_short_help_message(self):
         self.assertEqual('Add committer to the list of available committers', AddUserCommand.get_short_help_message())
+
+    def test_execute_prints_error_message_when_init_hasnt_been_ran(self):
+        mock_user_gateway = UserGateway()
+        mock_user_gateway.add_user = Mock()
+        mock_user_gateway.add_user.side_effect = UninitializedError()
+
+        mock_print_gateway = PrintGateway()
+        mock_print_gateway.print = Mock()
+
+        initials = 'usr'
+        name = 'user'
+        email = 'user@localhost'
+        command = AddUserCommand(['guet', initials, name, email], mock_user_gateway, mock_print_gateway)
+        command.execute()
+
+        mock_print_gateway.print.assert_called_once_with('guet has not been initialized yet! Please do so by running the command "guet init".')
+

@@ -39,7 +39,10 @@ class AddUserCommand(Command):
                 self._print_gateway.print(self.help())
                 self._print_gateway.print('')
         else:
-            self._user_gateway.add_user(self._args[1], self._args[2], self._args[3])
+            try:
+                self._user_gateway.add_user(self._args[1], self._args[2], self._args[3])
+            except UninitializedError:
+                self._print_gateway.print('guet has not been initialized yet! Please do so by running the command "guet init".')
 
     def help(self):
         return 'usage: guet add <initials> <"name"> <email>'
