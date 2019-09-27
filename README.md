@@ -4,6 +4,8 @@
 Pair programming is integral part of many software development lifecycles. When pairing, you may want to track both
 pairs contributions. Using **guet** allows for that functionality.
 
+[![Actions Status](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)
+
 ## Installation
 **guet** can be installed from [pypi](https://pypi.org/project/guet/):
 
