@@ -16,6 +16,7 @@ limitations under the License.
 from guet.gateways.io import PrintGateway, InputGateway
 from guet.commands.command import Command
 from guet.gateways.gateway import *
+from guet.git.git_gateway import GitGateway
 
 
 class StartCommand(Command):

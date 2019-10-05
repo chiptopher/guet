@@ -3,6 +3,7 @@ from unittest.mock import Mock
 
 from guet.commands.start import StartCommand
 from guet.gateways.gateway import *
+from guet.git.git_gateway import GitGateway
 from test.commands.test_command import CommandTest, create_test_case
 from guet.gateways.io import PrintGateway, InputGateway
 
