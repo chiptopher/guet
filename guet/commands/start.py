@@ -32,9 +32,7 @@ class StartCommand(Command):
 
     def execute(self):
         if self._git_gateway.git_present():
-            init_with_python3_shebang = False
-            if '--python3' in self._args:
-                init_with_python3_shebang = True
+            init_with_python3_shebang = True
             if not self._git_gateway.any_hook_present():
                 self._git_gateway.add_hooks(GitGateway.DEFAULT, init_with_python3_shebang)
             else:
