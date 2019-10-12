@@ -1,8 +1,7 @@
 
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from guet.commands.start import StartCommand
-from guet.gateways.gateway import *
 from guet.git.git_gateway import GitGateway
 from test.commands.test_command import CommandTest, create_test_case
 from guet.gateways.io import PrintGateway, InputGateway
@@ -34,17 +33,25 @@ class TestStartCommand(CommandTest):
         for case in cases:
             self._validate_test(case, StartCommand)
 
-    def test_execute_adds_the_hook(self):
+    @patch("guet.commands.start.git_hook_path_from_cwd")
+    @patch("guet.commands.start.any_hooks_present")
+    def test_execute_adds_the_hook(self, mock_any_hooks_present, git_hook_path_from_cwd):
+        git_hook_path_from_cwd.return_value = '/path'
+        mock_any_hooks_present.return_value = False
+
         mock_git_gateway = GitGateway()
         mock_git_gateway.add_hooks = Mock()
         mock_git_gateway.git_present = Mock(return_value=True)
 
         command = StartCommand([], mock_git_gateway)
         command.execute()
+        mock_any_hooks_present.assert_called_once_with('/path')
 
-        mock_git_gateway.add_hooks.assert_called_once()
+    @patch("guet.commands.start.git_hook_path_from_cwd")
+    @patch("guet.commands.start.any_hooks_present")
+    def test_execute_prompts_user_for_input_when_hooks_already_exist(self, mock_any_hooks_presnet, git_hook_path_from_cwd):
+        mock_any_hooks_presnet.return_value = True
 
-    def test_execute_prompts_user_for_input_when_hooks_already_exist(self):
         self.mock_git_gateway.git_present = Mock(return_value=True)
         self.mock_git_gateway.any_hook_present = Mock(return_value=True)
         self.mock_input_gateway.input = Mock(return_value='x')

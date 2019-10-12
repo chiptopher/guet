@@ -15,8 +15,9 @@ limitations under the License.
 """
 from guet.gateways.io import PrintGateway, InputGateway
 from guet.commands.command import Command
-from guet.gateways.gateway import *
 from guet.git.git_gateway import GitGateway
+from guet.git.any_hooks_present import any_hooks_present
+from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 
 
 class StartCommand(Command):
@@ -34,7 +35,7 @@ class StartCommand(Command):
     def execute(self):
         if self._git_gateway.git_present():
             init_with_python3_shebang = True
-            if not self._git_gateway.any_hook_present():
+            if not any_hooks_present(git_hook_path_from_cwd()):
                 self._git_gateway.add_hooks(GitGateway.DEFAULT, init_with_python3_shebang)
             else:
                 flag = None

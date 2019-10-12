@@ -53,32 +53,6 @@ class TestGitGateway(unittest.TestCase):
 
         self.assertTrue(isfile(join(self.parent_dir, '.git', 'hooks', 'pre-commit')))
 
-    def test_hook_exists_can_tell_if_given_hook_exists(self):
-        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
-        git_init_process.wait()
-
-        git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks(GitGateway.DEFAULT)
-
-        self.assertTrue(git_gateway.hook_present('pre-commit'))
-        self.assertFalse(git_gateway.hook_present('not-a-hook'))
-
-    def test_add_hooks_creates_hook_files_with_guet_prependend_to_name_when_given_create_alongside_flag(self):
-        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
-        git_init_process.wait()
-
-        git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks(GitGateway.CREATE_ALONGSIDE)
-        self.assertTrue(git_gateway.hook_present('guet-pre-commit'))
-
-    def test_add_hooks_doesnt_create_hook_files_when_given_cancel_flag(self):
-        git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
-        git_init_process.wait()
-
-        git_gateway = GitGateway(self.parent_dir)
-        git_gateway.add_hooks(GitGateway.CANCEL)
-        self.assertFalse(git_gateway.hook_present('pre-commit'))
-
     def test_add_hooks_overwrites_previous_hook_when_given_overwrite_flag(self):
         git_init_process = subprocess.Popen(['git', 'init', self.parent_dir])
         git_init_process.wait()

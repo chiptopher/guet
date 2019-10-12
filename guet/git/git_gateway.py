@@ -78,12 +78,6 @@ class GitGateway:
             f.write(line + '\n')
         f.close()
 
-    def any_hook_present(self):
-        return self.hook_present('pre-commit') or self.hook_present('post-commit') or self.hook_present('commit-msg')
-
-    def hook_present(self, file_name: str):
-        return isfile(join(self._parent_dir, '.git', 'hooks', file_name))
-
     def _format_file_name_from_flag(self, default_name, flag):
         if flag == self.CREATE_ALONGSIDE:
             return 'guet-{}'.format(default_name)
