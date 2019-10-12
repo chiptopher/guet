@@ -28,8 +28,7 @@ python setup.py install
 `guet init` will initiailze the **guet** config files for the system.
 
 #### Start
-`guet start` will start **guet** for the reposotry at the current directory. You can optionally choose to use the `--python3`
-on systems where python 3 is the default.
+`guet start` will start **guet** for the reposotry at the current directory. 
  
 #### Resgister Committers
 `guet add <initials> <"Name"> <email>` will register an available committer with the given initials, name and email.
