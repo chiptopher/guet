@@ -18,6 +18,9 @@ from guet.commands.command import Command
 from guet.git.git_gateway import GitGateway
 from guet.git.any_hooks_present import any_hooks_present
 from guet.git.git_path_from_cwd import git_hook_path_from_cwd
+from guet.git.create_hook import create_hook, HookMode, Hooks
+
+from os.path import join
 
 
 class StartCommand(Command):
@@ -34,24 +37,29 @@ class StartCommand(Command):
 
     def execute(self):
         if self._git_gateway.git_present():
-            init_with_python3_shebang = True
-            if not any_hooks_present(git_hook_path_from_cwd()):
-                self._git_gateway.add_hooks(GitGateway.DEFAULT, init_with_python3_shebang)
+            hook_path = git_hook_path_from_cwd()
+            if not any_hooks_present(hook_path):
+                self._create_all_hooks(hook_path, HookMode.NEW_OR_OVERWRITE)
             else:
-                flag = None
-                while not flag:
-                    self._print_gateway.print('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
-                    val = self._input_gateway.input()
-                    if val == 'o':
-                        flag = GitGateway.OVERWRITE
-                    elif val == 'c':
-                        flag = GitGateway.CREATE_ALONGSIDE
-                    elif val == 'x':
-                        flag = GitGateway.CANCEL
-                self._git_gateway.add_hooks(flag, init_with_python3_shebang)
+                hook_mode = None
+                self._print_gateway.print('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
+                val = self._input_gateway.input()
+                if val == 'o':
+                    hook_mode = HookMode.NEW_OR_OVERWRITE
+                elif val == 'c':
+                    hook_mode = HookMode.CREATE_ALONGSIDE
+                else:
+                    hook_mode = HookMode.CANCEL
+                self._create_all_hooks(hook_path, hook_mode)
 
         else:
             self._print_gateway.print('Git not initialized in this directory.')
+
+    def _create_all_hooks(self, hook_folder_path: str, hook_mode: HookMode):
+        if hook_mode is not HookMode.CANCEL:
+            create_hook(hook_folder_path, Hooks.PRE_COMMIT, hook_mode)
+            create_hook(hook_folder_path, Hooks.POST_COMMIT, hook_mode)
+            create_hook(hook_folder_path, Hooks.COMMIT_MSG, hook_mode)
 
     def help(self):
         pass

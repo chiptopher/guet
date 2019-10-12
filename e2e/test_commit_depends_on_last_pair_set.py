@@ -10,7 +10,7 @@ from guet.gateways.gateway import PairSetGateway
 
 class TestGuetCommitRotatesAuthor(E2ETest):
 
-    def test_commits_swaps_pairs_once(self):
+    def commits_swaps_pairs_once(self):
 
         test_directory = join(expanduser('~'), 'test')
         if isdir(test_directory):

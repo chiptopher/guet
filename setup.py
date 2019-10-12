@@ -21,6 +21,7 @@ setup(
     packages=[
         'guet',
         'guet.commands',
-        'guet.gateways'
+        'guet.gateways',
+        'guet.git'
     ]
 )

@@ -10,6 +10,7 @@ class PostCommitManager:
         self._file_gateway = file_gateway
 
     def manage(self):
+
         committers = self._file_gateway.get_committers()
         first_committer = committers.pop(0)
         committers.append(first_committer)
