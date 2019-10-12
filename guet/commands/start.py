@@ -15,12 +15,10 @@ limitations under the License.
 """
 from guet.gateways.io import PrintGateway, InputGateway
 from guet.commands.command import Command
-from guet.git.git_gateway import GitGateway
 from guet.git.any_hooks_present import any_hooks_present
 from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.create_hook import create_hook, HookMode, Hooks
-
-from os.path import join
+from guet.git.git_present_in_cwd import git_present_in_cwd
 
 
 class StartCommand(Command):
@@ -28,15 +26,13 @@ class StartCommand(Command):
 
     def __init__(self,
                  args,
-                 git_gateway: GitGateway = GitGateway(),
                  print_gateway: PrintGateway = PrintGateway(),
                  input_gateway: InputGateway = InputGateway()):
         super().__init__(args, print_gateway)
         self._input_gateway = input_gateway
-        self._git_gateway = git_gateway
 
     def execute(self):
-        if self._git_gateway.git_present():
+        if git_present_in_cwd():
             hook_path = git_hook_path_from_cwd()
             if not any_hooks_present(hook_path):
                 self._create_all_hooks(hook_path, HookMode.NEW_OR_OVERWRITE)
