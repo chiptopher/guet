@@ -18,3 +18,16 @@ class TestAnyHooksPresent(unittest.TestCase):
         mock_hook_present.side_effect = _side_effect
 
         self.assertTrue(any_hooks_present(git_path))
+
+    @patch('guet.git.any_hooks_present.hook_present')
+    def test_any_hooks_present_returns_true_if_any_off_the_hooks_are_present(self, mock_hook_present):
+        git_path = '/Users/user/workspace/project/.git'
+
+        mock_hook_present.side_effect = lambda _, hook_name: hook_name == 'pre-commit'
+        self.assertTrue(any_hooks_present(git_path))
+
+        mock_hook_present.side_effect = lambda _, hook_name: hook_name == 'post-commit'
+        self.assertTrue(any_hooks_present(git_path))
+
+        mock_hook_present.side_effect = lambda _, hook_name: hook_name == 'commit-msg'
+        self.assertTrue(any_hooks_present(git_path))
