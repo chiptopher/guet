@@ -1,5 +1,4 @@
 import os
-import subprocess
 from os.path import join, expanduser, isdir
 from shutil import rmtree
 

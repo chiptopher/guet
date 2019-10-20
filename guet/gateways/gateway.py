@@ -172,8 +172,7 @@ class FileGateway:
         create_fule_with_name(join(app_folder_path, constants.AUTHOR_NAME))
 
     def set_committers(self, committers: list):
-        with open(join(self._path, constants.APP_FOLDER_NAME, constants.COMMITTER_NAMES),
-                  'w') as committers_file:
+        with open(join(self._path, constants.APP_FOLDER_NAME, constants.COMMITTER_NAMES), 'w') as committers_file:
             committers_file.seek(0)
             committers_file.truncate()
             for committer in committers:
@@ -204,13 +203,9 @@ class FileGateway:
             author_name_file.seek(0)
             author_name_file.truncate()
             author_name_file.write(name)
-            process = self._subprocess.Popen(['git', 'config', 'user.name', name])
-            process.wait()
 
     def set_author_email(self, email: str):
         with open(join(self._path, constants.APP_FOLDER_NAME, constants.AUTHOR_EMAIL), 'w') as author_email_file:
             author_email_file.seek(0)
             author_email_file.truncate()
             author_email_file.write(email)
-            process = self._subprocess.Popen(['git', 'config', 'user.email', email])
-            process.wait()

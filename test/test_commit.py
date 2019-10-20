@@ -2,13 +2,14 @@
 import datetime
 import sys
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from guet.commit import PostCommitManager, PreCommitManager
 from guet.gateways.gateway import FileGateway, committer_result, PairSetGateway, pair_set_result
 from guet.gateways.io import PrintGateway
 
 
+@patch('guet.commit.configure_git_author')
 class PostCommitManagerTest(unittest.TestCase):
 
     def setUp(self):
@@ -20,7 +21,7 @@ class PostCommitManagerTest(unittest.TestCase):
 
         self.commit_manager = PostCommitManager(self.mock_file_gateway)
 
-    def test_manage_rotates_the_commit_names(self):
+    def test_manage_rotates_the_commit_names(self, mock_configure_git_author):
         committer1 = committer_result(name='Name', email='email', initials='')
         committer2 = committer_result(name='Name2', email='email', initials='')
         result = [committer1, committer2]
@@ -29,7 +30,7 @@ class PostCommitManagerTest(unittest.TestCase):
         self.commit_manager.manage()
         self.mock_file_gateway.set_committers.assert_called_once_with([committer2, committer1])
 
-    def test_manage_sets_the_new_author_name_and_email(self):
+    def test_manage_sets_the_new_author_name_and_email(self, mock_configure_git_author):
         committer1 = committer_result(name='Name', email='email', initials='')
         committer2 = committer_result(name='Name2', email='email', initials='')
         result = [committer1, committer2]
@@ -39,6 +40,14 @@ class PostCommitManagerTest(unittest.TestCase):
         self.mock_file_gateway.set_author_email.assert_called_once_with(committer2.email)
         self.mock_file_gateway.set_author_name.assert_called_once_with(committer2.name)
 
+    def test_manage_configures_git_to_use_new_author(self, mock_configure_git_author):
+        committer1 = committer_result(name='Name', email='email', initials='')
+        committer2 = committer_result(name='Name2', email='email', initials='')
+        result = [committer1, committer2]
+        self.mock_file_gateway.get_committers = Mock(return_value=result)
+
+        self.commit_manager.manage()
+        mock_configure_git_author.assert_called_with(committer2.name, committer2.email)
 
 class PreCommitManagerTest(unittest.TestCase):
 
