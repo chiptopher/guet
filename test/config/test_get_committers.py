@@ -1,0 +1,20 @@
+import unittest
+
+from unittest.mock import patch
+
+from guet.config.get_committers import get_committers
+
+
+class TestGetCommitters(unittest.TestCase):
+
+    @patch('builtins.open', new_callable=unittest.mock.mock_open())
+    def test_reads_committers_from_file(self, mock_open):
+        mock_open.return_value.readlines.return_value = [
+            'name1 <email1>\n',
+            'name2 <email2>\n'
+        ]
+        committers = get_committers()
+        self.assertEqual(committers[0].name, 'name1')
+        self.assertEqual(committers[0].email, 'email1')
+        self.assertEqual(committers[1].name, 'name2')
+        self.assertEqual(committers[1].email, 'email2')
