@@ -3,10 +3,10 @@ from os.path import expanduser, join
 import sqlite3
 
 from guet import constants
+from guet.config import configuration_directory
 
 
 def initialize():
-    configuration_directory = join(expanduser('~'), '.guet')
     mkdir(configuration_directory)
     connection = sqlite3.connect(join(configuration_directory, constants.DATA_SOURCE_NAME))
     _create_committer_table(connection)
