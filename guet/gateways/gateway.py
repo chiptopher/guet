@@ -23,6 +23,7 @@ from os import mkdir, getcwd
 from os.path import expanduser, abspath, join, pardir, isdir, isfile
 
 from guet import constants
+from guet.config.initialize import initialize
 from guet.gateways.errors import UninitializedError
 
 committer_result = namedtuple('CommitterOutput', 'initials name email')
