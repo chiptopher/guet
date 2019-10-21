@@ -1,15 +1,15 @@
 import unittest
 from unittest.mock import Mock
 
+from os.path import abspath, join
+
 from guet import constants as const
 from guet.gateways.gateway import *
-from guet.gateways.io import PrintGateway
-from guet.stdout_manager import StdoutManager
 
 
 class _SQLGatewayTest(unittest.TestCase):
     def setUp(self):
-        self.parent_directory = FileGateway.home_dir(__file__)
+        self.parent_directory = abspath(join(__file__, pardir))
         self.settings_folder_path = join(self.parent_directory, const.APP_FOLDER_NAME)
         self.data_source_path = join(self.settings_folder_path, const.DATA_SOURCE_NAME)
         self.file_gateway = FileGateway(self.parent_directory, subprocess_module=Mock())

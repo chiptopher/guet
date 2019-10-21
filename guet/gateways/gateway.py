@@ -195,10 +195,6 @@ class FileGateway:
     def path_exists(self):
         return isdir(self._create_app_path())
 
-    @staticmethod
-    def home_dir(file_dir):
-        return abspath(join(file_dir, pardir))
-
     def set_author_name(self, name: str):
         with open(join(self._path, constants.APP_FOLDER_NAME, constants.AUTHOR_NAME), 'w') as author_name_file:
             author_name_file.seek(0)
