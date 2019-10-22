@@ -5,7 +5,6 @@ from unittest.mock import Mock, patch
 
 from guet.commit import PostCommitManager, PreCommitManager
 from guet.gateways.gateway import committer_result, PairSetGateway, pair_set_result
-from guet.gateways.io import PrintGateway
 
 
 @patch('guet.commit.set_committer_as_author')
@@ -61,22 +60,18 @@ class PostCommitManagerTest(unittest.TestCase):
 
 class PreCommitManagerTest(unittest.TestCase):
 
-    def tearDown(self):
-        sys.stdout = self.original_stdout
-
     def setUp(self):
         self.mock_pair_set_gateway = PairSetGateway()
         self.mock_pair_set_gateway.get_pair_set = Mock()
         self.mock_pair_set_gateway.add_pair_set = Mock()
         self.mock_pair_set_gateway.get_most_recent_pair_set = Mock()
 
-        self.mock_print_gateway = PrintGateway()
-        self.mock_print_gateway.print = Mock()
 
-        self.mock_exit_method = Mock()
-        self.original_stdout = sys.stdout
-
-    def test_manage_checks_for_most_recent_pair_set_and_exits_1_if_it_is_over_24_hours(self):
+    @patch('builtins.print')
+    @patch('builtins.exit')
+    def test_manage_checks_for_most_recent_pair_set_and_exits_1_if_it_is_over_24_hours(self,
+                                                                                       mock_exit,
+                                                                                       mock_print):
         twenty_four_hours = 86400000
         # offset timestamp by 1 so because test might complete in under a second, causing it to fail
         now = round((datetime.datetime.utcnow().timestamp() - 1) * 1000)
@@ -85,13 +80,17 @@ class PreCommitManagerTest(unittest.TestCase):
             return pair_set_result(id=1, set_time=now - twenty_four_hours)
 
         self.mock_pair_set_gateway.get_most_recent_pair_set = Mock(side_effect=_mock_most_recent_pair_set)
-        subject = PreCommitManager(self.mock_pair_set_gateway, self.mock_print_gateway, self.mock_exit_method)
+        subject = PreCommitManager(self.mock_pair_set_gateway)
         subject.manage()
-        self.mock_exit_method.assert_called_once_with(1)
-        self.mock_print_gateway.print.assert_called_once_with(
+        mock_exit.assert_called_once_with(1)
+        mock_print.assert_called_with(
             "\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n")
 
-    def test_manage_checks_for_most_recent_pair_set_and_exits_0_if_it_is_under_24_hours(self):
+    @patch('builtins.print')
+    @patch('builtins.exit')
+    def test_manage_checks_for_most_recent_pair_set_and_exits_0_if_it_is_under_24_hours(self,
+                                                                                        mock_exit,
+                                                                                        mock_print):
         ten_hours = 36000000
         now = round(datetime.datetime.utcnow().timestamp() * 1000)
 
@@ -99,6 +98,6 @@ class PreCommitManagerTest(unittest.TestCase):
             return pair_set_result(id=1, set_time=now - ten_hours)
 
         self.mock_pair_set_gateway.get_most_recent_pair_set = Mock(side_effect=_mock_most_recent_pair_set)
-        subject = PreCommitManager(self.mock_pair_set_gateway, self.mock_print_gateway, self.mock_exit_method)
+        subject = PreCommitManager(self.mock_pair_set_gateway)
         subject.manage()
-        self.mock_exit_method.assert_called_once_with(0)
+        mock_exit.assert_called_once_with(0)

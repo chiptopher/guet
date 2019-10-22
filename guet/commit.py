@@ -6,7 +6,6 @@ from guet.config.get_committers import get_committers
 from guet.config.set_committers import set_committers
 from guet.config.set_author import set_committer_as_author
 from guet.gateways.gateway import PairSetGateway
-from guet.gateways.io import PrintGateway
 from guet.git.set_author import configure_git_author
 
 
@@ -26,18 +25,16 @@ class PostCommitManager:
 
 class PreCommitManager:
 
-    def __init__(self, pair_set_gateway: PairSetGateway = PairSetGateway(),
-                 print_gateway: PrintGateway = PrintGateway(), exit_method=exit):
-        self._print_gateway = print_gateway
+    def __init__(self,
+                 pair_set_gateway: PairSetGateway = PairSetGateway()):
         self._pair_set_gateway = pair_set_gateway
-        self._exit_method = exit_method
 
     def manage(self):
         now = round(datetime.datetime.utcnow().timestamp() * 1000)
         twenty_four_hours = 86400000
         twenty_four_hours_ago = now - twenty_four_hours
         if self._pair_set_gateway.get_most_recent_pair_set().set_time < twenty_four_hours_ago:
-            self._print_gateway.print("\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n")
-            self._exit_method(1)
+            print("\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n")
+            exit(1)
         else:
-            self._exit_method(0)
+            exit(0)
