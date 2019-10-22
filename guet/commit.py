@@ -1,23 +1,27 @@
 import datetime
+from typing import List
 
-from guet.gateways.gateway import FileGateway, PairSetGateway
+from guet.config.committer import Committer
+from guet.config.get_committers import get_committers
+from guet.config.set_committers import set_committers
+from guet.config.set_author import set_committer_as_author
+from guet.gateways.gateway import PairSetGateway
 from guet.gateways.io import PrintGateway
 from guet.git.set_author import configure_git_author
 
 
 class PostCommitManager:
 
-    def __init__(self, file_gateway: FileGateway = FileGateway()):
-        self._file_gateway = file_gateway
-
     def manage(self):
-        committers = self._file_gateway.get_committers()
-        first_committer = committers.pop(0)
-        committers.append(first_committer)
-        self._file_gateway.set_committers(committers)
-        self._file_gateway.set_author_name(committers[0].name)
-        self._file_gateway.set_author_email(committers[0].email)
+        committers = self._rotate_fist_commiter_to_last_committer(get_committers())
+        set_committer_as_author(committers[0])
+        set_committers(committers)
         configure_git_author(committers[0].name, committers[0].email)
+
+    def _rotate_fist_commiter_to_last_committer(self, committers: List[Committer]):
+        new_last_committer = committers.pop(0)
+        committers.append(new_last_committer)
+        return committers
 
 
 class PreCommitManager:

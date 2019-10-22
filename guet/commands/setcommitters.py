@@ -13,6 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from guet.config.committer import Committer
+from guet.config.set_author import set_committer_as_author
+from guet.config.set_committers import set_committers
 from guet.gateways.io import PrintGateway
 from .command import Command
 from guet.gateways.gateway import *
@@ -24,7 +27,6 @@ class SetCommittersCommand(Command):
     def __init__(self,
                  args,
                  user_gateway: UserGateway = UserGateway(),
-                 file_gateway: FileGateway = FileGateway(),
                  pair_set_gateway: PairSetGateway = PairSetGateway(),
                  pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway(),
                  print_gateway: PrintGateway = PrintGateway()):
@@ -32,7 +34,6 @@ class SetCommittersCommand(Command):
         self._pair_set_committers_gateway = pair_set_committers_gateway
         self._pair_set_gateway = pair_set_gateway
         self._user_gateway = user_gateway
-        self._file_gateway = file_gateway
         self._print_gateway = print_gateway
 
     def execute(self):
@@ -50,9 +51,9 @@ class SetCommittersCommand(Command):
                 id = pair_set_id
                 self._pair_set_committers_gateway.add_pair_set_committer(initials, id)
             author = self._user_gateway.get_user(committer_initials[0])
-            self._file_gateway.set_committers(committers)
-            self._file_gateway.set_author_email(author.email)
-            self._file_gateway.set_author_name(author.name)
+            actual_committers = [Committer(c.name, c.email) for c in committers]
+            set_committers(actual_committers)
+            set_committer_as_author(actual_committers[0])
 
     def _prepare_pair_set_committers(self, committer_initials: list, committers: list, pair_set_committer_add: list):
         should_set_committers = True

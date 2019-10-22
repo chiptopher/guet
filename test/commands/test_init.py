@@ -14,29 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from guet.commands.init import InitDataSourceCommand
-from guet.gateways.gateway import *
 from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 
 class TestInitDataSourceCommand(CommandTest):
 
-    def test_execute_uses_gateway_to_create_data_source(self):
-
-        file_gateway = FileGateway()
-        file_gateway.initialize = Mock()
-        file_gateway.path_exists = Mock(return_value=False)
-
-        command = InitDataSourceCommand(['init'], file_gateway)
+    @patch('guet.commands.init.already_initialized')
+    @patch('guet.commands.init.initialize')
+    def test_execute_uses_gateway_to_create_data_source(self,
+                                                        mock_initialize,
+                                                        mock_already_initialized):
+        mock_already_initialized.return_value = False
+        command = InitDataSourceCommand(['init'])
         command.execute()
-
-        file_gateway.initialize.assert_called()
+        mock_initialize.assert_called()
 
     def test_validate(self):
-
         cases = [
             create_test_case(['init'], True, 'Init requires first command'),
             create_test_case([], False, 'Should return false when there are too few arguments'),
@@ -50,38 +47,31 @@ class TestInitDataSourceCommand(CommandTest):
     def test_validate_just_init_returns_true(self):
         self.assertTrue(InitDataSourceCommand.validate(['init']))
 
-    def test_execute_prints_out_error_message_when_calling_init_when_it_has_already_been_called(self):
-
-        file_gateway = FileGateway()
-        file_gateway.initialize = Mock()
-        path_exists_mock = Mock()
-        path_exists_mock.return_value = False
-        file_gateway.path_exists = path_exists_mock
+    @patch('guet.commands.init.already_initialized')
+    def test_execute_prints_out_error_message_when_calling_init_when_it_has_already_been_called(self,
+                                                                                                mock_already_initialized):
 
         print_gateway = PrintGateway()
         print_gateway.print = Mock()
 
-        command = InitDataSourceCommand(['init'], file_gateway, print_gateway)
-        command.execute()
-        path_exists_mock.return_value = True
+        mock_already_initialized.return_value = True
+
+        command = InitDataSourceCommand(['init'], print_gateway)
         command.execute()
 
-        file_gateway.initialize.assert_called_once()
         print_gateway.print.assert_called_once_with('Config folder already exists.')
 
     def test_execute_prints_help_command_when_there_are_incorrect_arguments(self):
 
-        file_gateway = FileGateway()
-        file_gateway.initialize = Mock()
         path_exists_mock = Mock()
         path_exists_mock.return_value = False
-        file_gateway.path_exists = path_exists_mock
 
         print_gateway = PrintGateway()
         print_gateway.print = Mock()
 
-        command = InitDataSourceCommand(['init', 'invalid arg'], file_gateway, print_gateway)
+        command = InitDataSourceCommand(['init', 'invalid arg'], print_gateway)
         command.execute()
+
         print_gateway.print.assert_called_with('Invalid arguments.\n\n   {}'.format(command.help()))
 
     def test_get_short_help_message(self):

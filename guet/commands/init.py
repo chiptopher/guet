@@ -13,9 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from guet.config.already_initialized import already_initialized
+from guet.config.initialize import initialize
 from guet.gateways.io import PrintGateway
 from .command import Command
-from guet.gateways.gateway import *
 
 
 class InitDataSourceCommand(Command):
@@ -23,17 +24,15 @@ class InitDataSourceCommand(Command):
 
     def __init__(self,
                  args,
-                 file_gateway: FileGateway = FileGateway(),
                  print_gateway: PrintGateway = PrintGateway()):
         super().__init__(args, print_gateway)
-        self.file_gateway = file_gateway
 
     def execute(self):
         if len(self._args) != 1:
             self._print_gateway.print('Invalid arguments.\n\n   {}'.format(self.help()))
         else:
-            if not self.file_gateway.path_exists():
-                self.file_gateway.initialize()
+            if not already_initialized():
+                initialize()
             else:
                 self._print_gateway.print('Config folder already exists.')
 
