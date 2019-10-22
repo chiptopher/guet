@@ -14,13 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from guet.gateways.io import PrintGateway
-
 
 class Command:
-    def __init__(self, args, print_gateway: PrintGateway = PrintGateway()):
+    def __init__(self, args):
         self._args = args
-        self._print_gateway = print_gateway
 
     @classmethod
     def validate(cls, arguments: list):

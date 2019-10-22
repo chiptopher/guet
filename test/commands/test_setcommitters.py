@@ -3,7 +3,6 @@ from unittest.mock import Mock, patch
 from guet.commands.setcommitters import SetCommittersCommand
 from guet.config.committer import Committer
 from guet.gateways.gateway import *
-from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 
@@ -23,9 +22,6 @@ class TestSetCommittersCommand(CommandTest):
         self.mock_pair_set_committer_gateway = PairSetGatewayCommitterGateway()
         self.mock_pair_set_committer_gateway.add_pair_set_committer = Mock()
         self.mock_pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id = Mock()
-
-        self.mock_print_gateway = PrintGateway()
-        self.mock_print_gateway.print = Mock()
 
     def test_validate(self,
                       mock_set_committers,
@@ -93,15 +89,19 @@ class TestSetCommittersCommand(CommandTest):
         self.assertAlmostEqual(round(datetime.datetime.utcnow().timestamp() * 1000), call[0][0], -2)
         self.mock_pair_set_committer_gateway.add_pair_set_committer.assert_called_once_with('initials', pair_set_id)
 
+    @patch('builtins.print')
     def test_execute_prints_out_error_message_when_the_given_initials_arent_in_the_system(self,
+                                                                                          mock_print,
                                                                                           mock_set_committers,
                                                                                           mock_set_committer_as_author):
         self.mock_user_gateway.get_user = Mock(return_value=None)
         command = self._create_set_committers_command_with_all_mocks(['set', 'initials'])
         command.execute()
-        self.mock_print_gateway.print.assert_called_once_with("No committer exists with initials 'initials'")
+        mock_print.assert_called_once_with("No committer exists with initials 'initials'")
 
+    @patch('builtins.print')
     def test_execute_failing_doesnt_set_committers_still(self,
+                                                         mock_print,
                                                          mock_set_committers,
                                                          mock_set_committer_as_author):
         expected_initials = 'initials'
@@ -145,10 +145,8 @@ class TestSetCommittersCommand(CommandTest):
                                                       args: list,
                                                       mock_user_gateway: UserGateway = None,
                                                       mock_pair_set_gateway: PairSetGateway = None,
-                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = None,
-                                                      mock_print_gateway: PrintGateway = None):
+                                                      mock_pair_set_committers_gateway: PairSetGatewayCommitterGateway = None):
         ug = mock_user_gateway if None else self.mock_user_gateway
         psg = mock_pair_set_gateway if None else self.mock_pair_set_gateway
         pscg = mock_pair_set_committers_gateway if None else self.mock_pair_set_committer_gateway
-        pg = mock_print_gateway if None else self.mock_print_gateway
-        return SetCommittersCommand(args, ug, psg, pscg, pg)
+        return SetCommittersCommand(args, ug, psg, pscg)

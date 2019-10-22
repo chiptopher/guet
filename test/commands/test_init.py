@@ -17,7 +17,6 @@ limitations under the License.
 from unittest.mock import Mock, patch
 
 from guet.commands.init import InitDataSourceCommand
-from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 
@@ -47,33 +46,29 @@ class TestInitDataSourceCommand(CommandTest):
     def test_validate_just_init_returns_true(self):
         self.assertTrue(InitDataSourceCommand.validate(['init']))
 
+    @patch('builtins.print')
     @patch('guet.commands.init.already_initialized')
     def test_execute_prints_out_error_message_when_calling_init_when_it_has_already_been_called(self,
-                                                                                                mock_already_initialized):
-
-        print_gateway = PrintGateway()
-        print_gateway.print = Mock()
-
+                                                                                                mock_already_initialized,
+                                                                                                mock_print):
         mock_already_initialized.return_value = True
 
-        command = InitDataSourceCommand(['init'], print_gateway)
+        command = InitDataSourceCommand(['init'])
         command.execute()
 
-        print_gateway.print.assert_called_once_with('Config folder already exists.')
+        mock_print.assert_called_once_with('Config folder already exists.')
 
-    def test_execute_prints_help_command_when_there_are_incorrect_arguments(self):
+    @patch('builtins.print')
+    def test_execute_prints_help_command_when_there_are_incorrect_arguments(self,
+                                                                            mock_print):
 
         path_exists_mock = Mock()
         path_exists_mock.return_value = False
 
-        print_gateway = PrintGateway()
-        print_gateway.print = Mock()
-
-        command = InitDataSourceCommand(['init', 'invalid arg'], print_gateway)
+        command = InitDataSourceCommand(['init', 'invalid arg'])
         command.execute()
 
-        print_gateway.print.assert_called_with('Invalid arguments.\n\n   {}'.format(command.help()))
+        mock_print.assert_called_with('Invalid arguments.\n\n   {}'.format(command.help()))
 
     def test_get_short_help_message(self):
-
         self.assertEqual('Initialize guet for use', InitDataSourceCommand.get_short_help_message())

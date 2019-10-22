@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from guet.gateways.io import PrintGateway
 from .command import Command
 from guet.gateways.gateway import *
 
@@ -24,25 +23,24 @@ class AddUserCommand(Command):
 
     def __init__(self,
                  args,
-                 user_gateway: UserGateway = UserGateway(),
-                 print_gateway: PrintGateway = PrintGateway()):
-        super().__init__(args, print_gateway)
+                 user_gateway: UserGateway = UserGateway()):
+        super().__init__(args)
         self._user_gateway = user_gateway
 
     def execute(self):
         if len(self._args) != 4:
             if len(self._args) > 4:
-                self._print_gateway.print('Too many arguments.')
+                print('Too many arguments.')
             else:
-                self._print_gateway.print('Not enough arguments.')
-                self._print_gateway.print('')
-                self._print_gateway.print(self.help())
-                self._print_gateway.print('')
+                print('Not enough arguments.')
+                print('')
+                print(self.help())
+                print('')
         else:
             try:
                 self._user_gateway.add_user(self._args[1], self._args[2], self._args[3])
             except UninitializedError:
-                self._print_gateway.print('guet has not been initialized yet! Please do so by running the command "guet init".')
+                print('guet has not been initialized yet! Please do so by running the command "guet init".')
 
     def help(self):
         return 'usage: guet add <initials> <"name"> <email>'

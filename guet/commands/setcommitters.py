@@ -16,7 +16,6 @@ limitations under the License.
 from guet.config.committer import Committer
 from guet.config.set_author import set_committer_as_author
 from guet.config.set_committers import set_committers
-from guet.gateways.io import PrintGateway
 from .command import Command
 from guet.gateways.gateway import *
 
@@ -28,13 +27,11 @@ class SetCommittersCommand(Command):
                  args,
                  user_gateway: UserGateway = UserGateway(),
                  pair_set_gateway: PairSetGateway = PairSetGateway(),
-                 pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway(),
-                 print_gateway: PrintGateway = PrintGateway()):
+                 pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway()):
         super().__init__(args)
         self._pair_set_committers_gateway = pair_set_committers_gateway
         self._pair_set_gateway = pair_set_gateway
         self._user_gateway = user_gateway
-        self._print_gateway = print_gateway
 
     def execute(self):
         committer_initials = self._args[1:]
@@ -60,7 +57,7 @@ class SetCommittersCommand(Command):
         for committer_initial in committer_initials:
             committer = self._user_gateway.get_user(committer_initial)
             if committer is None:
-                self._print_gateway.print("No committer exists with initials '{}'".format(committer_initial))
+                print("No committer exists with initials '{}'".format(committer_initial))
                 should_set_committers = False
                 break
             committers.append(CommitterInput(name=committer.name, email=committer.email))

@@ -15,26 +15,23 @@ limitations under the License.
 """
 from guet.config.already_initialized import already_initialized
 from guet.config.initialize import initialize
-from guet.gateways.io import PrintGateway
 from .command import Command
 
 
 class InitDataSourceCommand(Command):
     _REQUIRED_ARGS_IN_CORRECT_ORDER = ['init']
 
-    def __init__(self,
-                 args,
-                 print_gateway: PrintGateway = PrintGateway()):
-        super().__init__(args, print_gateway)
+    def __init__(self, args):
+        super().__init__(args)
 
     def execute(self):
         if len(self._args) != 1:
-            self._print_gateway.print('Invalid arguments.\n\n   {}'.format(self.help()))
+            print('Invalid arguments.\n\n   {}'.format(self.help()))
         else:
             if not already_initialized():
                 initialize()
             else:
-                self._print_gateway.print('Config folder already exists.')
+                print('Config folder already exists.')
 
     def help(self):
         pass

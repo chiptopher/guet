@@ -13,11 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from guet.gateways.io import PrintGateway, InputGateway
 from guet.commands.command import Command
+from guet.gateways.io import InputGateway
 from guet.git.any_hooks_present import any_hooks_present
-from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.create_hook import create_hook, HookMode, Hooks
+from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.git_present_in_cwd import git_present_in_cwd
 
 
@@ -26,9 +26,8 @@ class StartCommand(Command):
 
     def __init__(self,
                  args,
-                 print_gateway: PrintGateway = PrintGateway(),
                  input_gateway: InputGateway = InputGateway()):
-        super().__init__(args, print_gateway)
+        super().__init__(args)
         self._input_gateway = input_gateway
 
     def execute(self):
@@ -38,7 +37,7 @@ class StartCommand(Command):
                 self._create_all_hooks(hook_path, HookMode.NEW_OR_OVERWRITE)
             else:
                 hook_mode = None
-                self._print_gateway.print('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
+                print('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
                 val = self._input_gateway.input()
                 if val == 'o':
                     hook_mode = HookMode.NEW_OR_OVERWRITE
@@ -49,7 +48,7 @@ class StartCommand(Command):
                 self._create_all_hooks(hook_path, hook_mode)
 
         else:
-            self._print_gateway.print('Git not initialized in this directory.')
+            print('Git not initialized in this directory.')
 
     def _create_all_hooks(self, hook_folder_path: str, hook_mode: HookMode):
         if hook_mode is not HookMode.CANCEL:

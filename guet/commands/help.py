@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from guet.gateways.io import PrintGateway
 from .command import Command
 from ..util import get_command_subclasses
 
@@ -22,12 +21,11 @@ class HelpCommand(Command):
 
     _REQUIRED_ARGS_IN_CORRECT_ORDER = []
 
-    def __init__(self, args, print_gateway: PrintGateway = PrintGateway()):
-        super().__init__(args, print_gateway)
-        self._print_gateway = print_gateway
+    def __init__(self, args):
+        super().__init__(args)
 
     def execute(self):
-        self._print_gateway.print(self.help())
+        print(self.help())
 
     @classmethod
     def validate(cls, arguments: list):

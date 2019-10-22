@@ -14,11 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from guet.commands.command import Command
 from guet.commands.help import HelpCommand
-from guet.gateways.io import PrintGateway
 from test.commands.test_command import CommandTest, create_test_case
 
 
@@ -35,14 +34,8 @@ class TestHelpCommand(CommandTest):
         for case in cases:
             self._validate_test(case, HelpCommand([]))
 
-    def test_init(self):
-        mock_print_gateway = PrintGateway(None)
-        command = HelpCommand([], mock_print_gateway)
-        self.assertEqual(mock_print_gateway, command._print_gateway)
-
-    def test_execute_raises_not_implemented_error(self):
-        mock_print_gateway = PrintGateway(None)
-        mock_print_gateway.print = Mock()
+    @patch('builtins.print')
+    def test_execute_raises_not_implemented_error(self, mock_print):
 
         class MockCommand(Command):
             def help(self):
@@ -52,9 +45,9 @@ class TestHelpCommand(CommandTest):
             def help(self):
                 return 'Mock command A'
 
-        command = HelpCommand([], mock_print_gateway)
+        command = HelpCommand([])
         command.execute()
-        mock_print_gateway.print.assert_called_once()
+        mock_print.assert_called_once()
 
     def test_help_message_consists_of_all_commands_help_messages(self):
 
@@ -75,10 +68,7 @@ class TestHelpCommand(CommandTest):
             def get_short_help_message(cls):
                 return 'Mock command A'
 
-        mock_print_gateway = PrintGateway(None)
-        mock_print_gateway.print = Mock()
-
-        help_command = HelpCommand(None, mock_print_gateway)
+        help_command = HelpCommand(None)
         actual = help_command.help(lambda ignored_commands: [MockCommandA])
         expected = 'usage: guet <command>\n\n   MockCommandA -- Mock command A\n'
         self.assertEqual(expected, actual)
