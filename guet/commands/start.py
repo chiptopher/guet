@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from guet.commands.command import Command
-from guet.gateways.io import InputGateway
 from guet.git.any_hooks_present import any_hooks_present
 from guet.git.create_hook import create_hook, HookMode, Hooks
 from guet.git.git_path_from_cwd import git_hook_path_from_cwd
@@ -24,11 +23,8 @@ from guet.git.git_present_in_cwd import git_present_in_cwd
 class StartCommand(Command):
     _REQUIRED_ARGS_IN_CORRECT_ORDER = ['start']
 
-    def __init__(self,
-                 args,
-                 input_gateway: InputGateway = InputGateway()):
+    def __init__(self, args):
         super().__init__(args)
-        self._input_gateway = input_gateway
 
     def execute(self):
         if git_present_in_cwd():
@@ -38,7 +34,7 @@ class StartCommand(Command):
             else:
                 hook_mode = None
                 print('There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
-                val = self._input_gateway.input()
+                val = input()
                 if val == 'o':
                     hook_mode = HookMode.NEW_OR_OVERWRITE
                 elif val == 'c':

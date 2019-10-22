@@ -2,15 +2,10 @@ from unittest.mock import Mock, patch, call
 
 from guet.commands.start import StartCommand
 from test.commands.test_command import CommandTest, create_test_case
-from guet.gateways.io import InputGateway
 from guet.git.create_hook import HookMode, Hooks
 
 
 class TestStartCommand(CommandTest):
-
-    def setUp(self):
-        self.mock_input_gateway = InputGateway()
-        self.mock_input_gateway.input = Mock()
 
     def test_validate(self):
         cases = [
@@ -43,6 +38,7 @@ class TestStartCommand(CommandTest):
             call('/path', Hooks.COMMIT_MSG, HookMode.NEW_OR_OVERWRITE)
         ])
 
+    @patch('builtins.input')
     @patch('builtins.print')
     @patch('guet.commands.start.git_present_in_cwd')
     @patch('guet.commands.start.create_hook')
@@ -53,19 +49,21 @@ class TestStartCommand(CommandTest):
                                                                      git_hook_path_from_cwd,
                                                                      mock_create_hook,
                                                                      git_present_in_cwd,
-                                                                     mock_print):
+                                                                     mock_print,
+                                                                     mock_input):
         mock_any_hooks_presnet.return_value = True
         git_hook_path_from_cwd.return_value = 'path'
 
-        self.mock_input_gateway.input = Mock(return_value='c')
+        mock_input.return_value = 'c'
 
-        command = self._create_command([])
+        command = StartCommand([])
         command.execute()
 
         mock_print.assert_called_once_with(
             'There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
-        self.mock_input_gateway.input.assert_called_once()
+        mock_input.assert_called_once()
 
+    @patch('builtins.input')
     @patch('guet.commands.start.git_present_in_cwd')
     @patch('guet.commands.start.create_hook')
     @patch("guet.commands.start.git_hook_path_from_cwd")
@@ -74,16 +72,17 @@ class TestStartCommand(CommandTest):
                                                                  mock_any_hooks_presenet,
                                                                  git_hook_path_from_cwd,
                                                                  mock_create_hook,
-                                                                 git_present_in_cwd):
+                                                                 git_present_in_cwd,
+                                                                 mock_input):
+        mock_input.return_value = 'x'
         mock_any_hooks_presenet.return_value = True
         git_hook_path_from_cwd.return_value = 'path'
 
-        self.mock_input_gateway.input = Mock(return_value='x')
-
-        command = self._create_command([])
+        command = StartCommand([])
         command.execute()
         mock_create_hook.assert_not_called()
 
+    @patch('builtins.input')
     @patch('guet.commands.start.git_present_in_cwd')
     @patch('guet.commands.start.create_hook')
     @patch("guet.commands.start.git_hook_path_from_cwd")
@@ -92,13 +91,13 @@ class TestStartCommand(CommandTest):
                                                   mock_any_hooks_present,
                                                   git_hook_path_from_cwd,
                                                   mock_create_hook,
-                                                  git_present_in_cwd):
+                                                  git_present_in_cwd,
+                                                  mock_input):
+        mock_input.return_value = 'o'
         mock_any_hooks_present.return_value = True
         git_hook_path_from_cwd.return_value = 'path'
 
-        self.mock_input_gateway.input = Mock(return_value='o')
-
-        command = self._create_command([])
+        command = StartCommand([])
         command.execute()
         mock_create_hook.assert_has_calls([
             call('path', Hooks.PRE_COMMIT, HookMode.NEW_OR_OVERWRITE),
@@ -119,7 +118,7 @@ class TestStartCommand(CommandTest):
                                                                       mock_print):
         git_present_in_cwd.return_value = False
 
-        command = self._create_command([])
+        command = StartCommand([])
         command.execute()
 
         mock_print.assert_called_with('Git not initialized in this directory.')
@@ -127,8 +126,3 @@ class TestStartCommand(CommandTest):
     def test_get_short_help_message(self):
         self.assertEqual('Start guet usage in the repository at current directory',
                          StartCommand.get_short_help_message())
-
-    def _create_command(self, args: list,
-                        input_gateway: InputGateway = None):
-        ig = input_gateway if None else self.mock_input_gateway
-        return StartCommand(args, ig)
