@@ -65,6 +65,15 @@ class DockerTest(unittest.TestCase):
         self.commands.append(command)
 
     @_called_execute
+    def guet_add(self, initials: str, name: str, email: str):
+        command = f'guet add {initials} "{name}" {email}'
+        self.commands.append(command)
+
+    @_called_execute
+    def add_command(self, command: str):
+        self.commands.append(command)
+
+    @_called_execute
     def guet_start(self, overwrite_answer: str = None):
         command = 'guet start'
         if overwrite_answer:

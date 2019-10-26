@@ -28,6 +28,8 @@ def process_file_system(docker_container) -> FileSystem:
 
 
 def _convert_file_system_to_include_text(docker_file_system: List[Dict]) -> List[DockerFile]:
+    if docker_file_system is None:
+        return []
     return [_convert_docker_file(docker_file) for docker_file in docker_file_system]
 
 
