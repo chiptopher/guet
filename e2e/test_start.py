@@ -32,5 +32,5 @@ class TestStart(DockerTest):
         self.save_file_content('test-env/.git/hooks/pre-commit')
         self.save_file_content('test-env/.git/hooks/post-commit')
         self.execute()
-        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('.git/hooks/pre-commit')[0])
-        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('.git/hooks/post-commit')[0])
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/pre-commit')[0])
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/post-commit')[0])
