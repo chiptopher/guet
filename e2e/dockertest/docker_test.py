@@ -86,6 +86,8 @@ class DockerTest(unittest.TestCase):
     @_called_execute
     def git_init(self):
         self.add_command('git init')
+        self.add_command('git config --global user.name name')
+        self.add_command('git config --global user.email email')
 
     @_called_execute
     def git_add(self):
