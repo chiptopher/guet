@@ -47,10 +47,6 @@ class DockerTest(unittest.TestCase):
         self.commands = []
         self.files_to_save = []
 
-        # TODO make it so that you don't need to do a global configuration for committing to work
-        self.add_command('git config --global user.name test')
-        self.add_command('git config --global user.email test')
-
     def execute(self):
         docker_client = docker.from_env()
         self.execute_command = self._generate_commands_string_to_pass_to_run()
