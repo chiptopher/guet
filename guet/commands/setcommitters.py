@@ -36,7 +36,8 @@ class SetCommittersCommand(Command):
     def execute(self):
         committer_initials = self._args[1:]
         committers = []
-        pair_set_id = self._pair_set_gateway.add_pair_set(round(datetime.datetime.utcnow().timestamp()*1000))
+        pair_set_time = round(datetime.datetime.utcnow().timestamp() * 1000)
+        pair_set_id = self._pair_set_gateway.add_pair_set(pair_set_time)
         pair_set_committer_add = []
         should_set_committers = self._prepare_pair_set_committers(committer_initials, committers, pair_set_committer_add)
         if should_set_committers:

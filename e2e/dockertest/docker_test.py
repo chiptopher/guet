@@ -41,15 +41,21 @@ class DockerTest(unittest.TestCase):
         super(DockerTest, self).__init__(*args, **kwargs)
         self.logs = None
         self.file_system = None
+        self.execute_command = None
 
         self.execute_called = False
         self.commands = []
         self.files_to_save = []
 
+        # TODO make it so that you don't need to do a global configuration for committing to work
+        self.add_command('git config --global user.name test')
+        self.add_command('git config --global user.email test')
+
     def execute(self):
         docker_client = docker.from_env()
+        self.execute_command = self._generate_commands_string_to_pass_to_run()
         container = docker_client.containers.run('guettest:0.1.0',
-                                                 self._generate_commands_string_to_pass_to_run(),
+                                                 self.execute_command,
                                                  detach=True)
         time.sleep(1)
 
@@ -86,9 +92,19 @@ class DockerTest(unittest.TestCase):
         self.add_command('git init')
 
     @_called_execute
+    def git_add(self):
+        self.add_command('git add .')
+
+    @_called_execute
+    def git_commit(self, message: str):
+        self.add_command(f"git commit -m '{message}'")
+
+    @_called_execute
+    def show_git_log(self):
+        self.add_command('git log')
+
+    @_called_execute
     def save_file_content(self, file_path: str):
-        """
-        """
         self.commands.append(f'echo start cat for {file_path}')
         self.commands.append(f'cat /root/{file_path}')
         self.commands.append(f'echo end cat for {file_path}')

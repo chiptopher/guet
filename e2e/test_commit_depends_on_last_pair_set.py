@@ -1,40 +1,25 @@
-import datetime
-import os
-import subprocess
-from os.path import join, expanduser, isdir
-from shutil import rmtree
-
-from e2e.e2etest import E2ETest
-from guet.gateways.gateway import PairSetGateway
 
 
-class TestGuetCommitRotatesAuthor(E2ETest):
+from e2e import DockerTest
 
-    def commits_swaps_pairs_once(self):
 
-        test_directory = join(expanduser('~'), 'test')
-        if isdir(test_directory):
-            rmtree(test_directory)
+class TestGuetCommitRotatesAuthor(DockerTest):
 
+    def test_commits_swaps_pairs_once(self):
         self.guet_init()
-
         self.guet_add('initials', 'name', 'email@localhost')
         self.guet_add('initials2', 'name2', 'email2@localhost')
+        self.git_init()
+        self.guet_start()
+        self.add_command(f"faketime '2008-12-24 08:15:42' guet set initials initials2")
+        self.add_file('A')
+        self.git_add()
+        # TODO make it so that you don't need to do a global configuration for committing to work
+        self.add_command('git config --global user.name test')
+        self.add_command('git config --global user.email test')
+        self.git_commit('initial commit')
 
-        os.mkdir(test_directory)
-        open(join(expanduser('~'), 'test', 'file1'), 'w').close()
+        self.execute()
 
-        self.git_init('.', test_directory)
-        twenty_four_hours = 86400000
-        twenty_four_hours_ago = round((datetime.datetime.utcnow().timestamp() - 1) * 1000) - twenty_four_hours
-        pair_set_gateway = PairSetGateway()
-        pair_set_gateway.add_pair_set(twenty_four_hours_ago)
-
-        self.guet_start(directory_to_execute_in=join(expanduser('~'), 'test'))
-        self.git_add('.', test_directory)
-
-        process = subprocess.Popen(['git', 'commit', '-m', '\"Initial commit\"'], cwd=test_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        res = process.communicate()
-        expected_output = "\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n\n"
-        self.assertEqual(expected_output, res[1].decode('utf-8'))
-        rmtree(test_directory)
+        self.assert_text_in_logs(2, 'You have not reset pairs in over twenty four hours!')
+        self.assert_text_in_logs(3, "Please reset your pairs by using guet set and including your pairs' initials")
