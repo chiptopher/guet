@@ -1,5 +1,7 @@
 import time
 import unittest
+import os
+from os.path import abspath, join
 from typing import Dict, List
 
 import docker
@@ -31,8 +33,8 @@ class DockerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         docker_client = docker.from_env()
-        # project_root_directory = abspath(join(abspath(__file__), '../../..'))
-        # docker_client.images.build(path=project_root_directory, tag='guettest:0.1.0')
+        project_root_directory = abspath(join(abspath(__file__), '../../..'))
+        docker_client.images.build(path=project_root_directory, tag='guettest:0.1.0')
         docker_client.close()
 
     def __init__(self, *args, **kwargs):
@@ -62,12 +64,11 @@ class DockerTest(unittest.TestCase):
         command = 'guet init'
         if arguments:
             command = command + ' ' + ' '.join(arguments)
-        self.commands.append(command)
+        self.add_command(command)
 
     @_called_execute
     def guet_add(self, initials: str, name: str, email: str):
-        command = f'guet add {initials} "{name}" {email}'
-        self.commands.append(command)
+        self.add_command(f'guet add {initials} "{name}" {email}')
 
     @_called_execute
     def add_command(self, command: str):
@@ -78,16 +79,18 @@ class DockerTest(unittest.TestCase):
         command = 'guet start'
         if overwrite_answer:
             command = f'printf {overwrite_answer} | {command}'
-        self.commands.append(command)
+        self.add_command(command)
 
     @_called_execute
     def git_init(self):
-        self.commands.append('git init')
+        self.add_command('git init')
 
     @_called_execute
     def save_file_content(self, file_path: str):
+        """
+        """
         self.commands.append(f'echo start cat for {file_path}')
-        self.commands.append(f'cat /root/test-env/{file_path}')
+        self.commands.append(f'cat /root/{file_path}')
         self.commands.append(f'echo end cat for {file_path}')
 
     @_called_execute
@@ -95,11 +98,14 @@ class DockerTest(unittest.TestCase):
         command = f'touch {file_path}'
         if text:
             command = f'echo "{text}" >> {file_path}'
-        self.commands.append(command)
+        self.add_command(command)
+
+    def guet_set(self, initials: List[str]):
+        self.add_command(f'guet set {" ".join(initials)}')
 
     @_not_called_execute
     def get_file_text(self, file_path: str) -> List[str]:
-        file = self.file_system.get_file_from_test_env(file_path)
+        file = self.file_system.get_file_from_root(file_path)
         return file.lines
 
     @_not_called_execute

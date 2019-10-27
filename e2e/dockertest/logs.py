@@ -34,5 +34,5 @@ def _remove_cat_logs(current_logs: List[str], file_system: FileSystem):
 
 def _load_lines_for_file(start: int, end: int, final_logs: List[str], file_system: FileSystem):
     file_name = final_logs[start].split('start cat for ')[1]
-    file = file_system.get_file(f'/root/test-env/{file_name}')
+    file = file_system.get_file(f'/root/{file_name}')
     file.lines = final_logs[0:end][start + 1:]

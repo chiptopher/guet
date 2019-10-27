@@ -1,62 +1,36 @@
-"""
-Copyright 2018 Christopher M. Boyer
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-"""
 
 import subprocess
 from os.path import join, expanduser
 
-from e2e.e2etest import E2ETest
+from e2e import DockerTest
 from guet import constants as const
 from guet.gateways.gateway import PairSetGatewayCommitterGateway
 
 
-class TestGuetSet(E2ETest):
-
-    def test_set_committers_creates_a_pair_set_for_the_users(self):
-        self.guet_init()
-        self.guet_add('initials1', 'name1', 'email1@localhost')
-        self.guet_add('initials2', 'name2', 'email2@localhost')
-        self.guet_set(['initials1', 'initials2'])
-
-        pair_set_committer_gateway = PairSetGatewayCommitterGateway()
-        self.assertEqual('initials1', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[0].committer_initials)
-        self.assertEqual('initials2', pair_set_committer_gateway.get_pair_set_committers_by_pair_set_id(1)[1].committer_initials)
+class TestGuetSet(DockerTest):
 
     def test_set_adds_given_users_to_committers_file(self):
-
         self.guet_init()
+
         initials = 'initials'
         name = 'name'
         email = 'user@localhost'
+
         self.guet_add(initials, name, email)
         self.guet_set([initials])
+        self.save_file_content('.guet/committernames')
+        self.save_file_content('.guet/authornames')
+        self.save_file_content('.guet/authoremails')
 
-        data_source_path = join(expanduser('~'), const.APP_FOLDER_NAME, const.COMMITTER_NAMES)
+        self.execute()
 
-        with open(data_source_path) as committer_names:
-            content = committer_names.readlines()
+        committer_names = self.get_file_text('.guet/committernames')
 
-        self.assertEqual('{} <{}>\n'.format(name, email), content[0])
+        self.assertEqual('{} <{}>'.format(name, email), committer_names[0])
+        self.assertEqual(email, self.get_file_text('.guet/authoremails')[0])
+        self.assertEqual(name, self.get_file_text('.guet/authornames')[0])
 
-        with open(join(expanduser('~'), const.APP_FOLDER_NAME, const.AUTHOR_EMAIL)) as auther_email:
-            content = auther_email.readline()
-        self.assertEqual(email, content)
-
-        with open(join(expanduser('~'), const.APP_FOLDER_NAME, const.AUTHOR_NAME)) as auther_name:
-            content = auther_name.readline()
-        self.assertEqual(name, content)
 
     def test_set_adds_multiple_users_to_committers_file(self):
         self.guet_init()
@@ -69,18 +43,19 @@ class TestGuetSet(E2ETest):
         self.guet_add(initials, name, email)
         self.guet_add(initials2, name, email)
         self.guet_set([initials, initials2])
+        self.save_file_content('.guet/committernames')
 
-        data_source_path = join(expanduser('~'), const.APP_FOLDER_NAME, const.COMMITTER_NAMES)
+        self.execute()
 
-        with open(data_source_path) as committer_names:
-            content = committer_names.readlines()
+        committer_names = self.get_file_text('.guet/committernames')
 
-        self.assertEqual('{} <{}>\n'.format(name, email), content[0])
-        self.assertEqual('{} <{}>\n'.format(name, email), content[1])
+        self.assertEqual('{} <{}>'.format(name, email), committer_names[0])
+        self.assertEqual('{} <{}>'.format(name, email), committer_names[1])
 
     def test_set_gracefully_displays_error_message_when_setting_committer_with_unknown_initials(self):
         self.guet_init()
-        process = subprocess.Popen(['guet', 'set', 'ui'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        full_output = process.communicate()
-        output = full_output[0].decode('utf-8')
-        self.assertEqual("No committer exists with initials 'ui'\n", output)
+        self.guet_set(['ui'])
+
+        self.execute()
+
+        self.assert_text_in_logs(0, "No committer exists with initials 'ui'")
