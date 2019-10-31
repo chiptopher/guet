@@ -1,5 +1,4 @@
 import datetime
-import sys
 import unittest
 from unittest.mock import Mock, patch
 
@@ -9,7 +8,7 @@ from guet.gateways.gateway import committer_result, PairSetGateway, pair_set_res
 
 @patch('guet.commit.set_committer_as_author')
 @patch('guet.commit.set_committers')
-@patch('guet.commit.get_committers')
+@patch('guet.commit.get_current_committers_names_and_emails')
 @patch('guet.commit.configure_git_author')
 class PostCommitManagerTest(unittest.TestCase):
 
