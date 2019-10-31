@@ -80,3 +80,8 @@ class TestInitialize(unittest.TestCase):
     def test_creates_file_for_current_author_name(self, mock_open, mock_mkdir, mock_connect):
         initialize()
         mock_open.assert_any_call(join(app_config_directory_path, constants.AUTHOR_NAME), 'w')
+
+    @patch('builtins.open', new_callable=unittest.mock.mock_open())
+    def test_creates_file_for_commiters_names(self, mock_open, mock_mkdir, mock_connect):
+        initialize()
+        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w')
