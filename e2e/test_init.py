@@ -11,6 +11,7 @@ class TestInit(DockerTest):
         self.assert_file_exists('.guet/committernames')
         self.assert_file_exists('.guet/authornames')
         self.assert_file_exists('.guet/authoremails')
+        self.assert_file_exists('.guet/committers')
 
     def test_multiple_calls_to_init_tells_user_config_folder_already_exists(self):
         self.guet_init()
