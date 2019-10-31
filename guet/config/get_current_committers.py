@@ -6,7 +6,7 @@ from guet.config import configuration_directory
 from guet.config.committer import Committer
 
 
-def get_committers() -> List[Committer]:
+def get_current_committers_names_and_emails() -> List[Committer]:
     f = open(join(configuration_directory, constants.COMMITTER_NAMES), 'r')
     lines = f.readlines()
     return [_extract_commiter_from_line_in_file(line) for line in lines]

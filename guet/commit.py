@@ -2,7 +2,7 @@ import datetime
 from typing import List
 
 from guet.config.committer import Committer
-from guet.config.get_committers import get_committers
+from guet.config.get_current_committers import get_current_committers_names_and_emails
 from guet.config.set_committers import set_committers
 from guet.config.set_author import set_committer_as_author
 from guet.gateways.gateway import PairSetGateway
@@ -12,7 +12,7 @@ from guet.git.set_author import configure_git_author
 class PostCommitManager:
 
     def manage(self):
-        committers = self._rotate_fist_commiter_to_last_committer(get_committers())
+        committers = self._rotate_fist_commiter_to_last_committer(get_current_committers_names_and_emails())
         set_committer_as_author(committers[0])
         set_committers(committers)
         configure_git_author(committers[0].name, committers[0].email)
