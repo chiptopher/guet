@@ -1,11 +1,4 @@
-
-
-import subprocess
-from os.path import join, expanduser
-
 from e2e import DockerTest
-from guet import constants as const
-from guet.gateways.gateway import PairSetGatewayCommitterGateway
 
 
 class TestGuetSet(DockerTest):

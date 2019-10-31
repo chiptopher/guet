@@ -1,12 +1,11 @@
 import time
 import unittest
-import os
 from os.path import abspath, join
-from typing import Dict, List
+from typing import List
 
 import docker
 
-from e2e.dockertest.file_system import process_file_system, DockerFile
+from e2e.dockertest.file_system import process_file_system
 from e2e.dockertest.logs import process_logs
 
 

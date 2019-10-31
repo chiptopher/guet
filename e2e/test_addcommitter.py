@@ -1,9 +1,5 @@
-import subprocess
 
 from e2e import DockerTest
-from e2e.e2etest import E2ETest
-from guet.commands.addcommitter import AddUserCommand
-from guet.gateways.gateway import UserGateway
 
 
 class TestAddUser(DockerTest):

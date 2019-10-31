@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 
 from e2e.dockertest.file_system import FileSystem
 
