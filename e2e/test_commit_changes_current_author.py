@@ -37,6 +37,8 @@ class TestGuetCommitRotatesAuthor(DockerTest):
         self.git_commit('Second commit')
         self.save_file_content('.guet/authornames')
         self.save_file_content('.guet/authoremails')
+        self.save_file_content('.guet/committers')
+        self.save_file_content('.guet/committersset')
 
         self.execute()
 

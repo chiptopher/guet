@@ -1,18 +1,13 @@
-
+from guet.config.already_initialized import already_initialized
 from .command import Command
-from guet.gateways.gateway import *
 from guet.config.add_committer import add_committer
 
 
 class AddUserCommand(Command):
-
     _REQUIRED_ARGS_IN_CORRECT_ORDER = ['add']
 
-    def __init__(self,
-                 args,
-                 user_gateway: UserGateway = UserGateway()):
+    def __init__(self, args):
         super().__init__(args)
-        self._user_gateway = user_gateway
 
     def execute(self):
         if len(self._args) != 4:
@@ -24,10 +19,9 @@ class AddUserCommand(Command):
                 print(self.help())
                 print('')
         else:
-            try:
-                self._user_gateway.add_user(self._args[1], self._args[2], self._args[3])
+            if already_initialized():
                 add_committer(self._args[1], self._args[2], self._args[3])
-            except UninitializedError:
+            else:
                 print('guet has not been initialized yet! Please do so by running the command "guet init".')
 
     def help(self):
