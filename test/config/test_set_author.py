@@ -13,13 +13,13 @@ class TestSetAuthor(unittest.TestCase):
 
     @patch('builtins.open', new_callable=unittest.mock.mock_open())
     def test_writes_the_committer_name_to_the_author_name_file(self, mock_open):
-        committer = Committer('name', 'email')
+        committer = Committer('name', 'email', 'initials')
         set_committer_as_author(committer)
         mock_open.assert_any_call(join(configuration_directory, constants.AUTHOR_NAME), 'w')
         mock_open.return_value.write.assert_any_call('name\n')
 
     @patch('builtins.open', new_callable=unittest.mock.mock_open())
     def test_writes_the_commiter_email_to_the_author_email_file(self, mock_open):
-        committer = Committer('name', 'email')
+        committer = Committer('name', 'email', 'initials')
         set_committer_as_author(committer)
         mock_open.return_value.write.assert_any_call('email\n')

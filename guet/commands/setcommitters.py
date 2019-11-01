@@ -13,57 +13,40 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from guet.config.committer import Committer
+from typing import List
+
+from guet.config.committer import filter_committers_with_initials, Committer
+from guet.config.get_committers import get_committers
 from guet.config.set_author import set_committer_as_author
-from guet.config.set_committers import set_committers
+from guet.config.set_current_committers import set_current_committers as set_committers
 from .command import Command
-from guet.gateways.gateway import *
 
 
 class SetCommittersCommand(Command):
     _REQUIRED_ARGS_IN_CORRECT_ORDER = ['set']
 
     def __init__(self,
-                 args,
-                 user_gateway: UserGateway = UserGateway(),
-                 pair_set_gateway: PairSetGateway = PairSetGateway(),
-                 pair_set_committers_gateway: PairSetGatewayCommitterGateway = PairSetGatewayCommitterGateway()):
+                 args):
         super().__init__(args)
-        self._pair_set_committers_gateway = pair_set_committers_gateway
-        self._pair_set_gateway = pair_set_gateway
-        self._user_gateway = user_gateway
 
     def execute(self):
+        committers = get_committers()
         committer_initials = self._args[1:]
-        committers = []
-        pair_set_time = round(datetime.datetime.utcnow().timestamp() * 1000)
-        pair_set_id = self._pair_set_gateway.add_pair_set(pair_set_time)
-        pair_set_committer_add = []
-        should_set_committers = self._prepare_pair_set_committers(committer_initials, committers, pair_set_committer_add)
-        if should_set_committers:
-            self._commit_pair_set_committers(committer_initials, committers, pair_set_committer_add, pair_set_id)
+        committers_to_set = filter_committers_with_initials(committers, committer_initials)
 
-    def _commit_pair_set_committers(self, committer_initials, committers, pair_set_committer_add, pair_set_id):
-            for pair_set_committer in pair_set_committer_add:
-                initials = pair_set_committer
-                id = pair_set_id
-                self._pair_set_committers_gateway.add_pair_set_committer(initials, id)
-            author = self._user_gateway.get_user(committer_initials[0])
-            actual_committers = [Committer(c.name, c.email) for c in committers]
-            set_committers(actual_committers)
-            set_committer_as_author(actual_committers[0])
+        correct_number_of_committers_present = len(committers_to_set) is len(committer_initials)
 
-    def _prepare_pair_set_committers(self, committer_initials: list, committers: list, pair_set_committer_add: list):
-        should_set_committers = True
-        for committer_initial in committer_initials:
-            committer = self._user_gateway.get_user(committer_initial)
-            if committer is None:
-                print("No committer exists with initials '{}'".format(committer_initial))
-                should_set_committers = False
-                break
-            committers.append(CommitterInput(name=committer.name, email=committer.email))
-            pair_set_committer_add.append(committer_initial)
-        return should_set_committers
+        if not correct_number_of_committers_present:
+            for initials in committer_initials:
+                committer_with_initial_present = False
+                for committer in committers:
+                    if committer.initials == initials:
+                        committer_with_initial_present = True
+                if not committer_with_initial_present:
+                    print(f"No committer exists with initials '{initials}'")
+        else:
+            set_committer_as_author(committers_to_set[0])
+            set_committers(committers_to_set)
 
     def help(self):
         pass
