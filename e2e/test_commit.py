@@ -17,5 +17,5 @@ class TestCommit(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(11, 'Co-authored-by: name <email@localhost>')
-        self.assert_text_in_logs(12, 'Co-authored-by: name2 <email2@localhost>')
+        self.assert_text_in_logs(10, '    Co-authored-by: name <email@localhost>')
+        self.assert_text_in_logs(11, '    Co-authored-by: name2 <email2@localhost>')
