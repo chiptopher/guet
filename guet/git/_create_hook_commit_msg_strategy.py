@@ -7,11 +7,8 @@ class _CommitMsgStrategy(_HookCreateStrategy):
 
     def file_lines(self) -> [str]:
         return [
-            "#!/bin/sh\n",
-            "FILE_LOCATION=~/.guet/committernames\n",
-            'CO_AUTHOR="Co-authored-by:"\n',
-            'echo "\\n\\n" >> "$1"\n',
-            'while read committer; do\n',
-            '	echo "$CO_AUTHOR $committer" >> "$1"\n',
-            'done <$FILE_LOCATION\n'
+            '#! /usr/bin/env python3\n',
+            'from guet.hooks import manage\n',
+            'import sys\n',
+            'manage(sys.argv[0])\n',
         ]
