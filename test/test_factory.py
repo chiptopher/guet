@@ -1,5 +1,6 @@
 import unittest
 
+from guet.commands import HelpCommand
 from guet.commands.command import Command
 from guet.factory import CommandFactory
 
@@ -32,3 +33,8 @@ class TestCommandFactory(unittest.TestCase):
         result = command_factory.create(args)
         self.assertEqual(MockCommand, type(result))
         self.assertEqual(args, result._args)
+
+    def test_returns_help_command_if_no_command_provided(self):
+        command_factory = CommandFactory(dict())
+        result = command_factory.create([])
+        self.assertEqual(HelpCommand, type(result))
