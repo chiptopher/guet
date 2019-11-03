@@ -1,23 +1,21 @@
-"""
-Copyright 2018 Christopher M. Boyer
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-"""
 
 import sys
 
-from .executor import Executor
+from guet.commands import AddUserCommand, InitDataSourceCommand, SetCommittersCommand, StartCommand
+from guet.factory import CommandFactory
 
 
-def main(executor: Executor = Executor()):
-    executor.execute(sys.argv[1:])
+def _command_builder_map():
+    command_builder_map = dict()
+    command_builder_map['add'] = AddUserCommand
+    command_builder_map['init'] = InitDataSourceCommand
+    command_builder_map['set'] = SetCommittersCommand
+    command_builder_map['start'] = StartCommand
+    return command_builder_map
+
+
+def main():
+    command_factory = CommandFactory(_command_builder_map())
+    command = command_factory.create(sys.argv[1:])
+    command.execute()
