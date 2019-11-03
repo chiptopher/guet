@@ -1,4 +1,4 @@
-from guet.commands import Command
+from guet.commands import Command, HelpCommand
 
 
 class CommandFactory:
@@ -6,6 +6,9 @@ class CommandFactory:
         self.command_builder_map = command_builder_map
 
     def create(self, args: list) -> Command:
-        command_arg = args[0]
-        initialized_command = self.command_builder_map[command_arg](args)
-        return initialized_command
+        if len(args) > 0:
+            command_arg = args[0]
+            initialized_command = self.command_builder_map[command_arg](args)
+            return initialized_command
+        else:
+            return HelpCommand(args)
