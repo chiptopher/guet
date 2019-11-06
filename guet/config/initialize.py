@@ -13,6 +13,7 @@ def initialize():
     _create_file_with_name(join(configuration_directory, constants.AUTHOR_EMAIL))
     _create_file_with_name(join(configuration_directory, constants.COMMITTERS))
     _create_file_with_name(join(configuration_directory, constants.COMMITTERS_SET))
+    _create_file_with_name(join(configuration_directory, constants.CONFIG))
 
 
 def _create_file_with_name(file_name: str) -> None:
