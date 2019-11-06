@@ -41,6 +41,11 @@ class TestInitialize(unittest.TestCase):
         mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w')
 
     @patch('builtins.open', new_callable=unittest.mock.mock_open())
+    def test_creates_file_for_configuration(self, mock_open, mock_mkdir):
+        initialize()
+        mock_open.assert_any_call(join(app_config_directory_path, constants.CONFIG), 'w')
+
+    @patch('builtins.open', new_callable=unittest.mock.mock_open())
     def test_creates_file_for_committers_set(self, mock_open, mock_mkdir):
         initialize()
         mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS_SET), 'w')
