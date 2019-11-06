@@ -27,10 +27,6 @@ class HelpCommand(Command):
     def execute(self):
         print(self.help())
 
-    @classmethod
-    def validate(cls, arguments: list):
-        return False
-
     def help(self, command_classes_func=get_command_subclasses):
         command_classes = command_classes_func([HelpCommand])
         help_message = 'usage: guet <command>\n'

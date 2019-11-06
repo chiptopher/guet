@@ -1,43 +1,14 @@
-"""
-Copyright 2018 Christopher M. Boyer
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-"""
-
+import unittest
 from unittest.mock import Mock, call, patch
 
 from guet.commands.addcommitter import AddUserCommand
-from test.commands.test_command import CommandTest, create_test_case
 
 
 @patch('guet.commands.addcommitter.already_initialized')
 @patch('guet.commands.addcommitter.add_committer')
 @patch('builtins.print')
-class TestAddUserCommand(CommandTest):
+class TestAddUserCommand(unittest.TestCase):
 
-    def test_validate(self,
-                      mock_print,
-                      mock_add_committer,
-                      mock_already_initialized):
-        cases = [
-            create_test_case(['add'], True, 'Should return true with correct number of args'),
-            create_test_case(['add', 'extra'], True, 'Should return true when there are extra arguments'),
-            create_test_case(['wrong'], False, 'Should return false when the required args are wrong'),
-            create_test_case([], False, 'Should return false when there are not enough args')
-        ]
-
-        for case in cases:
-            self._validate_test(case, AddUserCommand)
 
     def test_execute_prints_error_message_when_too_many_arguments_are_given(self,
                                                                             mock_print,

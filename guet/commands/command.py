@@ -19,14 +19,6 @@ class Command:
     def __init__(self, args):
         self._args = args
 
-    @classmethod
-    def validate(cls, arguments: list):
-        required_args = cls.get_list_of_required_arguments_in_correct_order()
-        validated = len(arguments) >= len(required_args)
-        for index, arg in enumerate(required_args):
-            validated = validated and arg == arguments[index]
-        return validated
-
     def execute(self):
         raise NotImplementedError
 
@@ -35,8 +27,4 @@ class Command:
 
     @classmethod
     def get_short_help_message(cls):
-        raise NotImplementedError
-
-    @classmethod
-    def get_list_of_required_arguments_in_correct_order(cls):
         raise NotImplementedError

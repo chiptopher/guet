@@ -23,17 +23,6 @@ from test.commands.test_command import CommandTest, create_test_case
 
 class TestHelpCommand(CommandTest):
 
-    def test_validate(self):
-
-        cases = [
-            create_test_case([], False, 'Should return false when there are no arguments'),
-            create_test_case(['one'], False, 'Should return false when there is one argument'),
-            create_test_case(['one', 'two'], False, 'Should return false when there are more than one arguments'),
-        ]
-
-        for case in cases:
-            self._validate_test(case, HelpCommand([]))
-
     @patch('builtins.print')
     def test_execute_raises_not_implemented_error(self, mock_print):
 

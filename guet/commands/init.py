@@ -25,7 +25,3 @@ class InitDataSourceCommand(Command):
     @classmethod
     def get_short_help_message(cls):
         return 'Initialize guet for use'
-
-    @classmethod
-    def get_list_of_required_arguments_in_correct_order(cls):
-        return cls._REQUIRED_ARGS_IN_CORRECT_ORDER

@@ -1,27 +1,14 @@
+import unittest
 from unittest.mock import Mock, patch
 
 from guet.commands.setcommitters import SetCommittersCommand
 from guet.config.committer import Committer
-from test.commands.test_command import CommandTest, create_test_case
 
 
 @patch('guet.commands.setcommitters.get_committers')
 @patch('guet.commands.setcommitters.set_committers')
 @patch('guet.commands.setcommitters.set_committer_as_author')
-class TestSetCommittersCommand(CommandTest):
-
-    def test_validate(self,
-                      mock_set_committer_as_author,
-                      mock_set_committers,
-                      mock_get_committers):
-        cases = [
-            create_test_case(['set', 'extra'], True, 'Should return true when the correct number of args'),
-            create_test_case([], False, 'Should return false when not enough arguments are given'),
-            create_test_case(['something else'], False, 'Should return false when the required args are wrong')
-        ]
-
-        for case in cases:
-            self._validate_test(case, SetCommittersCommand)
+class TestSetCommittersCommand(unittest.TestCase):
 
     def test_execute_adds_the_first_person_in_the_list_as_the_author_email_and_name(self,
                                                                                     mock_set_committer_as_author,
