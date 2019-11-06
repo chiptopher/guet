@@ -1,21 +1,12 @@
+import unittest
 from unittest.mock import Mock, patch, call
 
 from guet.commands.start import StartCommand
-from test.commands.test_command import CommandTest, create_test_case
+from test.commands.test_command import create_test_case
 from guet.git.create_hook import HookMode, Hooks
 
 
-class TestStartCommand(CommandTest):
-
-    def test_validate(self):
-        cases = [
-            create_test_case(['start'], True, 'Should return true with the correct number of args'),
-            create_test_case(['nother'], False, 'Should return false if the correct number of args is arent correct'),
-            create_test_case([], False, 'Should return false when there are less than the number of args')
-        ]
-
-        for case in cases:
-            self._validate_test(case, StartCommand)
+class TestStartCommand(unittest.TestCase):
 
     @patch('guet.commands.start.git_present_in_cwd')
     @patch('guet.commands.start.create_hook')

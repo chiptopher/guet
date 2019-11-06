@@ -13,14 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
+import unittest
 from unittest.mock import Mock, patch
 
 from guet.commands.init import InitDataSourceCommand
-from test.commands.test_command import CommandTest, create_test_case
 
 
-class TestInitDataSourceCommand(CommandTest):
+class TestInitDataSourceCommand(unittest.TestCase):
 
     @patch('guet.commands.init.already_initialized')
     @patch('guet.commands.init.initialize')
@@ -31,20 +30,6 @@ class TestInitDataSourceCommand(CommandTest):
         command = InitDataSourceCommand(['init'])
         command.execute()
         mock_initialize.assert_called()
-
-    def test_validate(self):
-        cases = [
-            create_test_case(['init'], True, 'Init requires first command'),
-            create_test_case([], False, 'Should return false when there are too few arguments'),
-            create_test_case(['wrong'], False, 'Should return false when the required arg is wrong'),
-            create_test_case(['init', 'extra'], True, 'Should return true when there are extra commands')
-        ]
-
-        for case in cases:
-            self._validate_test(case, InitDataSourceCommand([]))
-
-    def test_validate_just_init_returns_true(self):
-        self.assertTrue(InitDataSourceCommand.validate(['init']))
 
     @patch('builtins.print')
     @patch('guet.commands.init.already_initialized')
