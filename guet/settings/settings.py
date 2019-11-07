@@ -11,6 +11,9 @@ class Settings:
         self._settings['pairReset'] = Setting(default_value=True,
                                               parser=boolean_parser,
                                               validator=lambda v: type(v) == bool)
+        self._settings['debug'] = Setting(default_value=False,
+                                          parser=boolean_parser,
+                                          validator=lambda v: type(v) == bool)
 
     def load(self, configuration_file_lines: List[str]):
         [self._load_attribute(attribute) for attribute in configuration_file_lines]

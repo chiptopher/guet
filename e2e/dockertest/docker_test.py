@@ -68,6 +68,11 @@ class DockerTest(unittest.TestCase):
         self.add_command(command)
 
     @_called_execute
+    def guet_config(self, flags: List[str] = []):
+        command = f'guet config {" ".join(flags)}'
+        self.add_command(command)
+
+    @_called_execute
     def guet_add(self, initials: str, name: str, email: str):
         self.add_command(f'guet add {initials} "{name}" {email}')
 
