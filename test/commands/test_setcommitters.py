@@ -59,12 +59,12 @@ class TestSetCommittersCommand(CommandTest):
         expected_initials = 'initials'
 
         def _mock_user_return(initials: str):
-            if initials is expected_initials:
+            if initials == expected_initials:
                 return committer_result(name='name', email='email', initials=expected_initials)
 
         self.mock_user_gateway.get_user = Mock(side_effect=_mock_user_return)
 
-        command = self._create_set_committers_command_with_all_mocks(['set', expected_initials], self.mock_user_gateway)
+        command = self._create_set_committers_command_with_all_mocks(['set', "InItIaLs"], self.mock_user_gateway)
         command.execute()
         mock_set_committer_as_author.assert_called_with(Committer('name', 'email'))
 

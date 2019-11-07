@@ -45,10 +45,10 @@ class SetCommittersCommand(Command):
 
     def _commit_pair_set_committers(self, committer_initials, committers, pair_set_committer_add, pair_set_id):
             for pair_set_committer in pair_set_committer_add:
-                initials = pair_set_committer
+                initials = str(pair_set_committer).lower()
                 id = pair_set_id
                 self._pair_set_committers_gateway.add_pair_set_committer(initials, id)
-            author = self._user_gateway.get_user(committer_initials[0])
+            author = self._user_gateway.get_user(str(committer_initials[0]).lower())
             actual_committers = [Committer(c.name, c.email) for c in committers]
             set_committers(actual_committers)
             set_committer_as_author(actual_committers[0])
@@ -56,7 +56,7 @@ class SetCommittersCommand(Command):
     def _prepare_pair_set_committers(self, committer_initials: list, committers: list, pair_set_committer_add: list):
         should_set_committers = True
         for committer_initial in committer_initials:
-            committer = self._user_gateway.get_user(committer_initial)
+            committer = self._user_gateway.get_user(str(committer_initial).lower())
             if committer is None:
                 print("No committer exists with initials '{}'".format(committer_initial))
                 should_set_committers = False

@@ -38,7 +38,7 @@ class AddUserCommand(Command):
                 print('')
         else:
             try:
-                self._user_gateway.add_user(self._args[1], self._args[2], self._args[3])
+                self._user_gateway.add_user(str(self._args[1]).lower(), self._args[2], self._args[3])
             except UninitializedError:
                 print('guet has not been initialized yet! Please do so by running the command "guet init".')
 

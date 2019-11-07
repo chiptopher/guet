@@ -38,12 +38,12 @@ class TestAddUserCommand(CommandTest):
         mock_user_gateway = UserGateway()
         mock_user_gateway.add_user = Mock()
 
-        initials = 'usr'
+        initials = 'usR'
         name = 'user'
         email = 'user@localhost'
         command = AddUserCommand(['guet', initials, name, email], mock_user_gateway)
         command.execute()
-        mock_user_gateway.add_user.assert_called_once_with(initials, name, email)
+        mock_user_gateway.add_user.assert_called_once_with(initials.lower(), name, email)
 
     @patch('builtins.print')
     def test_execute_prints_error_message_when_too_many_arguments_are_given(self,
