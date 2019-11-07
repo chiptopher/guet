@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from typing import Dict
+
 from .command import Command
 from ..util import get_command_subclasses
 
@@ -21,20 +23,19 @@ class HelpCommand(Command):
 
     _REQUIRED_ARGS_IN_CORRECT_ORDER = []
 
-    def __init__(self, args):
+    def __init__(self, args, command_builder_map=None):
         super().__init__(args)
+        if command_builder_map is None:
+            command_builder_map = dict()
+        self.command_builder_map = command_builder_map
 
     def execute(self):
         print(self.help())
 
-    def help(self, command_classes_func=get_command_subclasses):
-        command_classes = command_classes_func([HelpCommand])
+    def help(self):
         help_message = 'usage: guet <command>\n'
-        for command_class in command_classes:
-            args = ''
-            for arg in command_class.get_list_of_required_arguments_in_correct_order():
-                args += '{} '.format(arg)
-            help_message += '\n   {}-- {}'.format(args, command_class.get_short_help_message())
+        for key in self.command_builder_map:
+            help_message += '\n   {} -- {}'.format(key, self.command_builder_map[key].get_short_help_message())
         return help_message + '\n'
 
     def get_short_help_message(self):
