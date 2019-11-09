@@ -17,27 +17,11 @@ from typing import List
 
 
 class Command:
-    def __init__(self, args):
-        self._args = args
-
-    def execute(self):
-        raise NotImplementedError
-
-    def help(self):
-        raise NotImplementedError
-
-    @classmethod
-    def get_short_help_message(cls):
-        raise NotImplementedError
-
-
-class Command2(Command):
     @classmethod
     def get_short_help_message(cls):
         return cls.help_short()
 
     def __init__(self, args: List[str], args_needed: bool = True):
-        super().__init__(args)
         self.args_needed = args_needed
         self.args = args[1:]
 

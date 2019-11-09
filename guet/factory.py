@@ -1,4 +1,5 @@
-from guet.commands import Command, HelpCommand
+from guet.commands import HelpCommand
+from guet.commands.command import Command
 
 
 class CommandFactory:

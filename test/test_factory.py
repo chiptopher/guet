@@ -1,24 +1,32 @@
 import unittest
 
 from guet.commands import HelpCommand
-from guet.commands.command import Command, Command2
+from guet.commands.command import Command
 from guet.factory import CommandFactory
 
 
 class MockCommand(Command):
-    def execute(self):
+    def execute_hook(self) -> None:
         pass
 
-    def validate(self, arguments: list):
-        return False
+    def help(self) -> str:
+        pass
+
+    @classmethod
+    def help_short(cls) -> str:
+        pass
 
 
 class NotMockCommand(Command):
-    def execute(self):
+    def execute_hook(self) -> None:
         pass
 
-    def validate(self, arguments: list):
-        return False
+    def help(self) -> str:
+        pass
+
+    @classmethod
+    def help_short(cls) -> str:
+        pass
 
 
 class TestCommandFactory(unittest.TestCase):
@@ -32,7 +40,6 @@ class TestCommandFactory(unittest.TestCase):
         args = ['command']
         result = command_factory.create(args)
         self.assertEqual(MockCommand, type(result))
-        self.assertEqual(args, result._args)
 
     def test_returns_help_command_if_no_command_provided(self):
         command_factory = CommandFactory(dict())
@@ -41,7 +48,7 @@ class TestCommandFactory(unittest.TestCase):
 
     def test_help_command_has_command_builder_map(self):
         command_builder_map = dict()
-        command_builder_map['command'] = lambda args: Command2(args)
+        command_builder_map['command'] = lambda args: Command(args)
         command_factory = CommandFactory(command_builder_map)
         result = command_factory.create([])
         self.assertEqual(command_builder_map, result.command_builder_map)
