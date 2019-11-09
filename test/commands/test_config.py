@@ -13,7 +13,7 @@ class ConfigSetTest(unittest.TestCase):
 
     def test_short_help_message(self):
         command = ConfigSetCommand([])
-        self.assertEqual(ConfigSetCommand.SHORT_HELP_MESSAGE, command.get_short_help_message())
+        self.assertEqual(ConfigSetCommand.SHORT_HELP_MESSAGE, command.help_short())
 
     @patch('guet.commands.config.set_config')
     @patch('guet.commands.config.get_config')

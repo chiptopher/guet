@@ -35,13 +35,13 @@ class TestCommand2(unittest.TestCase):
             return 'Help'
 
     def test_execute_calls_implementation_command_hook(self):
-        command = self.Command2Impl(['arg'])
+        command = self.Command2Impl(['command2', 'arg'])
         command.execute()
         self.assertTrue(command.called)
 
     @patch('builtins.print')
-    def test_prints_help_message_when_no_args_given(self,
+    def test_prints_help_message_when_no_args_given_with_appended_newline(self,
                                                     mock_print):
-        command = self.Command2Impl([])
+        command = self.Command2Impl(['command2'])
         command.execute()
-        mock_print.assert_called_with(command.help())
+        mock_print.assert_called_with('Help\n')
