@@ -35,9 +35,9 @@ class TestCreateHook(unittest.TestCase):
         mock_open.assert_called_once_with('path/pre-commit', 'w')
         mock_open.return_value.writelines.assert_called_with([
             '#! /usr/bin/env python3\n',
-            'from guet.commit import PreCommitManager\n',
-            'cm = PreCommitManager()\n',
-            'cm.manage()\n'
+            'from guet.hooks import manage\n',
+            'import sys\n',
+            'manage(sys.argv[0])\n',
         ])
 
         mock_open.return_value.close.assert_called()
@@ -57,7 +57,6 @@ class TestCreateHook(unittest.TestCase):
             'from guet.hooks import manage\n',
             'import sys\n',
             'manage(sys.argv[0])\n',
-
         ])
         mock_open.return_value.close.assert_called()
 
@@ -67,9 +66,9 @@ class TestCreateHook(unittest.TestCase):
         mock_open.assert_called_once_with('path/post-commit', 'w')
         mock_open.return_value.writelines.assert_called_with([
             '#! /usr/bin/env python3\n',
-            'from guet.commit import PostCommitManager\n',
-            'cm = PostCommitManager()\n',
-            'cm.manage()\n'
+            'from guet.hooks import manage\n',
+            'import sys\n',
+            'manage(sys.argv[0])\n',
         ])
 
         mock_open.return_value.close.assert_called()
