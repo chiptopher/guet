@@ -1,17 +1,16 @@
-
 from guet.config.already_initialized import already_initialized
 from guet.config.initialize import initialize
-from .command import Command
+from .command import Command2
 
 
-class InitDataSourceCommand(Command):
-    _REQUIRED_ARGS_IN_CORRECT_ORDER = ['init']
+class InitDataSourceCommand(Command2):
 
     def __init__(self, args):
-        super().__init__(args)
+        super().__init__(args, args_needed=False)
 
-    def execute(self):
-        if len(self._args) != 1:
+    def execute_hook(self):
+        extra_arguments_given = len(self.args) > 0
+        if extra_arguments_given:
             print('Invalid arguments.\n\n   {}'.format(self.help()))
         else:
             if not already_initialized():
@@ -20,8 +19,8 @@ class InitDataSourceCommand(Command):
                 print('Config folder already exists.')
 
     def help(self):
-        pass
+        return ''
 
     @classmethod
-    def get_short_help_message(cls):
+    def help_short(cls) -> str:
         return 'Initialize guet for use'
