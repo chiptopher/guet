@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from typing import List
 
 
 class Command:
@@ -28,3 +29,30 @@ class Command:
     @classmethod
     def get_short_help_message(cls):
         raise NotImplementedError
+
+
+class Command2:
+    def __init__(self, args: List[str]):
+        self.args = args
+
+    def execute(self) -> None:
+        if self._no_args_given():
+            self._print_help_message()
+        else:
+            self.execute_hook()
+
+    def execute_hook(self) -> None:
+        raise NotImplementedError
+
+    def help(self) -> str:
+        raise NotImplementedError
+
+    @classmethod
+    def help_short(cls) -> str:
+        raise NotImplementedError
+
+    def _no_args_given(self) -> bool:
+        return len(self.args) == 0
+
+    def _print_help_message(self) -> None:
+        print(self.help())

@@ -1,6 +1,6 @@
-
 import collections
 import unittest
+from unittest.mock import patch
 
 from guet.commands.command import *
 
@@ -20,3 +20,28 @@ class TestCommand(unittest.TestCase):
             self.assertIsNotNone(command._args)
 
 
+class TestCommand2(unittest.TestCase):
+    class Command2Impl(Command2):
+        called = False
+
+        @classmethod
+        def help_short(cls):
+            pass
+
+        def execute_hook(self):
+            self.called = True
+
+        def help(self):
+            return 'Help'
+
+    def test_execute_calls_implementation_command_hook(self):
+        command = self.Command2Impl(['arg'])
+        command.execute()
+        self.assertTrue(command.called)
+
+    @patch('builtins.print')
+    def test_prints_help_message_when_no_args_given(self,
+                                                    mock_print):
+        command = self.Command2Impl([])
+        command.execute()
+        mock_print.assert_called_with(command.help())
