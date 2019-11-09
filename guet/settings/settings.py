@@ -7,6 +7,7 @@ from guet.settings.setting import Setting
 class Settings:
 
     def __init__(self):
+        self.version = None
         self._settings = dict()
         self._settings['pairReset'] = Setting(default_value=True,
                                               parser=boolean_parser,
@@ -16,7 +17,9 @@ class Settings:
                                           validator=lambda v: type(v) == bool)
 
     def load(self, configuration_file_lines: List[str]):
-        [self._load_attribute(attribute) for attribute in configuration_file_lines]
+        lines_without_version = configuration_file_lines[2:]
+        self.version = configuration_file_lines[0].rstrip()
+        [self._load_attribute(attribute) for attribute in lines_without_version]
 
     def _load_attribute(self, attribute):
         split = attribute.rstrip().split('=')
@@ -29,7 +32,9 @@ class Settings:
             exit(1)
 
     def write(self) -> List[str]:
-        return [self._convert_to_line(key) for key in self._settings if not self._settings[key].is_default_value()]
+        version = [f'{self.version}\n', '\n']
+        settings = [self._convert_to_line(key) for key in self._settings if not self._settings[key].is_default_value()]
+        return version + settings
 
     def set(self, key: str, value) -> None:
         read_writer = self._settings[key]

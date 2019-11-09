@@ -15,7 +15,14 @@ class TestSetConfig(unittest.TestCase):
                                                                   mock_write_lines):
         settings = Settings()
         settings.load([
+            '2.0.0\n',
+            '\n',
             'pairReset=False\n'
         ])
         set_config(settings)
-        mock_write_lines.assert_called_with(join(configuration_directory, constants.CONFIG), ['pairReset=False\n'])
+        expected_result = [
+            '2.0.0\n',
+            '\n',
+            'pairReset=False\n'
+        ]
+        mock_write_lines.assert_called_with(join(configuration_directory, constants.CONFIG), expected_result)

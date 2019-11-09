@@ -23,6 +23,7 @@ setup(
         'guet.commands',
         'guet.hooks',
         'guet.files',
+        'guet.settings',
         'guet.git',
         'guet.config'
     ]
