@@ -11,4 +11,4 @@ class CommandFactory:
             initialized_command = self.command_builder_map[command_arg](args)
             return initialized_command
         else:
-            return HelpCommand(args)
+            return HelpCommand(args, self.command_builder_map)
