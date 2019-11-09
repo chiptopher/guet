@@ -26,7 +26,7 @@ class TestCommand2(unittest.TestCase):
 
         @classmethod
         def help_short(cls):
-            pass
+            return 'Short Help'
 
         def execute_hook(self):
             self.called = True
@@ -41,10 +41,14 @@ class TestCommand2(unittest.TestCase):
 
     @patch('builtins.print')
     def test_prints_help_message_when_no_args_given_with_appended_newline(self,
-                                                    mock_print):
+                                                                          mock_print):
         command = self.Command2Impl(['command2'])
         command.execute()
         mock_print.assert_called_with('Help\n')
+
+    def test_short_message_works(self):
+        command = self.Command2Impl(['command2'])
+        self.assertEqual('Short Help', command.get_short_help_message())
 
     @patch('builtins.print')
     def test_does_not_print_help_message_when_no_args_given_if_that_is_valid_for_command(self,
