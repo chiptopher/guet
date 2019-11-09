@@ -1,16 +1,17 @@
 from typing import List
 
 from guet.commands import Command
+from guet.commands.command import Command2
 from guet.config.get_config import get_config
 from guet.config.set_config import set_config
 from guet.settings.settings import Settings
 
 
-class ConfigSetCommand(Command):
+class ConfigSetCommand(Command2):
     HELP_MESSAGE = 'usage: guet config [--<key>=<value> ...]'
     SHORT_HELP_MESSAGE = 'Change setting values'
 
-    def execute(self):
+    def execute_hook(self) -> None:
         config = get_config()
         key_and_value = self._separate_key_and_value()
         self._append_key_and_value_to_config(config, key_and_value)
@@ -20,12 +21,12 @@ class ConfigSetCommand(Command):
         return self.HELP_MESSAGE
 
     @classmethod
-    def get_short_help_message(cls):
+    def help_short(cls) -> str:
         return cls.SHORT_HELP_MESSAGE
 
     def _separate_key_and_value(self) -> List:
         key_and_value = []
-        for arg in self._only_args_starting_with_double_dash(self._args[1:]):
+        for arg in self._only_args_starting_with_double_dash(self.args):
             split = arg.split('=')
             key_and_value.append((self._remove_double_dash(split[0]), split[1]))
         return key_and_value

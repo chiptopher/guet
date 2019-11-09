@@ -31,9 +31,14 @@ class Command:
         raise NotImplementedError
 
 
-class Command2:
+class Command2(Command):
+    @classmethod
+    def get_short_help_message(cls):
+        return cls.help_short()
+
     def __init__(self, args: List[str]):
-        self.args = args
+        super().__init__(args)
+        self.args = args[1:]
 
     def execute(self) -> None:
         if self._no_args_given():
@@ -55,4 +60,4 @@ class Command2:
         return len(self.args) == 0
 
     def _print_help_message(self) -> None:
-        print(self.help())
+        print(f'{self.help()}\n')
