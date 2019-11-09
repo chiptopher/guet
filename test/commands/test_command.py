@@ -45,3 +45,9 @@ class TestCommand2(unittest.TestCase):
         command = self.Command2Impl(['command2'])
         command.execute()
         mock_print.assert_called_with('Help\n')
+
+    @patch('builtins.print')
+    def test_does_not_print_help_message_when_no_args_given_if_that_is_valid_for_command(self,
+                                                                                         mock_print):
+        command = self.Command2Impl(['command2'], args_needed=False)
+        mock_print.assert_not_called()
