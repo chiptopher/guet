@@ -1,9 +1,9 @@
 from guet.config.add_committer import add_committer
 from guet.config.already_initialized import already_initialized
-from .command import Command2
+from .command import Command
 
 
-class AddUserCommand(Command2):
+class AddUserCommand(Command):
 
     def __init__(self, args):
         super().__init__(args)

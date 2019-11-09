@@ -1,11 +1,11 @@
-from guet.commands.command import Command, Command2
+from guet.commands.command import Command
 from guet.git.any_hooks_present import any_hooks_present
 from guet.git.create_hook import create_hook, HookMode, Hooks
 from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.git_present_in_cwd import git_present_in_cwd
 
 
-class StartCommand(Command2):
+class StartCommand(Command):
 
     def __init__(self, args):
         super().__init__(args, args_needed=False)

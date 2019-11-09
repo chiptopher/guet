@@ -1,9 +1,9 @@
 from guet.config.already_initialized import already_initialized
 from guet.config.initialize import initialize
-from .command import Command2
+from .command import Command
 
 
-class InitDataSourceCommand(Command2):
+class InitDataSourceCommand(Command):
 
     def __init__(self, args):
         super().__init__(args, args_needed=False)

@@ -1,7 +1,7 @@
-from guet.commands.command import Command2
+from guet.commands.command import Command
 
 
-class HelpCommand(Command2):
+class HelpCommand(Command):
     _REQUIRED_ARGS_IN_CORRECT_ORDER = []
 
     def __init__(self, args, command_builder_map=None):
