@@ -36,12 +36,14 @@ class Command2(Command):
     def get_short_help_message(cls):
         return cls.help_short()
 
-    def __init__(self, args: List[str]):
+    def __init__(self, args: List[str], args_needed: bool = True):
         super().__init__(args)
+        self.args_needed = args_needed
         self.args = args[1:]
 
     def execute(self) -> None:
-        if self._no_args_given():
+        no_args_given = len(self.args) == 0
+        if no_args_given and self.args_needed:
             self._print_help_message()
         else:
             self.execute_hook()
@@ -55,9 +57,6 @@ class Command2(Command):
     @classmethod
     def help_short(cls) -> str:
         raise NotImplementedError
-
-    def _no_args_given(self) -> bool:
-        return len(self.args) == 0
 
     def _print_help_message(self) -> None:
         print(f'{self.help()}\n')
