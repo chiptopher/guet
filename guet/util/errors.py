@@ -11,5 +11,6 @@ def log_on_error(f):
             print('An error has occurred, please refer to error logs for more information\n')
             stack_tract = traceback.format_exc()
             set_errors(stack_tract)
+            exit(1)
 
     return wrapper
