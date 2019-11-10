@@ -30,4 +30,4 @@ class TestGuetSet(DockerTest):
         set_text_split = set_text.split(',')
         self.assertEqual('initials1', set_text_split[0])
         self.assertEqual('initials2', set_text_split[1])
-        self.assertTrue(start_time + 5000 > int(set_text_split[2]) > start_time)
+        self.assertTrue(start_time + 10000 > int(set_text_split[2]) > start_time)

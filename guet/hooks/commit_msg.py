@@ -6,6 +6,7 @@ from guet.config.committer import Committer
 from guet.config.get_current_committers import get_current_committers
 from guet.git.edit_commit_msg import edit_commit_msg
 from guet.git.given_commit_message import given_commit_message
+from guet.util.errors import log_on_error
 
 
 def _create_co_authored_line(committer: Committer):
@@ -23,6 +24,7 @@ def _remove_trailing_newline(commit_message_without_co_authored):
         del commit_message_without_co_authored[len(commit_message_without_co_authored) - 1]
 
 
+@log_on_error
 def commit_msg():
     git_path = git_path_from_cwd()
     commit_message = given_commit_message(git_path)
