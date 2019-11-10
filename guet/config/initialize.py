@@ -18,6 +18,7 @@ def initialize():
     _create_file_with_name(join(configuration_directory, constants.COMMITTERS))
     _create_file_with_name(join(configuration_directory, constants.COMMITTERS_SET))
     _create_file_with_name(join(configuration_directory, constants.CONFIG))
+    _create_file_with_name(join(configuration_directory, constants.ERRORS))
     _prepend_version_number_to_config_file()
 
 

@@ -25,6 +25,7 @@ setup(
         'guet.files',
         'guet.settings',
         'guet.git',
-        'guet.config'
+        'guet.config',
+        'guet.util'
     ]
 )

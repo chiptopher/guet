@@ -1,7 +1,9 @@
 from guet.config.most_recent_committers_set import most_recent_committers_set
 from guet.currentmillis import current_millis
+from guet.util.errors import log_on_error
 
 
+@log_on_error
 def pre_commit():
     now = current_millis()
     twenty_four_hours = 86400000
