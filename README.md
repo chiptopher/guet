@@ -1,8 +1,7 @@
 # guet
 > enable contribution tracking when pair programming with guet
 
-Pair programming is integral part of many software development lifecycles. When pairing, you may want to track both
-pairs contributions. Using **guet** allows for that functionality.
+Pair programming is integral part of many software development lifecycles. When pairing, you may want to track both pairs contributions. Using **guet** allows for that functionality.
 
 [![Actions Status](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)
 
@@ -37,8 +36,12 @@ python setup.py install
 `guet set [<initials>, ...]` will register the committers with the given initials to have their names attached to all
 following commits.
 
+## Changelog
+
+To see the version releases, changes between them, and upgrade guides, check the [change log](./.github/CHANGELOG.md)
+
 ## Contribution
 
-Guidelines for contributions can be found [here](./docs/CONTRIBUTING.md). Feel free to 
-[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** or you want to submit a
+Guidelines for contributions can be found [here](./.github/CONTRIBUTING.md). Feel free to 
+[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** you want to submit a
 feature request.
