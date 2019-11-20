@@ -3,6 +3,7 @@ import unittest
 from guet.commands import HelpCommand
 from guet.commands.command import Command
 from guet.factory import CommandFactory
+from guet.settings.settings import Settings
 
 
 class MockCommand(Command):
@@ -48,7 +49,7 @@ class TestCommandFactory(unittest.TestCase):
 
     def test_help_command_has_command_builder_map(self):
         command_builder_map = dict()
-        command_builder_map['command'] = lambda args: Command(args)
+        command_builder_map['command'] = lambda args: Command(args, Settings())
         command_factory = CommandFactory(command_builder_map)
         result = command_factory.create([])
         self.assertEqual(command_builder_map, result.command_builder_map)

@@ -8,11 +8,11 @@ from guet.settings.settings import Settings
 class ConfigSetTest(unittest.TestCase):
 
     def test_help_message(self):
-        command = ConfigSetCommand([])
+        command = ConfigSetCommand([], Settings())
         self.assertEqual(ConfigSetCommand.HELP_MESSAGE, command.help())
 
     def test_short_help_message(self):
-        command = ConfigSetCommand([])
+        command = ConfigSetCommand([], Settings())
         self.assertEqual(ConfigSetCommand.SHORT_HELP_MESSAGE, command.help_short())
 
     @patch('guet.commands.config.set_config')
@@ -22,7 +22,7 @@ class ConfigSetTest(unittest.TestCase):
                                            mock_set_config):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
-        command = ConfigSetCommand(['config', '--debug=True'])
+        command = ConfigSetCommand(['config', '--debug=True'], Settings())
         command.execute()
         mock_set_config.assert_called_with(mock_settings)
         self.assertEqual(True, mock_settings.read('debug'))
@@ -34,7 +34,7 @@ class ConfigSetTest(unittest.TestCase):
                                                                  mock_set_config):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
-        command = ConfigSetCommand(['config', '--debug=True', '--pairReset=False'])
+        command = ConfigSetCommand(['config', '--debug=True', '--pairReset=False'], Settings())
         command.execute()
         mock_set_config.assert_called_with(mock_settings)
         self.assertEqual(True, mock_settings.read('debug'))
@@ -47,7 +47,7 @@ class ConfigSetTest(unittest.TestCase):
                                            mock_set_config):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
-        command = ConfigSetCommand(['config', '--debug=True', 'noDoubleDash=True'])
+        command = ConfigSetCommand(['config', '--debug=True', 'noDoubleDash=True'], Settings())
         command.execute()
         mock_set_config.assert_called_with(mock_settings)
         self.assertEqual(True, mock_settings.read('debug'))
@@ -63,7 +63,7 @@ class ConfigSetTest(unittest.TestCase):
                                                              mock_exit):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
-        command = ConfigSetCommand(['config', '--invalidKey=true'])
+        command = ConfigSetCommand(['config', '--invalidKey=true'], Settings())
         command.execute()
         mock_print.assert_called_with(f'Cannot set \"invalidKey\", not valid configuration.\n')
         mock_exit.assert_called_with(1)

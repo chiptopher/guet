@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import Mock, call, patch
 
 from guet.commands.addcommitter import AddUserCommand
+from guet.settings.settings import Settings
 
 
 @patch('guet.commands.addcommitter.already_initialized')
@@ -17,7 +18,7 @@ class TestAddUserCommand(unittest.TestCase):
         initials = 'usr'
         name = 'user'
         email = 'user@localhost'
-        command = AddUserCommand(['guet', initials, name, email, 'extra'])
+        command = AddUserCommand(['guet', initials, name, email, 'extra'], Settings())
         command.execute()
 
         mock_print.assert_called_once_with('Too many arguments.')
@@ -26,7 +27,7 @@ class TestAddUserCommand(unittest.TestCase):
                                                                                               mock_print,
                                                                                               mock_add_commiter,
                                                                                               mock_already_initialized):
-        command = AddUserCommand(['guet', 'initials', 'name'])
+        command = AddUserCommand(['guet', 'initials', 'name'], Settings())
         command.execute()
 
         calls = [call('Not enough arguments.'), call(''), call(command.help())]
@@ -36,7 +37,7 @@ class TestAddUserCommand(unittest.TestCase):
                                           mock_print,
                                           mock_add_commiter,
                                           mock_already_initialized):
-        command = AddUserCommand([])
+        command = AddUserCommand([], Settings())
         self.assertEqual('usage: guet add <initials> <"name"> <email>', command.help())
 
     def test_get_short_help_message(self,
@@ -52,7 +53,7 @@ class TestAddUserCommand(unittest.TestCase):
         initials = 'usr'
         name = 'user'
         email = 'user@localhost'
-        command = AddUserCommand(['guet', initials, name, email])
+        command = AddUserCommand(['guet', initials, name, email], Settings())
         mock_already_initialized.return_value = False
         command.execute()
 
@@ -63,7 +64,7 @@ class TestAddUserCommand(unittest.TestCase):
                                                             mock_print,
                                                             mock_add_commiter,
                                                             mock_already_initialized):
-        command = AddUserCommand(['guet', 'initials', 'name', 'email'])
+        command = AddUserCommand(['guet', 'initials', 'name', 'email'], Settings())
         command.execute()
 
         mock_add_commiter.assert_called_with('initials', 'name', 'email')

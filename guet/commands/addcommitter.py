@@ -1,12 +1,12 @@
 from guet.config.add_committer import add_committer
 from guet.config.already_initialized import already_initialized
 from .command import Command
-
+from guet.settings.settings import Settings
 
 class AddUserCommand(Command):
 
-    def __init__(self, args):
-        super().__init__(args)
+    def __init__(self, args, settings: Settings):
+        super().__init__(args, settings)
 
     def execute_hook(self):
         if len(self.args) != 3:

@@ -1,11 +1,13 @@
 from guet.commands.command import Command
+from guet.settings.settings import Settings
 
+from typing import List
 
 class HelpCommand(Command):
     _REQUIRED_ARGS_IN_CORRECT_ORDER = []
 
-    def __init__(self, args, command_builder_map=None):
-        super().__init__(args)
+    def __init__(self, args: List[str], settings: Settings, command_builder_map=None):
+        super().__init__(args, settings)
         if command_builder_map is None:
             command_builder_map = dict()
         self.command_builder_map = command_builder_map

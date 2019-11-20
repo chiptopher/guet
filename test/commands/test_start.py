@@ -2,8 +2,8 @@ import unittest
 from unittest.mock import Mock, patch, call
 
 from guet.commands.start import StartCommand
-from test.commands.test_command import create_test_case
 from guet.git.create_hook import HookMode, Hooks
+from guet.settings.settings import Settings
 
 
 class TestStartCommand(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestStartCommand(unittest.TestCase):
         git_hook_path_from_cwd.return_value = '/path'
         mock_any_hooks_present.return_value = False
 
-        command = StartCommand([])
+        command = StartCommand([], Settings())
         command.execute()
         mock_any_hooks_present.assert_called_once_with('/path')
         mock_create_hook.assert_has_calls([
@@ -47,7 +47,7 @@ class TestStartCommand(unittest.TestCase):
 
         mock_input.return_value = 'c'
 
-        command = StartCommand([])
+        command = StartCommand([], Settings())
         command.execute()
 
         mock_print.assert_called_once_with(
@@ -69,7 +69,7 @@ class TestStartCommand(unittest.TestCase):
         mock_any_hooks_presenet.return_value = True
         git_hook_path_from_cwd.return_value = 'path'
 
-        command = StartCommand([])
+        command = StartCommand([], Settings())
         command.execute()
         mock_create_hook.assert_not_called()
 
@@ -88,7 +88,7 @@ class TestStartCommand(unittest.TestCase):
         mock_any_hooks_present.return_value = True
         git_hook_path_from_cwd.return_value = 'path'
 
-        command = StartCommand([])
+        command = StartCommand([], Settings())
         command.execute()
         mock_create_hook.assert_has_calls([
             call('path', Hooks.PRE_COMMIT, HookMode.NEW_OR_OVERWRITE),
@@ -109,7 +109,7 @@ class TestStartCommand(unittest.TestCase):
                                                                       mock_print):
         git_present_in_cwd.return_value = False
 
-        command = StartCommand([])
+        command = StartCommand([], Settings())
         command.execute()
 
         mock_print.assert_called_with('Git not initialized in this directory.')

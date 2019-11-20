@@ -3,12 +3,15 @@ from guet.git.any_hooks_present import any_hooks_present
 from guet.git.create_hook import create_hook, HookMode, Hooks
 from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.git_present_in_cwd import git_present_in_cwd
+from guet.settings.settings import Settings
+
+from typing import List
 
 
 class StartCommand(Command):
 
-    def __init__(self, args):
-        super().__init__(args, args_needed=False)
+    def __init__(self, args: List[str], settings: Settings):
+        super().__init__(args, settings, args_needed=False)
 
     def execute_hook(self) -> None:
         if git_present_in_cwd():
