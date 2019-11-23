@@ -14,5 +14,6 @@ class Committer:
         return f'{self.initials},{self.name},{self.email}'
 
 
-def filter_committers_with_initials(committers: List[Committer], initials: List[str]) -> List[Committer]:
+def filter_committers_with_initials(committers: List[Committer],
+                                    initials: List[str]) -> List[Committer]:
     return [committer for committer in committers if committer.initials in initials]

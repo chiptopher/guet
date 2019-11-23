@@ -3,10 +3,11 @@ import traceback
 from guet.config.set_errors import set_errors
 
 
-def log_on_error(f):
+def log_on_error(wrapped):
     def wrapper():
         try:
-            f()
+            wrapped()
+        # pylint: disable=broad-except
         except Exception:
             print('An error has occurred, please refer to error logs for more information\n')
             stack_tract = traceback.format_exc()

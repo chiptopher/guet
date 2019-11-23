@@ -1,7 +1,7 @@
+from typing import List
 from guet.commands.command import Command
 from guet.settings.settings import Settings
 
-from typing import List
 
 class HelpCommand(Command):
     _REQUIRED_ARGS_IN_CORRECT_ORDER = []

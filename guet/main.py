@@ -1,7 +1,6 @@
 
 
 import sys
-import traceback
 
 from guet.commands import AddUserCommand, InitDataSourceCommand, SetCommittersCommand, StartCommand
 from guet.commands.config import ConfigSetCommand

@@ -1,13 +1,12 @@
 from os.path import join
 
 from guet import constants
-from guet.config import configuration_directory
+from guet.config import CONFIGURATION_DIRECTORY
 
 
 def most_recent_committers_set():
-    f = open(join(configuration_directory, constants.COMMITTERS_SET), 'r')
-    line = f.readline()
-    f.close()
+    set_committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET), 'r')
+    line = set_committers_file.readline()
+    set_committers_file.close()
     split = line.rstrip().split(',')
     return int(split[len(split)-1])
-

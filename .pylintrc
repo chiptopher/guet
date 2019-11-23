@@ -1,0 +1,16 @@
+
+[MASTER]
+
+score=no
+
+[MESSAGES CONTROL]
+# R1705: Unnecessary "else" after "return" (no-else-return)
+# R1722: Consider using sys.exit() (consider-using-sys-exit)
+# R0801: Similar lines in files
+# C0114: Missing module docstring (missing-module-docstring)
+# C0116: Missing function or method docstring (missing-function-docstring)
+# C0115: Missing class docstring (missing-class-docstring)
+
+disable=R1705,R1722,R0801,C0114,C0116,C0115
+
+min-public-methods=1

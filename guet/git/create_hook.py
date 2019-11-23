@@ -19,9 +19,9 @@ class Hooks(Enum):
 
 def create_hook(hook_folder_path: str, hook: Hooks, create_mode: HookMode):
     final_hook_path = join(hook_folder_path, create_mode(hook.value))
-    f = open(final_hook_path, 'w')
-    f.writelines(HOOK_FILE_LINES)
-    f.close()
+    file = open(final_hook_path, 'w')
+    file.writelines(HOOK_FILE_LINES)
+    file.close()
 
-    st = stat(final_hook_path)
-    chmod(final_hook_path, st.st_mode | 0o111)
+    status = stat(final_hook_path)
+    chmod(final_hook_path, status.st_mode | 0o111)

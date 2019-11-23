@@ -10,8 +10,8 @@ def pre_commit():
     twenty_four_hours_ago = now - twenty_four_hours
     set_time = most_recent_committers_set()
     if set_time < twenty_four_hours_ago:
-        print("\nYou have not reset pairs in over twenty four hours!\nPlease reset your pairs by using guet set and including your pairs' initials\n")
+        print(("\nYou have not reset pairs in over twenty four hours!\n" +
+               "Please reset your pairs by using guet set and including your pairs' initials\n"))
         exit(1)
     else:
         exit(0)
-

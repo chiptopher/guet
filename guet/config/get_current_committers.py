@@ -2,15 +2,15 @@ from os.path import join
 from typing import List
 
 from guet import constants
-from guet.config import configuration_directory
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.committer import Committer, filter_committers_with_initials
 from guet.config.get_committers import get_committers
 
 
 def get_current_committers() -> List[Committer]:
-    f = open(join(configuration_directory, constants.COMMITTERS_SET), 'r')
-    line = f.readline()
-    f.close()
+    set_committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET), 'r')
+    line = set_committers_file.readline()
+    set_committers_file.close()
     committer_initials = line.rstrip().split(',')
     del committer_initials[-1]
     committers = get_committers()
@@ -21,5 +21,3 @@ def get_current_committers() -> List[Committer]:
             if committer.initials == initials:
                 final.append(committer)
     return final
-
-

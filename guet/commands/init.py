@@ -1,13 +1,11 @@
+from typing import List
 from guet.config.already_initialized import already_initialized
 from guet.config.initialize import initialize
 from guet.settings.settings import Settings
 from .command import Command
 
-from typing import List
-
 
 class InitDataSourceCommand(Command):
-
     def __init__(self, args: List[str], settings: Settings):
         super().__init__(args, settings, args_needed=False)
 

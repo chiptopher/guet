@@ -2,7 +2,7 @@ from os.path import join
 from typing import List
 
 from guet import constants
-from guet.config import configuration_directory
+from guet.config import CONFIGURATION_DIRECTORY
 
 _COMMITTER_NOT_PRESENT = -1
 
@@ -30,13 +30,13 @@ def _position_of_committer_with_initials(all_committers: List[str], initials: st
 
 
 def _read_all_committers_from_file() -> List[str]:
-    committers_file = open(join(configuration_directory, constants.COMMITTERS), 'r')
+    committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), 'r')
     all_lines = committers_file.readlines()
     committers_file.close()
     return all_lines
 
 
 def _write_committers_to_file(committers: List[str]) -> None:
-    committers_file = open(join(configuration_directory, constants.COMMITTERS), 'w')
+    committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), 'w')
     committers_file.writelines(committers)
     committers_file.close()

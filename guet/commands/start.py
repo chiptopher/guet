@@ -1,3 +1,5 @@
+from typing import List
+
 from guet.commands.command import Command
 from guet.git.any_hooks_present import any_hooks_present
 from guet.git.create_hook import create_hook, HookMode, Hooks
@@ -5,11 +7,8 @@ from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.git_present_in_cwd import git_present_in_cwd
 from guet.settings.settings import Settings
 
-from typing import List
-
 
 class StartCommand(Command):
-
     def __init__(self, args: List[str], settings: Settings):
         super().__init__(args, settings, args_needed=False)
 
@@ -20,8 +19,9 @@ class StartCommand(Command):
                 self._create_all_hooks(hook_path, HookMode.NEW_OR_OVERWRITE)
             else:
                 hook_mode = None
-                print(
-                    'There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
+                print(('There is already commit hooks in this project. ' +
+                       'Would you like to overwrite (o), ' +
+                       'create (c) the file and put it in the hooks folder, or cancel (x)?'))
                 val = input()
                 if val == 'o':
                     hook_mode = HookMode.NEW_OR_OVERWRITE
@@ -34,7 +34,8 @@ class StartCommand(Command):
         else:
             print('Git not initialized in this directory.')
 
-    def _create_all_hooks(self, hook_folder_path: str, hook_mode: HookMode):
+    @staticmethod
+    def _create_all_hooks(hook_folder_path: str, hook_mode: HookMode):
         if hook_mode is not HookMode.CANCEL:
             create_hook(hook_folder_path, Hooks.PRE_COMMIT, hook_mode)
             create_hook(hook_folder_path, Hooks.POST_COMMIT, hook_mode)

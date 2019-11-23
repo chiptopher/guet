@@ -4,7 +4,7 @@ from os.path import join
 from unittest.mock import patch
 
 from guet import constants
-from guet.config import configuration_directory
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.committer import Committer
 from guet.config.get_current_committers import get_current_committers
 
@@ -37,7 +37,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
                                         mock_get_committers):
         mock_open.return_value.readline.return_value = 'initials1,initials2,1000000000\n'
         get_current_committers()
-        mock_open.assert_called_with(join(configuration_directory, constants.COMMITTERS_SET), 'r')
+        mock_open.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET), 'r')
 
     @patch('builtins.open', new_callable=unittest.mock.mock_open())
     def test_get_current_committers_preserves_order_of_committers(self,

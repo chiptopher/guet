@@ -9,7 +9,7 @@ def _append_guet(base_name: str):
     return base_name + '-guet'
 
 
-def _should_not_be_called(base_name: str):
+def _should_not_be_called(_unused: str):
     return RuntimeError
 
 

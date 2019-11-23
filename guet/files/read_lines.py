@@ -2,7 +2,7 @@ from typing import List
 
 
 def read_lines(path: str) -> List[str]:
-    f = open(path, 'r')
-    lines = f.readlines()
-    f.close()
+    file = open(path, 'r')
+    lines = file.readlines()
+    file.close()
     return lines

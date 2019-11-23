@@ -11,15 +11,16 @@ class Settings:
         self._settings = dict()
         self._settings['pairReset'] = Setting(default_value=True,
                                               parser=boolean_parser,
-                                              validator=lambda v: type(v) == bool)
+                                              validator=lambda v: isinstance(v, bool))
         self._settings['debug'] = Setting(default_value=False,
                                           parser=boolean_parser,
-                                          validator=lambda v: type(v) == bool)
+                                          validator=lambda v: isinstance(v, bool))
 
     def load(self, configuration_file_lines: List[str]):
         lines_without_version = configuration_file_lines[2:]
         self.version = configuration_file_lines[0].rstrip()
-        [self._load_attribute(attribute) for attribute in lines_without_version]
+        for attribute in lines_without_version:
+            self._load_attribute(attribute)
 
     def _load_attribute(self, attribute):
         split = attribute.rstrip().split('=')
@@ -33,7 +34,10 @@ class Settings:
 
     def write(self) -> List[str]:
         version = [f'{self.version}\n', '\n']
-        settings = [self._convert_to_line(key) for key in self._settings if not self._settings[key].is_default_value()]
+        settings = []
+        for key in self._settings:
+            if not self._settings[key].is_default_value():
+                settings.append(self._convert_to_line(key))
         return version + settings
 
     def set(self, key: str, value) -> None:

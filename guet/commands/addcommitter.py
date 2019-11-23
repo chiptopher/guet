@@ -1,10 +1,10 @@
 from guet.config.add_committer import add_committer
 from guet.config.already_initialized import already_initialized
-from .command import Command
 from guet.settings.settings import Settings
+from .command import Command
+
 
 class AddUserCommand(Command):
-
     def __init__(self, args, settings: Settings):
         super().__init__(args, settings)
 
@@ -21,7 +21,8 @@ class AddUserCommand(Command):
             if already_initialized():
                 add_committer(self.args[0], self.args[1], self.args[2])
             else:
-                print('guet has not been initialized yet! Please do so by running the command "guet init".')
+                print(('guet has not been initialized yet! ' +
+                       'Please do so by running the command "guet init".'))
 
     def help(self):
         return 'usage: guet add <initials> <"name"> <email>'

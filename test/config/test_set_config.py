@@ -3,7 +3,7 @@ from os.path import join
 from unittest.mock import patch
 
 from guet import constants
-from guet.config import configuration_directory
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.set_config import set_config
 from guet.settings.settings import Settings
 
@@ -25,4 +25,4 @@ class TestSetConfig(unittest.TestCase):
             '\n',
             'pairReset=False\n'
         ]
-        mock_write_lines.assert_called_with(join(configuration_directory, constants.CONFIG), expected_result)
+        mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.CONFIG), expected_result)
