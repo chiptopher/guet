@@ -28,7 +28,6 @@ def _called_execute(f):
 
 
 class DockerTest(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         docker_client = docker.from_env()
@@ -75,6 +74,10 @@ class DockerTest(unittest.TestCase):
     @_called_execute
     def guet_add(self, initials: str, name: str, email: str):
         self.add_command(f'guet add {initials} "{name}" {email}')
+
+    @_called_execute
+    def guet_get_current(self):
+        self.add_command(f'guet get current')
 
     @_called_execute
     def add_command(self, command: str):
@@ -143,4 +146,3 @@ class DockerTest(unittest.TestCase):
 
     def _file_or_directory_exists_in_file_system(self, path: str):
         self.assertTrue(self.file_system.get_file_from_root(path) is not None)
-
