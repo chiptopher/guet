@@ -2,7 +2,6 @@ from e2e import DockerTest
 
 
 class TestCommit(DockerTest):
-
     def test_adds_current_committers_to_commit_message(self):
         self.guet_init()
         self.guet_add('initials', 'name', 'email@localhost')
@@ -39,6 +38,5 @@ class TestCommit(DockerTest):
         self.show_git_log()
 
         self.execute()
-
         self.assert_text_in_logs(16, '    Co-authored-by: name3 <email3@localhost>')
         self.assert_text_in_logs(17, '    Co-authored-by: name4 <email4@localhost>')

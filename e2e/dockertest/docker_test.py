@@ -76,6 +76,10 @@ class DockerTest(unittest.TestCase):
         self.add_command(f'guet add {initials} "{name}" {email}')
 
     @_called_execute
+    def guet_get_committers(self):
+        self.add_command(f'guet get committers')
+
+    @_called_execute
     def guet_get_current(self):
         self.add_command(f'guet get current')
 
