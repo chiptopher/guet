@@ -1,6 +1,7 @@
 
 [MASTER]
 
+ignore=test
 score=no
 
 [MESSAGES CONTROL]
@@ -14,3 +15,5 @@ score=no
 disable=R1705,R1722,R0801,C0114,C0116,C0115
 
 min-public-methods=1
+
+string-quote=single
