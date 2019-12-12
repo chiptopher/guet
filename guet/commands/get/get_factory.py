@@ -5,9 +5,9 @@ from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.get.all_committers_strategy import AllCommittersStrategy
 from guet.commands.get.current_committers_strategy import CurrentCommittersStrategy
 from guet.commands.get.full_committers_list_strategy import FullCommittersListStrategy
-from guet.commands.get.get_command import GetCommand
 from guet.commands.get.invalid_identifier_strategy import InvalidIdentifierStrategy
 from guet.commands.get.short_list_strategy import ShortCommittersListStrategy
+from guet.commands.help_message_strategy import HelpMessageStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.config.get_committers import get_committers
 from guet.config.get_current_committers import get_current_committers
@@ -34,4 +34,7 @@ class GetCommandFactory(CommandFactoryMethod):
                     strategy = AllCommittersStrategy(FullCommittersListStrategy(get_committers()))
             else:
                 strategy = InvalidIdentifierStrategy()
-            return GetCommand(args, settings, strategy)
+            return StrategyCommand(args, settings, strategy)
+        else:
+            return StrategyCommand(args, settings, HelpMessageStrategy(
+                """usage: guet get <identifier>\n\nValid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers"""))
