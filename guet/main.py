@@ -2,9 +2,9 @@ import sys
 
 from guet.commands import AddUserCommand, InitDataSourceCommand, SetCommittersCommand, StartCommand
 from guet.commands.config import ConfigSetCommand
+from guet.commands.get.get_factory import GetCommandFactory
 from guet.factory import CommandFactory
 from guet.util.errors import log_on_error
-from guet.commands.get import GetCommand
 
 
 def _command_builder_map():
@@ -14,7 +14,7 @@ def _command_builder_map():
     command_builder_map['set'] = SetCommittersCommand
     command_builder_map['start'] = StartCommand
     command_builder_map['config'] = ConfigSetCommand
-    command_builder_map['get'] = GetCommand
+    command_builder_map['get'] = GetCommandFactory
     return command_builder_map
 
 

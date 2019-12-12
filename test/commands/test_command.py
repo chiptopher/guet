@@ -6,6 +6,7 @@ from guet.commands.command import *
 
 test_case = collections.namedtuple('TestCase', 'input expected_output explanation')
 
+
 class TestCommand2(unittest.TestCase):
     class CommandImpl(Command):
         called = False
@@ -19,18 +20,6 @@ class TestCommand2(unittest.TestCase):
 
         def help(self):
             return 'Help'
-
-    def test_all_commands_pass_arguments_to_super_constructor(self):
-        args = []
-        for command_class in Command.__subclasses__():
-            command = command_class(args, Settings())
-            self.assertIsNotNone(command.args)
-
-    def test_all_commands_pass_settings_to_super_constructor(self):
-        settings = Settings()
-        for command_class in Command.__subclasses__():
-            command = command_class([], settings)
-            self.assertEqual(command.settings, settings)
 
     def test_execute_calls_implementation_command_hook(self):
         command = self.CommandImpl(['command2', 'arg'], Settings())

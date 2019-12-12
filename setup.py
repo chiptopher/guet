@@ -21,6 +21,7 @@ setup(
     packages=[
         'guet',
         'guet.commands',
+        'guet.commands.get',
         'guet.hooks',
         'guet.files',
         'guet.settings',

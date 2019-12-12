@@ -1,4 +1,3 @@
-
 import unittest
 
 from guet.commands.command import Command
@@ -8,8 +7,7 @@ from guet.settings.settings import Settings
 
 class TestHelpCommand(unittest.TestCase):
 
-    def test_help_message_consists_of_all_commands_help_messages(self):
-
+    def test_help_message_consists_of_all_commands_help_messages_of_commands_passed_to_map(self):
         class MockCommand(Command):
 
             def get_short_help_message(self):
@@ -18,7 +16,7 @@ class TestHelpCommand(unittest.TestCase):
             def get_list_of_required_arguments_in_correct_order(self):
                 raise NotImplementedError
 
-        class MockCommandA(MockCommand):
+        class MockCommandA(Command):
 
             @classmethod
             def get_short_help_message(cls):
