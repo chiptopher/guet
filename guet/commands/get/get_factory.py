@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Type
 
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
@@ -21,20 +21,25 @@ class GetCommandFactory(CommandFactoryMethod):
 
     def build(self, args: List[str], settings: Settings) -> Command:
         if len(args) > 1:
-            identifier = args[1]
-            list_flag = False
-            if '-l' in args:
-                list_flag = True
-            if identifier == 'current':
-                strategy = CurrentCommittersStrategy(FullCommittersListStrategy(get_current_committers()))
-            elif identifier == 'committers':
-                if list_flag:
-                    strategy = AllCommittersStrategy(ShortCommittersListStrategy(get_committers()))
-                else:
-                    strategy = AllCommittersStrategy(FullCommittersListStrategy(get_committers()))
-            else:
-                strategy = InvalidIdentifierStrategy()
+            printing_strategy_type = self._determine_printing_strategy(args)
+            strategy = self._determine_identifier_strategy(args, printing_strategy_type)
             return StrategyCommand(args, settings, strategy)
         else:
             return StrategyCommand(args, settings, HelpMessageStrategy(
                 """usage: guet get <identifier>\n\nValid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers"""))
+
+    def _determine_printing_strategy(self, args: List[str]):
+        if '-l' in args:
+            return ShortCommittersListStrategy
+        else:
+            return FullCommittersListStrategy
+
+    def _determine_identifier_strategy(self, args: List[str], printing_strategy_type):
+        identifier = args[1]
+        if identifier == 'current':
+            strategy = CurrentCommittersStrategy(printing_strategy_type(get_current_committers()))
+        elif identifier == 'committers':
+            strategy = AllCommittersStrategy(printing_strategy_type(get_committers()))
+        else:
+            strategy = InvalidIdentifierStrategy()
+        return strategy
