@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Callable
 
 from guet.commands.strategy_command import CommandStrategy
 from guet.config.committer import Committer
@@ -6,8 +6,14 @@ from guet.settings.settings import Settings
 
 
 class CommitterPrintingStrategy(CommandStrategy):
-    def __init__(self, committers: List[Committer]):
+    def __init__(self,
+                 committers: List[Committer],
+                 pre_print_strategy: Callable[[], None],
+                 listing_strategy: Callable[[List[Committer]], None]):
         self.committers = committers
+        self.pre_print_strategy = pre_print_strategy
+        self.listing_strategy = listing_strategy
 
     def apply(self, args: List[str], settings: Settings):
-        raise NotImplementedError
+        self.pre_print_strategy()
+        self.listing_strategy(self.committers)

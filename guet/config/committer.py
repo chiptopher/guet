@@ -13,6 +13,9 @@ class Committer:
     def __str__(self):
         return f'{self.initials},{self.name},{self.email}'
 
+    def pretty(self):
+        return f'{self.initials} - {self.name} <{self.email}>'
+
 
 def filter_committers_with_initials(committers: List[Committer],
                                     initials: List[str]) -> List[Committer]:

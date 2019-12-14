@@ -8,6 +8,7 @@ class TestGet(DockerTest):
         self.guet_add('initials2', 'name2', 'email2')
         self.guet_set(['initials1', 'initials2'])
         self.guet_get_current()
+        self.save_file_content('.guet/errors')
 
         self.execute()
 
@@ -21,6 +22,7 @@ class TestGet(DockerTest):
         self.guet_add('initials2', 'name2', 'email2')
         self.guet_set(['initials1', 'initials2'])
         self.guet_get_committers()
+        self.save_file_content('.guet/errors')
 
         self.execute()
 
