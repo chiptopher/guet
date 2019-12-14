@@ -24,7 +24,7 @@ class CommandFactory:
         if len(args) > 0:
             command_arg = args[0]
             command_type = self.command_builder_map[command_arg]
-            if issubclass(command_type, CommandFactoryMethod):
+            if isinstance(command_type, CommandFactoryMethod):
                 return self._create_with_command_factory(command_type, args, settings)
             else:
                 return self._create_with_command_constructor(command_type, args, settings)
@@ -37,4 +37,4 @@ class CommandFactory:
 
     def _create_with_command_factory(self, command_factory: CommandFactoryMethod, args: List[str],
                                      settings: Settings) -> Command:
-        return command_factory().build(args, settings)
+        return command_factory.build(args, settings)

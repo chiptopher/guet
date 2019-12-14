@@ -1,5 +1,6 @@
 from typing import List
 from guet.commands.command import Command
+from guet.commands.command_factory import CommandFactoryMethod
 from guet.settings.settings import Settings
 
 
@@ -14,7 +15,7 @@ class HelpCommand(Command):
     def help(self):
         help_message = 'usage: guet <command>\n'
         for key in self.command_builder_map:
-            if issubclass(self.command_builder_map[key], Command):
+            if not isinstance(self.command_builder_map[key], CommandFactoryMethod):
                 short_help_message = self.command_builder_map[key].get_short_help_message()
                 help_message += '\n   {} -- {}'.format(key, short_help_message)
         return help_message + '\n'

@@ -64,7 +64,7 @@ class TestCommandFactory(unittest.TestCase):
 
     def test_returns_command_using_command_factory_build_method(self, mock_get_settings, mock_already_init):
         builder_map = dict()
-        builder_map['command'] = MockCommandFactory
+        builder_map['command'] = MockCommandFactory()
         builder_map['not-command'] = NotMockCommand
 
         command_factory = CommandFactory(builder_map)
