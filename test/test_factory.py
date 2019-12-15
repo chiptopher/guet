@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from unittest.mock import patch
-from guet.commands import HelpCommand
+from guet.commands.help import HelpCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.factory import CommandFactory
@@ -62,7 +62,8 @@ class TestCommandFactory(unittest.TestCase):
         result = command_factory.create([])
         self.assertEqual(command_builder_map, result.command_builder_map)
 
-    def test_returns_command_using_command_factory_build_method(self, mock_get_settings, mock_already_init):
+    def test_returns_command_using_command_factory_build_method(self, mock_get_settings,
+                                                                mock_already_init):
         builder_map = dict()
         builder_map['command'] = MockCommandFactory()
         builder_map['not-command'] = NotMockCommand
