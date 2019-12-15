@@ -5,7 +5,7 @@ from guet.commands.command import Command
 
 
 class CommandFactoryMethod:
-    def short_help_message(self):
+    def short_help_message(self) -> str:
         raise NotImplementedError
 
     def build(self, args: List[str], settings: Settings) -> Command:

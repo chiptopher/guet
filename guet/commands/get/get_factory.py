@@ -22,9 +22,8 @@ def print_only_initials(committers: List[Committer]) -> None:
 
 
 class GetCommandFactory(CommandFactoryMethod):
-
     def short_help_message(self):
-        pass
+        return 'Get information about the current state of the system'
 
     def build(self, args: List[str], settings: Settings) -> Command:
         if len(args) > 1:
@@ -34,8 +33,11 @@ class GetCommandFactory(CommandFactoryMethod):
             except AttributeError:
                 return StrategyCommand(args, settings, InvalidIdentifierStrategy())
         else:
-            return StrategyCommand(args, settings, HelpMessageStrategy(
-                """usage: guet get <identifier>\n\nValid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers"""))
+            return StrategyCommand(
+                args, settings,
+                HelpMessageStrategy(
+                    """usage: guet get <identifier>\n\nValid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers"""
+                ))
 
     def _determine_identifier(self, identifier: str):
         if identifier == 'committers':

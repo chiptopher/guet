@@ -9,7 +9,7 @@ class CommandFactoryDecorator(CommandFactoryMethod):
         self.decorated = decorated
 
     def short_help_message(self):
-        self.decorated.short_help_message()
+        return self.decorated.short_help_message()
 
     def build(self, args: List[str], settings: Settings):
         raise NotImplementedError
