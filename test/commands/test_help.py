@@ -1,30 +1,27 @@
 import unittest
 
 from guet.commands.command import Command
+from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.help import HelpCommand
 from guet.settings.settings import Settings
+from unittest.mock import Mock
 
 
 class TestHelpCommand(unittest.TestCase):
-
     def test_help_message_consists_of_all_commands_help_messages_of_commands_passed_to_map(self):
-        class MockCommand(Command):
-
-            def get_short_help_message(self):
-                raise NotImplementedError
-
-            def get_list_of_required_arguments_in_correct_order(self):
-                raise NotImplementedError
-
         class MockCommandA(Command):
-
             @classmethod
             def get_short_help_message(cls):
                 return 'Mock command A'
 
+        mock_command_factory = CommandFactoryMethod()
+        mock_command_factory.short_help_message = Mock(return_value='Mock Command B')
+
         command_builder_map = dict()
         command_builder_map['MockCommandA'] = MockCommandA
+        command_builder_map['MockCommandB'] = mock_command_factory
+
         help_command = HelpCommand([], Settings(), command_builder_map)
         actual = help_command.help()
-        expected = 'usage: guet <command>\n\n   MockCommandA -- Mock command A\n'
+        expected = 'usage: guet <command>\n\n   MockCommandA -- Mock command A\n   MockCommandB -- Mock Command B\n'
         self.assertEqual(expected, actual)
