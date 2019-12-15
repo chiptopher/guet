@@ -10,13 +10,12 @@ class CommandStrategy:
 
 
 class StrategyCommand(Command):
-
     def __init__(self,
                  args: List[str],
                  settings: Settings,
                  command_strategy: CommandStrategy,
                  args_needed=False):
-        super().__init__(args, settings, args_needed=args_needed)
+        super().__init__(args, settings, args_needed=False)
         self.strategy = command_strategy
 
     def help(self) -> str:
