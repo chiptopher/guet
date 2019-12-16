@@ -15,5 +15,6 @@ setup(name='guet',
       entry_points={'console_scripts': ['guet=guet.main:main']},
       packages=[
           'guet', 'guet.commands', 'guet.commands.get', 'guet.commands.addcommitter', 'guet.hooks',
-          'guet.files', 'guet.settings', 'guet.git', 'guet.config', 'guet.util'
+          'guet.commands.config', 'guet.files', 'guet.settings', 'guet.git', 'guet.config',
+          'guet.util'
       ])
