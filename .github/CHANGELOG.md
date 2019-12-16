@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.1.0
+
+Version 2.1.0 included two major features. First, you can actually set `pairReset=false` and have it work with your commits. Second `guet get` was added as a command. You can run it with the `current` identidier to get the current committers, and with the `committers` identifier to list out all of the committers on the system. For example:
+```
+$ guet get committers
+All committers
+cb -- chris boyer <cboyer@example.com>
+ep -- first last <flast@example.com>
+```
+
+Additionally, passing the -l flag to either command will print out just the initials of the committers
+
+```
+$ guet get committers
+cb, ep
+```
+
 ## 2.0.0
 
 Version 2.0 incorporated an almost entire rewrite of the working of guet, but didn't introduce many new features. Part of the rewrite included modifying the configuration files. Before 2.0, sqlite was used to manage the current committer. This has all been removed, and instread now manages those features with plain text files.

@@ -23,6 +23,8 @@ python setup.py install
 
 ## Usage
 
+For full usage details, using `guet` will print out all commands and a description of what they do. Some of the ones most basic to the workflow are:
+
 #### Initialization
 `guet init` will initiailze the **guet** config files for the system.
 
