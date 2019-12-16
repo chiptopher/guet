@@ -7,7 +7,7 @@ from guet.factory import CommandFactory
 from guet.util.errors import log_on_error
 from guet.commands.addcommitter.factory import AddCommitterFactory
 from guet.commands.init import InitDataSourceCommand
-from guet.commands.setcommitters import SetCommittersCommand
+from guet.commands.setcommitters.command import SetCommittersCommand
 from guet.commands.start import StartCommand
 from guet.commands.config.factory import ConfigCommandFactory
 
