@@ -10,10 +10,10 @@ cb -- chris boyer <cboyer@example.com>
 ep -- first last <flast@example.com>
 ```
 
-Additionally, passing the -l flag to either command will print out just the initials of the committers
+Additionally, passing the `-l` flag to either command will print out just the initials of the committers
 
 ```
-$ guet get committers
+$ guet get committers -l
 cb, ep
 ```
 
