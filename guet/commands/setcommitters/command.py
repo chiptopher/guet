@@ -27,7 +27,7 @@ class SetCommittersCommand(Command):
             set_committers(committers_to_set)
 
     def help(self):
-        pass
+        return 'usage: guet set <initials> [<initials> ...]'
 
     @classmethod
     def help_short(cls) -> str:
