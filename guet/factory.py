@@ -1,8 +1,10 @@
 from typing import List
 
-from guet.commands.help import HelpCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
+from guet.commands.help.guet_usage import guet_usage
+from guet.commands.help_message_strategy import HelpMessageStrategy
+from guet.commands.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 from guet.config.get_config import get_config
 from guet.config.already_initialized import already_initialized
@@ -30,7 +32,7 @@ class CommandFactory:
                 return self._create_with_command_constructor(command_type, args, settings)
 
         else:
-            return HelpCommand(args, Settings(), self.command_builder_map)
+            return StrategyCommand(args, settings, HelpMessageStrategy(guet_usage(self.command_builder_map)))
 
     def _create_with_command_constructor(self, command_class, args: List[str],
                                          settings: Settings) -> Command:

@@ -1,6 +1,7 @@
 import unittest
 from typing import List
 from unittest.mock import patch
+from guet.commands.help.guet_usage import guet_usage
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.factory import CommandFactory
@@ -47,19 +48,15 @@ class TestCommandFactory(unittest.TestCase):
         result = command_factory.create(args)
         self.assertNotEqual(returned_settings, result.settings)
 
-    def test_returns_help_command_if_no_command_provided(self, mock_get_settings,
-                                                         mock_already_init):
-        command_factory = CommandFactory(dict())
+    @patch('builtins.print')
+    def test_uses_command_builder_map_to_print_help_messages(self, mock_print, mock_get_settings,
+                                                             mock_already_init):
+        builder_map = dict()
+        builder_map['command'] = MockCommandFactory()
+        command_factory = CommandFactory(builder_map)
         result = command_factory.create([])
-        self.assertEqual(HelpCommand, type(result))
-
-    def test_help_command_has_command_builder_map(self, mock_get_settings, mock_already_init):
-        mock_get_settings.return_value = Settings()
-        command_builder_map = dict()
-        command_builder_map['command'] = lambda args, settings: Command(args, settings)
-        command_factory = CommandFactory(command_builder_map)
-        result = command_factory.create([])
-        self.assertEqual(command_builder_map, result.command_builder_map)
+        result.execute()
+        mock_print.assert_called_with(guet_usage(builder_map))
 
     def test_returns_command_using_command_factory_build_method(self, mock_get_settings,
                                                                 mock_already_init):

@@ -1,6 +1,5 @@
 import sys
 
-from guet.commands.config.command import ConfigSetCommand
 from guet.commands.get.get_factory import GetCommandFactory
 from guet.commands.init_required_decorator import InitRequiredDecorator
 from guet.factory import CommandFactory
