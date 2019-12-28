@@ -5,7 +5,7 @@ from guet.commands.init_required_decorator import InitRequiredDecorator
 from guet.factory import CommandFactory
 from guet.util.errors import log_on_error
 from guet.commands.addcommitter.factory import AddCommitterFactory
-from guet.commands.init import InitDataSourceCommand
+from guet.commands.init.factory import InitCommandFactory
 from guet.commands.setcommitters.factory import SetCommittersCommandFactory
 from guet.commands.start import StartCommand
 from guet.commands.config.factory import ConfigCommandFactory
@@ -14,7 +14,7 @@ from guet.commands.config.factory import ConfigCommandFactory
 def _command_builder_map():
     command_builder_map = dict()
     command_builder_map['add'] = InitRequiredDecorator(AddCommitterFactory())
-    command_builder_map['init'] = InitDataSourceCommand
+    command_builder_map['init'] = InitCommandFactory()
     command_builder_map['set'] = InitRequiredDecorator(SetCommittersCommandFactory())
     command_builder_map['start'] = StartCommand
     command_builder_map['config'] = InitRequiredDecorator(ConfigCommandFactory())
