@@ -16,6 +16,7 @@ setup(name='guet',
       packages=[
           'guet',
           'guet.commands', 'guet.commands.get', 'guet.commands.addcommitter', 'guet.commands.init',
+          'guet.commands.start',
           'guet.commands.config', 'guet.hooks', 'guet.commands.config', 'guet.commands.config', 'guet.commands.help',
           'guet.commands.setcommitters', 'guet.files', 'guet.settings', 'guet.git', 'guet.config',
           'guet.util'

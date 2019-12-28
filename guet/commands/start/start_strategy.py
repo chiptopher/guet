@@ -1,18 +1,17 @@
 from typing import List
 
-from guet.commands.command import Command
+from guet.commands.strategy_command import CommandStrategy
+from guet.git._hook_mode import HookMode
 from guet.git.any_hooks_present import any_hooks_present
-from guet.git.create_hook import create_hook, HookMode, Hooks
+from guet.git.create_hook import create_hook, Hooks
 from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.git_present_in_cwd import git_present_in_cwd
 from guet.settings.settings import Settings
 
 
-class StartCommand(Command):
-    def __init__(self, args: List[str], settings: Settings):
-        super().__init__(args, settings, args_needed=False)
+class StartCommandStrategy(CommandStrategy):
 
-    def execute_hook(self) -> None:
+    def apply(self, args: List[str], settings: Settings):
         if git_present_in_cwd():
             hook_path = git_hook_path_from_cwd()
             if not any_hooks_present(hook_path):
@@ -40,10 +39,3 @@ class StartCommand(Command):
             create_hook(hook_folder_path, Hooks.PRE_COMMIT, hook_mode)
             create_hook(hook_folder_path, Hooks.POST_COMMIT, hook_mode)
             create_hook(hook_folder_path, Hooks.COMMIT_MSG, hook_mode)
-
-    def help(self):
-        pass
-
-    @classmethod
-    def help_short(cls) -> str:
-        return 'Start guet usage in the repository at current directory'
