@@ -1,7 +1,7 @@
 from typing import List
 
 from guet.settings.settings import Settings
-from guet.commands.strategy_command import CommandStrategy
+from guet.commands.strategy import CommandStrategy
 from guet.config.add_committer import add_committer
 
 
