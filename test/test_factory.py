@@ -1,7 +1,6 @@
 import unittest
 from typing import List
 from unittest.mock import patch
-from guet.commands.help import HelpCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.factory import CommandFactory

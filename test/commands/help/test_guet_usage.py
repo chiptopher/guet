@@ -1,10 +1,10 @@
 import unittest
+from unittest.mock import Mock
 
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
-from guet.commands.help import HelpCommand
 from guet.settings.settings import Settings
-from unittest.mock import Mock
+from guet.commands.help.guet_usage import guet_usage
 
 
 class TestHelpCommand(unittest.TestCase):
@@ -21,7 +21,6 @@ class TestHelpCommand(unittest.TestCase):
         command_builder_map['MockCommandA'] = MockCommandA
         command_builder_map['MockCommandB'] = mock_command_factory
 
-        help_command = HelpCommand([], Settings(), command_builder_map)
-        actual = help_command.help()
+        actual = guet_usage(command_builder_map)
         expected = 'usage: guet <command>\n\n   MockCommandA -- Mock command A\n   MockCommandB -- Mock Command B\n'
         self.assertEqual(expected, actual)
