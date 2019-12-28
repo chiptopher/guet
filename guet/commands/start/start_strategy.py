@@ -1,6 +1,6 @@
 from typing import List
 
-from guet.commands.strategy_command import CommandStrategy
+from guet.commands.strategy import CommandStrategy
 from guet.git._hook_mode import HookMode
 from guet.git.any_hooks_present import any_hooks_present
 from guet.git.create_hook import create_hook, Hooks

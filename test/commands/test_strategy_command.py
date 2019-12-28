@@ -1,7 +1,8 @@
 from unittest import TestCase, mock
 from unittest.mock import Mock, MagicMock
 
-from guet.commands.strategy_command import StrategyCommand, CommandStrategy
+from guet.commands.strategy_command import StrategyCommand
+from guet.commands.strategy import CommandStrategy
 from guet.settings.settings import Settings
 
 

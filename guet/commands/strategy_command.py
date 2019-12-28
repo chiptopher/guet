@@ -1,12 +1,8 @@
 from typing import List
 
 from guet.commands.command import Command
+from guet.commands.strategy import CommandStrategy
 from guet.settings.settings import Settings
-
-
-class CommandStrategy:
-    def apply(self, args: List[str], settings: Settings):
-        raise NotImplementedError
 
 
 class StrategyCommand(Command):

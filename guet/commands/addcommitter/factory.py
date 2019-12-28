@@ -5,7 +5,7 @@ from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.strategy_command import StrategyCommand
 from guet.commands.too_few_args import TooFewArgsStrategy
 from guet.commands.command import Command
-from guet.commands.strategy_command import CommandStrategy
+from guet.commands.strategy import CommandStrategy
 from guet.commands.too_many_args import TooManyArgsStrategy
 from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
 from guet.commands.help_message_strategy import HelpMessageStrategy
