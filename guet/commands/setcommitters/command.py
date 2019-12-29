@@ -1,11 +1,11 @@
-from guet.commands.command import Command
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.config.committer import filter_committers_with_initials
 from guet.config.get_committers import get_committers
 from guet.config.set_author import set_committer_as_author
 from guet.config.set_current_committers import set_current_committers as set_committers
 
 
-class SetCommittersCommand(Command):
+class SetCommittersCommand(ArgSettingCommand):
 
     def execute_hook(self) -> None:
         committers = get_committers()

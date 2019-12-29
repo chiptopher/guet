@@ -8,9 +8,9 @@ from guet.settings.settings import Settings
 
 class TestStrategyCommand(TestCase):
 
-    def test_execute_hook_calls_the_strategy_apply(self):
+    def test_execute_calls_the_strategy_apply(self):
         strategy = MagicMock(CommandStrategy)
         strategy.apply = MagicMock()
-        command = StrategyCommand(['test'], Settings(), strategy)
-        command.execute_hook()
+        command = StrategyCommand(strategy)
+        command.execute()
         strategy.apply.assert_called_once()

@@ -2,13 +2,13 @@ import collections
 import unittest
 from unittest.mock import patch
 
-from guet.commands.command import *
+from guet.commands.argsettingcommand import *
 
 test_case = collections.namedtuple('TestCase', 'input expected_output explanation')
 
 
 class TestCommand2(unittest.TestCase):
-    class CommandImpl(Command):
+    class CommandImpl(ArgSettingCommand):
         called = False
 
         @classmethod

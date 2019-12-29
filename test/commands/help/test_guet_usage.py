@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from guet.commands.command import Command
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.settings.settings import Settings
 from guet.commands.help.guet_usage import guet_usage
@@ -9,7 +9,7 @@ from guet.commands.help.guet_usage import guet_usage
 
 class TestHelpCommand(unittest.TestCase):
     def test_help_message_consists_of_all_commands_help_messages_of_commands_passed_to_map(self):
-        class MockCommandA(Command):
+        class MockCommandA(ArgSettingCommand):
             @classmethod
             def get_short_help_message(cls):
                 return 'Mock command A'

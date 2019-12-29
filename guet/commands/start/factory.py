@@ -1,5 +1,6 @@
 from typing import List
 
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.start.start_strategy import StartCommandStrategy
@@ -12,4 +13,4 @@ class StartCommandFactory(CommandFactoryMethod):
         return 'Start guet usage in the repository at current directory'
 
     def build(self, args: List[str], settings: Settings) -> Command:
-        return StrategyCommand(args, settings, StartCommandStrategy())
+        return StrategyCommand(StartCommandStrategy())
