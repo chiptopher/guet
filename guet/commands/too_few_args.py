@@ -9,7 +9,7 @@ class TooFewArgsStrategy(CommandStrategy):
         super().__init__()
         self._help_message = help_message
 
-    def apply(self, args: List[str], settings: Settings):
+    def apply(self):
         print('Not enough arguments.')
         print('')
         print(self._help_message)

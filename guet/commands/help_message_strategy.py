@@ -8,5 +8,5 @@ class HelpMessageStrategy(CommandStrategy):
     def __init__(self, help_message: str):
         self.help_message = help_message
 
-    def apply(self, args: List[str], settings: Settings):
+    def apply(self):
         print(self.help_message)

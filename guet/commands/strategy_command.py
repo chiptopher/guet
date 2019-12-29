@@ -22,4 +22,4 @@ class StrategyCommand(Command):
         raise NotImplementedError
 
     def execute_hook(self) -> None:
-        self.strategy.apply(self.args, self.settings)
+        self.strategy.apply()
