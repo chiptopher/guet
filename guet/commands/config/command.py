@@ -1,12 +1,12 @@
 from typing import List
 
-from guet.commands.command import Command
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.config.get_config import get_config
 from guet.config.set_config import set_config
 from guet.settings.settings import Settings
 
 
-class ConfigSetCommand(Command):
+class ConfigSetCommand(ArgSettingCommand):
     HELP_MESSAGE = 'usage: guet config [--<key>=<value> ...]'
     SHORT_HELP_MESSAGE = 'Change setting values'
 

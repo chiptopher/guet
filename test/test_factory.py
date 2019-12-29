@@ -2,7 +2,7 @@ import unittest
 from typing import List
 from unittest.mock import patch
 from guet.commands.help.guet_usage import guet_usage
-from guet.commands.command import Command
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.factory import CommandFactory
 from guet.settings.settings import Settings
@@ -70,7 +70,7 @@ class TestCommandFactory(unittest.TestCase):
         self.assertEqual(MockCommand, type(result))
 
 
-class MockCommand(Command):
+class MockCommand(ArgSettingCommand):
     def execute_hook(self) -> None:
         pass
 
@@ -82,7 +82,7 @@ class MockCommand(Command):
         pass
 
 
-class NotMockCommand(Command):
+class NotMockCommand(ArgSettingCommand):
     def execute_hook(self) -> None:
         pass
 

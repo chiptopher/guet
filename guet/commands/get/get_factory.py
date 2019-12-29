@@ -1,5 +1,6 @@
 from typing import List, Type
 
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.get.committer_printing_strategy import CommitterPrintingStrategy
@@ -30,12 +31,11 @@ class GetCommandFactory(CommandFactoryMethod):
         if len(args) > 1:
             try:
                 strategy = self._determine_strategy(args)
-                return StrategyCommand(args, settings, strategy)
+                return StrategyCommand(strategy)
             except AttributeError:
-                return StrategyCommand(args, settings, InvalidIdentifierStrategy(args[0]))
+                return StrategyCommand(InvalidIdentifierStrategy(args[0]))
         else:
             return StrategyCommand(
-                args, settings,
                 HelpMessageStrategy(
                     """usage: guet get <identifier>\n\nValid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers"""
                 ))

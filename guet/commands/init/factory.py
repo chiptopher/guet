@@ -1,5 +1,6 @@
 from typing import List
 
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.lambda_strategy import LambdaStrategy
@@ -17,6 +18,6 @@ class InitCommandFactory(CommandFactoryMethod):
 
     def build(self, args: List[str], settings: Settings) -> Command:
         if not already_initialized():
-            return StrategyCommand(args, settings, LambdaStrategy(lambda: initialize()))
+            return StrategyCommand(LambdaStrategy(lambda: initialize()))
         else:
-            return StrategyCommand(args, settings, PrintCommandStrategy('Config folder already exists.'))
+            return StrategyCommand(PrintCommandStrategy('Config folder already exists.'))

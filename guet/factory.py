@@ -1,5 +1,6 @@
 from typing import List
 
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.help.guet_usage import guet_usage
@@ -14,7 +15,7 @@ class CommandFactory:
     def __init__(self, command_builder_map):
         self.command_builder_map = command_builder_map
 
-    def create(self, args: list) -> Command:
+    def create(self, args: list) -> ArgSettingCommand:
         result = None
         if already_initialized():
             result = self._create_with_settings(args, get_config())
@@ -32,12 +33,12 @@ class CommandFactory:
                 return self._create_with_command_constructor(command_type, args, settings)
 
         else:
-            return StrategyCommand(args, settings, HelpMessageStrategy(guet_usage(self.command_builder_map)))
+            return StrategyCommand(HelpMessageStrategy(guet_usage(self.command_builder_map)))
 
     def _create_with_command_constructor(self, command_class, args: List[str],
-                                         settings: Settings) -> Command:
+                                         settings: Settings) -> ArgSettingCommand:
         return command_class(args, settings)
 
     def _create_with_command_factory(self, command_factory: CommandFactoryMethod, args: List[str],
-                                     settings: Settings) -> Command:
+                                     settings: Settings) -> ArgSettingCommand:
         return command_factory.build(args, settings)

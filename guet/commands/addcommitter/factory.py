@@ -1,10 +1,11 @@
 from typing import List
 
+from guet.commands.command import Command
 from guet.settings.settings import Settings
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.strategy_command import StrategyCommand
 from guet.commands.too_few_args import TooFewArgsStrategy
-from guet.commands.command import Command
+from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.strategy import CommandStrategy
 from guet.commands.too_many_args import TooManyArgsStrategy
 from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
@@ -16,7 +17,7 @@ class AddCommitterFactory(CommandFactoryMethod):
 
     def build(self, args: List[str], settings: Settings) -> Command:
         strategy = self._choose_strategy(args[1:], settings)
-        return StrategyCommand(args, settings, strategy)
+        return StrategyCommand(strategy)
 
     def short_help_message(self):
         return 'Add committer to the list of available committers'
