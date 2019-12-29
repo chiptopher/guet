@@ -11,7 +11,7 @@ from guet.settings.settings import Settings
 
 class StartCommandStrategy(CommandStrategy):
 
-    def apply(self, args: List[str], settings: Settings):
+    def apply(self):
         if git_present_in_cwd():
             hook_path = git_hook_path_from_cwd()
             if not any_hooks_present(hook_path):

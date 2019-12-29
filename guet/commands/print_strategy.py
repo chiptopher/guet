@@ -8,5 +8,5 @@ class PrintCommandStrategy(CommandStrategy):
     def __init__(self, text: str):
         self._text = text
 
-    def apply(self, args: List[str], settings: Settings):
+    def apply(self):
         print(self._text)

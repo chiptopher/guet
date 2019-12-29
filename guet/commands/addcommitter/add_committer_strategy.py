@@ -12,5 +12,5 @@ class AddCommitterStrategy(CommandStrategy):
         self._email = email
         self._initials = initials
 
-    def apply(self, args: List[str], settings: Settings):
+    def apply(self):
         add_committer(self._initials, self._name, self._email)

@@ -14,6 +14,6 @@ class CommitterPrintingStrategy(CommandStrategy):
         self.pre_print_strategy = pre_print_strategy
         self.listing_strategy = listing_strategy
 
-    def apply(self, args: List[str], settings: Settings):
+    def apply(self):
         self.pre_print_strategy()
         self.listing_strategy(self.committers)

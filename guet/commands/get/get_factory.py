@@ -32,7 +32,7 @@ class GetCommandFactory(CommandFactoryMethod):
                 strategy = self._determine_strategy(args)
                 return StrategyCommand(args, settings, strategy)
             except AttributeError:
-                return StrategyCommand(args, settings, InvalidIdentifierStrategy())
+                return StrategyCommand(args, settings, InvalidIdentifierStrategy(args[0]))
         else:
             return StrategyCommand(
                 args, settings,
