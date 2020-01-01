@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1
+
+Version 2.1.1 introduces help messages for all the commands. For all commands, this can be invoked using `--help` and `-h` flags. Additionally, for all commands other than `init` and `start`, running `guet <command>` will also print the help message.
+
 ## 2.1.0
 
 Version 2.1.0 included two major features. First, you can actually set `pairReset=false` and have it work with your commits. Second `guet get` was added as a command. You can run it with the `current` identidier to get the current committers, and with the `committers` identifier to list out all of the committers on the system. For example:
