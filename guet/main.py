@@ -3,13 +3,12 @@ import sys
 from guet.commands.get.get_factory import GetCommandFactory, GET_HELP_MESSAGE
 from guet.commands.help_decorator import HelpDecorator
 from guet.commands.init_required_decorator import InitRequiredDecorator
-from guet.commands.setcommitters.command import SET_HELP_MESSAGE
 from guet.commands.start.factory import StartCommandFactory, START_HELP_MESSAGE
 from guet.factory import CommandFactory
 from guet.util.errors import log_on_error
 from guet.commands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
 from guet.commands.init.factory import InitCommandFactory, INIT_HELP_MESSAGE
-from guet.commands.setcommitters.factory import SetCommittersCommandFactory
+from guet.commands.setcommitters.factory import SetCommittersCommandFactory, SET_HELP_MESSAGE
 from guet.commands.config.factory import ConfigCommandFactory, CONFIG_HELP_MESSAGE
 
 
