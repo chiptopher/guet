@@ -6,9 +6,9 @@ from guet.config.committer import Committer
 from guet.settings.settings import Settings
 
 
-@patch('guet.commands.setcommitters.command.get_committers')
-@patch('guet.commands.setcommitters.command.set_committers')
-@patch('guet.commands.setcommitters.command.set_committer_as_author')
+@patch('guet.commands.setcommitters.set_committers_strategy.get_committers')
+@patch('guet.commands.setcommitters.set_committers_strategy.set_committers')
+@patch('guet.commands.setcommitters.set_committers_strategy.set_committer_as_author')
 class TestSetCommittersCommand(unittest.TestCase):
     def test_execute_adds_the_first_person_in_the_list_as_the_author_email_and_name(
             self, mock_set_committer_as_author, mock_set_committers, mock_get_committers):

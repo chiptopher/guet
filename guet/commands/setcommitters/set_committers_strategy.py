@@ -1,15 +1,18 @@
-from guet.commands.argsettingcommand import ArgSettingCommand
+from typing import List
+
+from guet.commands.strategy import CommandStrategy
 from guet.config.committer import filter_committers_with_initials
 from guet.config.get_committers import get_committers
 from guet.config.set_author import set_committer_as_author
 from guet.config.set_current_committers import set_current_committers as set_committers
 
-SET_HELP_MESSAGE = 'usage: guet set <initials> [<initials> ...]'
 
+class SetCommittersStrategy(CommandStrategy):
 
-class SetCommittersCommand(ArgSettingCommand):
+    def __init__(self, args: List[str]):
+        self.args = args
 
-    def execute_hook(self) -> None:
+    def apply(self):
         committers = get_committers()
         committer_initials = self.args
         committers_to_set = filter_committers_with_initials(committers, committer_initials)
@@ -27,10 +30,3 @@ class SetCommittersCommand(ArgSettingCommand):
         else:
             set_committer_as_author(committers_to_set[0])
             set_committers(committers_to_set)
-
-    def help(self):
-        return SET_HELP_MESSAGE
-
-    @classmethod
-    def help_short(cls) -> str:
-        return 'Set the current committers'
