@@ -4,6 +4,8 @@ from guet.config.get_committers import get_committers
 from guet.config.set_author import set_committer_as_author
 from guet.config.set_current_committers import set_current_committers as set_committers
 
+SET_HELP_MESSAGE = 'usage: guet set <initials> [<initials> ...]'
+
 
 class SetCommittersCommand(ArgSettingCommand):
 
@@ -27,7 +29,7 @@ class SetCommittersCommand(ArgSettingCommand):
             set_committers(committers_to_set)
 
     def help(self):
-        return 'usage: guet set <initials> [<initials> ...]'
+        return SET_HELP_MESSAGE
 
     @classmethod
     def help_short(cls) -> str:

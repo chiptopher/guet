@@ -7,9 +7,6 @@ from guet.commands.config.factory import ConfigCommandFactory
 
 
 class ConfigSetTest(unittest.TestCase):
-    def test_help_message(self):
-        command = ConfigSetCommand([], Settings())
-        self.assertEqual(ConfigSetCommand.HELP_MESSAGE, command.help())
 
     def test_short_help_message(self):
         command = ConfigSetCommand([], Settings())

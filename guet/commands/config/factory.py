@@ -4,6 +4,8 @@ from guet.settings.settings import Settings
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.config.command import ConfigSetCommand
 
+CONFIG_HELP_MESSAGE = 'usage: guet config [--<key>=<value> ...]'
+
 
 class ConfigCommandFactory(CommandFactoryMethod):
     def short_help_message(self):

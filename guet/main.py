@@ -3,22 +3,24 @@ import sys
 from guet.commands.get.get_factory import GetCommandFactory, GET_HELP_MESSAGE
 from guet.commands.help_decorator import HelpDecorator
 from guet.commands.init_required_decorator import InitRequiredDecorator
-from guet.commands.start.factory import StartCommandFactory
+from guet.commands.setcommitters.command import SET_HELP_MESSAGE
+from guet.commands.start.factory import StartCommandFactory, START_HELP_MESSAGE
 from guet.factory import CommandFactory
 from guet.util.errors import log_on_error
-from guet.commands.addcommitter.factory import AddCommitterFactory
-from guet.commands.init.factory import InitCommandFactory
+from guet.commands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
+from guet.commands.init.factory import InitCommandFactory, INIT_HELP_MESSAGE
 from guet.commands.setcommitters.factory import SetCommittersCommandFactory
-from guet.commands.config.factory import ConfigCommandFactory
+from guet.commands.config.factory import ConfigCommandFactory, CONFIG_HELP_MESSAGE
 
 
 def _command_builder_map():
     command_builder_map = dict()
-    command_builder_map['add'] = InitRequiredDecorator(AddCommitterFactory())
-    command_builder_map['init'] = InitCommandFactory()
-    command_builder_map['set'] = InitRequiredDecorator(SetCommittersCommandFactory())
-    command_builder_map['start'] = InitRequiredDecorator(StartCommandFactory())
-    command_builder_map['config'] = InitRequiredDecorator(ConfigCommandFactory())
+    command_builder_map['add'] = InitRequiredDecorator(HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE))
+    command_builder_map['init'] = HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True)
+    command_builder_map['set'] = InitRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE))
+    command_builder_map['start'] = InitRequiredDecorator(
+        HelpDecorator(StartCommandFactory(), START_HELP_MESSAGE, no_args_valid=True))
+    command_builder_map['config'] = InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE))
     command_builder_map['get'] = InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE))
     return command_builder_map
 

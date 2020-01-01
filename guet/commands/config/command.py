@@ -7,7 +7,6 @@ from guet.settings.settings import Settings
 
 
 class ConfigSetCommand(ArgSettingCommand):
-    HELP_MESSAGE = 'usage: guet config [--<key>=<value> ...]'
     SHORT_HELP_MESSAGE = 'Change setting values'
 
     def execute_hook(self) -> None:
@@ -17,7 +16,7 @@ class ConfigSetCommand(ArgSettingCommand):
         set_config(config)
 
     def help(self) -> str:
-        return self.HELP_MESSAGE
+        return ""
 
     @classmethod
     def help_short(cls) -> str:
@@ -30,6 +29,7 @@ class ConfigSetCommand(ArgSettingCommand):
             key_and_value.append((_remove_double_dash(split[0]), split[1]))
         return key_and_value
 
+
 def _append_key_and_value_to_config(config: Settings, key_and_value: List):
     for key_value in key_and_value:
         try:
@@ -38,8 +38,10 @@ def _append_key_and_value_to_config(config: Settings, key_and_value: List):
             print(f'Cannot set \"{key_value[0]}\", not valid configuration.\n')
             exit(1)
 
+
 def _only_args_starting_with_double_dash(args: List) -> List[str]:
     return [arg for arg in args if arg.startswith('--')]
+
 
 def _remove_double_dash(key: str) -> str:
     return key.replace('--', '')
