@@ -3,11 +3,12 @@ from typing import List
 from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
+from guet.commands.help_message_strategy import HelpMessageBuilder
 from guet.commands.start.start_strategy import StartCommandStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 
-START_HELP_MESSAGE = 'usage: guet start\n\nInitialize current directory with .git folder to use guet.'
+START_HELP_MESSAGE = HelpMessageBuilder('guet start', 'Initialize current .git project to use guet.').build()
 
 
 class StartCommandFactory(CommandFactoryMethod):

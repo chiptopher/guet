@@ -5,7 +5,7 @@ from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.get.committer_printing_strategy import CommitterPrintingStrategy
 from guet.commands.get.invalid_identifier_strategy import InvalidIdentifierStrategy
-from guet.commands.help_message_strategy import HelpMessageStrategy
+from guet.commands.help_message_strategy import HelpMessageStrategy, HelpMessageBuilder
 from guet.commands.strategy_command import StrategyCommand
 from guet.commands.strategy import CommandStrategy
 from guet.config.committer import Committer
@@ -23,7 +23,9 @@ def print_only_initials(committers: List[Committer]) -> None:
     print(', '.join([committer.initials for committer in committers]))
 
 
-GET_HELP_MESSAGE = """usage: guet get <identifier>\n\nValid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers"""
+GET_HELP_MESSAGE = HelpMessageBuilder('guet get <identifier>', 'Get currently set information.') \
+    .explanation('Valid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers') \
+    .build()
 
 
 class GetCommandFactory(CommandFactoryMethod):
