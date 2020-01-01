@@ -1,19 +1,14 @@
 import unittest
 from unittest.mock import patch
 
-from guet.commands.config.command import ConfigSetCommand
 from guet.settings.settings import Settings
 from guet.commands.config.factory import ConfigCommandFactory
 
 
 class ConfigSetTest(unittest.TestCase):
 
-    def test_short_help_message(self):
-        command = ConfigSetCommand([], Settings())
-        self.assertEqual(ConfigSetCommand.SHORT_HELP_MESSAGE, command.help_short())
-
-    @patch('guet.commands.config.command.set_config')
-    @patch('guet.commands.config.command.get_config')
+    @patch('guet.commands.config.set_config_strategy.set_config')
+    @patch('guet.commands.config.set_config_strategy.get_config')
     def test_execute_writes_the_new_config(self, mock_get_config, mock_set_config):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
@@ -22,8 +17,8 @@ class ConfigSetTest(unittest.TestCase):
         mock_set_config.assert_called_with(mock_settings)
         self.assertEqual(True, mock_settings.read('debug'))
 
-    @patch('guet.commands.config.command.set_config')
-    @patch('guet.commands.config.command.get_config')
+    @patch('guet.commands.config.set_config_strategy.set_config')
+    @patch('guet.commands.config.set_config_strategy.get_config')
     def test_execute_writes_the_new_config_with_multiple_configs(self, mock_get_config,
                                                                  mock_set_config):
         mock_settings = Settings()
@@ -34,8 +29,8 @@ class ConfigSetTest(unittest.TestCase):
         self.assertEqual(True, mock_settings.read('debug'))
         self.assertEqual(False, mock_settings.read('pairReset'))
 
-    @patch('guet.commands.config.command.set_config')
-    @patch('guet.commands.config.command.get_config')
+    @patch('guet.commands.config.set_config_strategy.set_config')
+    @patch('guet.commands.config.set_config_strategy.get_config')
     def test_execute_writes_multiple_configs(self, mock_get_config, mock_set_config):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
@@ -46,8 +41,8 @@ class ConfigSetTest(unittest.TestCase):
 
     @patch('builtins.exit')
     @patch('builtins.print')
-    @patch('guet.commands.config.command.set_config')
-    @patch('guet.commands.config.command.get_config')
+    @patch('guet.commands.config.set_config_strategy.set_config')
+    @patch('guet.commands.config.set_config_strategy.get_config')
     def test_execute_prints_error_message_when_given_bad_key(self, mock_get_config, mock_set_config,
                                                              mock_print, mock_exit):
         mock_settings = Settings()
