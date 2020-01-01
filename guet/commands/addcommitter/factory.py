@@ -5,15 +5,14 @@ from guet.settings.settings import Settings
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.strategy_command import StrategyCommand
 from guet.commands.too_few_args import TooFewArgsStrategy
-from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.strategy import CommandStrategy
 from guet.commands.too_many_args import TooManyArgsStrategy
 from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
-from guet.commands.help_message_strategy import HelpMessageStrategy
+
+ADD_COMMITTER_HELP_MESSAGE = 'usage: guet add <initials> <"name"> <email>'
 
 
 class AddCommitterFactory(CommandFactoryMethod):
-    _HELP = 'usage: guet add <initials> <"name"> <email>'
 
     def build(self, args: List[str], settings: Settings) -> Command:
         strategy = self._choose_strategy(args[1:], settings)
@@ -23,10 +22,8 @@ class AddCommitterFactory(CommandFactoryMethod):
         return 'Add committer to the list of available committers'
 
     def _choose_strategy(self, args: List[str], _: Settings) -> CommandStrategy:
-        if len(args) == 0:
-            return HelpMessageStrategy(self._HELP)
         if len(args) < 3:
-            return TooFewArgsStrategy(self._HELP)
+            return TooFewArgsStrategy(ADD_COMMITTER_HELP_MESSAGE)
         elif len(args) > 3:
             return TooManyArgsStrategy()
         else:

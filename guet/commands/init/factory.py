@@ -10,6 +10,8 @@ from guet.config.already_initialized import already_initialized
 from guet.config.initialize import initialize
 from guet.settings.settings import Settings
 
+INIT_HELP_MESSAGE = "usage: guet init\n\nInitializes guet for use on this computer."
+
 
 class InitCommandFactory(CommandFactoryMethod):
 

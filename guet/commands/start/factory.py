@@ -7,6 +7,8 @@ from guet.commands.start.start_strategy import StartCommandStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 
+START_HELP_MESSAGE = 'usage: guet start\n\nInitialize current directory with .git folder to use guet.'
+
 
 class StartCommandFactory(CommandFactoryMethod):
     def short_help_message(self) -> str:
