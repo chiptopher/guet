@@ -74,9 +74,3 @@ class TestGetCommand(TestCase):
         command = GetCommandFactory().build(['get', 'bad_identifer'], Settings())
         command.execute()
         mock_print('Invalid identifier <bad_identifier>')
-
-    def test_create_command_uses_help_message_strategy_when_given_no_identifier(self, mock_get_committers,
-                                                                                mock_get_current_committers,
-                                                                                mock_print):
-        command = GetCommandFactory().build(['get'], Settings())
-        self.assertIsInstance(command.strategy, HelpMessageStrategy)
