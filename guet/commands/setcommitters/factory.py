@@ -1,11 +1,12 @@
 from typing import List
 
 from guet.commands.command_factory import CommandFactoryMethod
+from guet.commands.help_message_strategy import HelpMessageBuilder
 from guet.commands.setcommitters.set_committers_strategy import SetCommittersStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 
-SET_HELP_MESSAGE = 'usage: guet set <initials> [<initials> ...]'
+SET_HELP_MESSAGE = HelpMessageBuilder('guet set <initials> [<initials> ...]', 'Get current committers.').build()
 
 
 class SetCommittersCommandFactory(CommandFactoryMethod):

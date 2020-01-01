@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, call, patch
 
-from guet.commands.addcommitter.factory import AddCommitterFactory
+from guet.commands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
 from guet.settings.settings import Settings
 
 
@@ -27,14 +27,9 @@ class TestAddUserCommand(unittest.TestCase):
         calls = [
             call('Not enough arguments.'),
             call(''),
-            call('usage: guet add <initials> <"name"> <email>')
+            call(ADD_COMMITTER_HELP_MESSAGE)
         ]
         mock_print.assert_has_calls(calls)
-
-    def test_help_prints_the_help_message(self, mock_print, mock_add_commiter):
-        command = AddCommitterFactory().build(['add'], Settings())
-        command.execute()
-        mock_print.assert_called_with('usage: guet add <initials> <"name"> <email>')
 
     def test_get_short_help_message(self, mock_print, mock_add_commiter):
         self.assertEqual('Add committer to the list of available committers',

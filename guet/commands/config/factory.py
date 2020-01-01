@@ -1,11 +1,12 @@
 from typing import List
 
 from guet.commands.config.set_config_strategy import SetConfigStrategy
+from guet.commands.help_message_strategy import HelpMessageBuilder
 from guet.commands.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 from guet.commands.command_factory import CommandFactoryMethod
 
-CONFIG_HELP_MESSAGE = 'usage: guet config [--<key>=<value> ...]'
+CONFIG_HELP_MESSAGE = HelpMessageBuilder('guet config [--<key>=<value> ...', 'Set a configuration.').build()
 
 
 class ConfigCommandFactory(CommandFactoryMethod):

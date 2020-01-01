@@ -1,6 +1,7 @@
 from typing import List
 
 from guet.commands.command import Command
+from guet.commands.help_message_strategy import HelpMessageBuilder
 from guet.settings.settings import Settings
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.strategy_command import StrategyCommand
@@ -9,7 +10,8 @@ from guet.commands.strategy import CommandStrategy
 from guet.commands.too_many_args import TooManyArgsStrategy
 from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
 
-ADD_COMMITTER_HELP_MESSAGE = 'usage: guet add <initials> <"name"> <email>'
+ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <email>',
+                                                "Add committer to make available for commit tracking.").build()
 
 
 class AddCommitterFactory(CommandFactoryMethod):
