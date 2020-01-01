@@ -51,3 +51,14 @@ class TestHelpDecorator(TestCase):
         command.execute()
 
         mock_print.assert_called_with('help message')
+
+    def test_returns_decorated_if_no_args_valid_set_to_true(self, mock_print):
+        mock_command = Mock(Command())
+        mock_factory = Mock(CommandFactoryMethod())
+        mock_factory.build = Mock(return_value=mock_command)
+
+        help_decorator = HelpDecorator(mock_factory, "help message", no_args_valid=True)
+        command = help_decorator.build(["command"], Settings())
+        command.execute()
+
+        mock_print.assert_not_called()
