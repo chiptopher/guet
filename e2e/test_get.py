@@ -42,7 +42,7 @@ class TestGet(DockerTest):
         self.guet_init()
         self.guet_get_committers(help=True)
         self.execute()
-        self.assert_text_in_logs(0, 'usage: guet get <identifier>')
+        self.assert_text_in_logs(0, 'usage: guet get <identifier> [-flag, ...]')
         self.assert_text_in_logs(2, 'Get currently set information.')
         self.assert_text_in_logs(4, 'Valid Identifier')
         self.assert_text_in_logs(6, '\tcurrent - lists currently set committers')

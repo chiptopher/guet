@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from guet.commands.help_message_strategy import HelpMessageBuilder
+from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagsBuilder, FlagBuilder
 
 
 class TestHelpMessageBuilder(TestCase):
@@ -23,3 +23,8 @@ class TestHelpMessageBuilder(TestCase):
         builder = HelpMessageBuilder('command args', 'description').explanation('explanation')
         result = builder.build()
         self.assertTrue('description\n\nexplanation' in result)
+
+    def test_adding_flags_section_adds_flags(self):
+        result = HelpMessageBuilder('command args', 'description').flags(
+            FlagsBuilder([FlagBuilder('key1', 'value1'), FlagBuilder('key2', 'value2')])).build()
+        self.assertTrue('\nFlags\n\tkey1  -  value1\n\tkey2  -  value2\n' in result)

@@ -3,7 +3,7 @@ from typing import List
 from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
-from guet.commands.help_message_strategy import HelpMessageBuilder
+from guet.commands.help.help_message_builder import HelpMessageBuilder
 from guet.commands.lambda_strategy import LambdaStrategy
 from guet.commands.print_strategy import PrintCommandStrategy
 from guet.commands.strategy_command import StrategyCommand
