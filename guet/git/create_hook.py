@@ -1,7 +1,7 @@
 from enum import Enum
 from os import chmod, stat
 from os.path import join
-from guet.git._hook_mode import HookMode
+from guet.git.hook_mode import HookMode
 
 HOOK_FILE_LINES = [
     '#! /usr/bin/env python3\n',

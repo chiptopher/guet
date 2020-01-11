@@ -9,7 +9,7 @@ from guet.settings.settings import Settings
 class TestStartCommand(unittest.TestCase):
 
     @patch('guet.commands.start.start_strategy.git_present_in_cwd')
-    @patch('guet.commands.start.start_strategy.create_hook')
+    @patch('guet.commands.start.create_hook_strategy.create_hook')
     @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
     @patch("guet.commands.start.start_strategy.any_hooks_present")
     def test_execute_adds_the_hook(self,
@@ -32,7 +32,7 @@ class TestStartCommand(unittest.TestCase):
     @patch('builtins.input')
     @patch('builtins.print')
     @patch('guet.commands.start.start_strategy.git_present_in_cwd')
-    @patch('guet.commands.start.start_strategy.create_hook')
+    @patch('guet.commands.start.create_hook_strategy.create_hook')
     @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
     @patch("guet.commands.start.start_strategy.any_hooks_present")
     def test_execute_prompts_user_for_input_when_hooks_already_exist(self,
@@ -75,7 +75,7 @@ class TestStartCommand(unittest.TestCase):
 
     @patch('builtins.input')
     @patch('guet.commands.start.start_strategy.git_present_in_cwd')
-    @patch('guet.commands.start.start_strategy.create_hook')
+    @patch('guet.commands.start.create_hook_strategy.create_hook')
     @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
     @patch("guet.commands.start.start_strategy.any_hooks_present")
     def test_execute_will_overwrite_if_input_is_o(self,
