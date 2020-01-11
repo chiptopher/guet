@@ -8,10 +8,10 @@ from guet.settings.settings import Settings
 
 class TestStartCommand(unittest.TestCase):
 
-    @patch('guet.commands.start.start_strategy.git_present_in_cwd')
+    @patch('guet.commands.start.factory.git_present_in_cwd')
     @patch('guet.commands.start.create_hook_strategy.create_hook')
-    @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
-    @patch("guet.commands.start.start_strategy.any_hooks_present")
+    @patch("guet.commands.start.factory.git_hook_path_from_cwd")
+    @patch("guet.commands.start.factory.any_hooks_present")
     def test_execute_adds_the_hook(self,
                                    mock_any_hooks_present,
                                    git_hook_path_from_cwd,
@@ -31,10 +31,10 @@ class TestStartCommand(unittest.TestCase):
 
     @patch('builtins.input')
     @patch('builtins.print')
-    @patch('guet.commands.start.start_strategy.git_present_in_cwd')
+    @patch('guet.commands.start.factory.git_present_in_cwd')
     @patch('guet.commands.start.create_hook_strategy.create_hook')
-    @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
-    @patch("guet.commands.start.start_strategy.any_hooks_present")
+    @patch("guet.commands.start.factory.git_hook_path_from_cwd")
+    @patch("guet.commands.start.factory.any_hooks_present")
     def test_execute_prompts_user_for_input_when_hooks_already_exist(self,
                                                                      mock_any_hooks_presnet,
                                                                      git_hook_path_from_cwd,
@@ -55,10 +55,10 @@ class TestStartCommand(unittest.TestCase):
         mock_input.assert_called_once()
 
     @patch('builtins.input')
-    @patch('guet.commands.start.start_strategy.git_present_in_cwd')
-    @patch('guet.commands.start.start_strategy.create_hook')
-    @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
-    @patch("guet.commands.start.start_strategy.any_hooks_present")
+    @patch('guet.commands.start.factory.git_present_in_cwd')
+    @patch('guet.commands.start.create_hook_strategy.create_hook')
+    @patch("guet.commands.start.factory.git_hook_path_from_cwd")
+    @patch("guet.commands.start.factory.any_hooks_present")
     def test_execute_wont_create_hooks_if_user_chooses_to_cancel(self,
                                                                  mock_any_hooks_presenet,
                                                                  git_hook_path_from_cwd,
@@ -74,10 +74,10 @@ class TestStartCommand(unittest.TestCase):
         mock_create_hook.assert_not_called()
 
     @patch('builtins.input')
-    @patch('guet.commands.start.start_strategy.git_present_in_cwd')
+    @patch('guet.commands.start.factory.git_present_in_cwd')
     @patch('guet.commands.start.create_hook_strategy.create_hook')
-    @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
-    @patch("guet.commands.start.start_strategy.any_hooks_present")
+    @patch("guet.commands.start.factory.git_hook_path_from_cwd")
+    @patch("guet.commands.start.factory.any_hooks_present")
     def test_execute_will_overwrite_if_input_is_o(self,
                                                   mock_any_hooks_present,
                                                   git_hook_path_from_cwd,
@@ -97,10 +97,10 @@ class TestStartCommand(unittest.TestCase):
         ])
 
     @patch('builtins.print')
-    @patch('guet.commands.start.start_strategy.git_present_in_cwd')
-    @patch('guet.commands.start.start_strategy.create_hook')
-    @patch("guet.commands.start.start_strategy.git_hook_path_from_cwd")
-    @patch("guet.commands.start.start_strategy.any_hooks_present")
+    @patch('guet.commands.start.factory.git_present_in_cwd')
+    @patch('guet.commands.start.create_hook_strategy.create_hook')
+    @patch("guet.commands.start.factory.git_hook_path_from_cwd")
+    @patch("guet.commands.start.factory.any_hooks_present")
     def test_execute_if_git_not_present_in_folder_print_error_message(self,
                                                                       mock_any_hooks_present,
                                                                       git_hook_path_from_cwd,

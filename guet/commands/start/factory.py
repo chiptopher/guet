@@ -3,8 +3,13 @@ from typing import List
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.help.help_message_builder import HelpMessageBuilder
+from guet.commands.print_strategy import PrintCommandStrategy
+from guet.commands.start.create_hook_strategy import CreateHookStrategy
 from guet.commands.start.start_strategy import PromptUserForHookTypeStrategy
 from guet.commands.strategy_command import StrategyCommand
+from guet.git.any_hooks_present import any_hooks_present
+from guet.git.git_path_from_cwd import git_hook_path_from_cwd
+from guet.git.git_present_in_cwd import git_present_in_cwd
 from guet.settings.settings import Settings
 
 START_HELP_MESSAGE = HelpMessageBuilder('guet start', 'Initialize current .git project to use guet.').build()
@@ -15,4 +20,12 @@ class StartCommandFactory(CommandFactoryMethod):
         return 'Start guet usage in the repository at current directory'
 
     def build(self, args: List[str], settings: Settings) -> Command:
-        return StrategyCommand(PromptUserForHookTypeStrategy())
+        if git_present_in_cwd():
+            hook_path = git_hook_path_from_cwd()
+            if not any_hooks_present(hook_path):
+                strategy = CreateHookStrategy(hook_path)
+            else:
+                strategy = PromptUserForHookTypeStrategy(hook_path)
+            return StrategyCommand(strategy)
+        else:
+            return StrategyCommand(PrintCommandStrategy('Git not initialized in this directory.'))
