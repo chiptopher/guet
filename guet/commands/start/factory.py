@@ -2,7 +2,7 @@ from typing import List
 
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
-from guet.commands.help.help_message_builder import HelpMessageBuilder
+from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
 from guet.commands.print_strategy import PrintCommandStrategy
 from guet.commands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.start.create_hook_strategy import CreateHookStrategy
@@ -13,7 +13,11 @@ from guet.git.git_path_from_cwd import git_hook_path_from_cwd
 from guet.git.git_present_in_cwd import git_present_in_cwd
 from guet.settings.settings import Settings
 
-START_HELP_MESSAGE = HelpMessageBuilder('guet start', 'Initialize current .git project to use guet.').build()
+START_HELP_MESSAGE = HelpMessageBuilder('guet start',
+                                        'Initialize current .git project to use guet.') \
+    .flags(FlagsBuilder(
+    [FlagBuilder('-a/--alongside', 'Create hooks alongside current hooks with "-guet" on the end'),
+     FlagBuilder('-o/--overwrite', 'Overwrite current hooks')])).build()
 
 
 class StartCommandFactory(CommandFactoryMethod):
