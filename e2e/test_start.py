@@ -22,7 +22,21 @@ class TestStart(DockerTest):
         self.add_file('.git/hooks/pre-commit')
         self.guet_start(overwrite_answer='x')
         self.execute()
-        self.assert_text_in_logs(1, 'There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
+        self.assert_text_in_logs(1,
+                                 'There is already commit hooks in this project. Would you like to overwrite (o), create (c) the file and put it in the hooks folder, or cancel (x)?')
+
+    def test_passing_dash_a_to_command_creates_alongside_without_prompt(self):
+        self.guet_init()
+        self.git_init()
+        self.add_file('.git/hooks/pre-commit')
+        self.guet_start(args=['-a'])
+        self.save_file_content('test-env/.git/hooks/pre-commit-guet')
+        self.save_file_content('test-env/.git/hooks/post-commit-guet')
+        self.save_file_content('test-env/.git/hooks/commit-msg-guet')
+        self.execute()
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/post-commit-guet')[0])
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/commit-msg-guet')[0])
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/pre-commit-guet')[0])
 
     def test_giving_c_to_create_alongside_creates_hooks_with_guet_appended_along_the_end(self):
         self.guet_init()
