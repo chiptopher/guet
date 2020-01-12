@@ -25,6 +25,8 @@ class StartCommandFactory(CommandFactoryMethod):
             hook_path = git_hook_path_from_cwd()
             if '-a' in args or '--alongside' in args:
                 strategy = CreateAlongsideHookStrategy(hook_path)
+            elif '-o' in args or '--overwrite' in args:
+                strategy = CreateHookStrategy(hook_path)
             elif not any_hooks_present(hook_path):
                 strategy = CreateHookStrategy(hook_path)
             else:

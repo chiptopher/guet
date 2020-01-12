@@ -61,3 +61,16 @@ class TestStart(DockerTest):
         self.execute()
         self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/pre-commit')[0])
         self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/post-commit')[0])
+
+    def test_giving_dash_o_flag_overwrites_current_hooks_without_prompt(self):
+        self.guet_init()
+        self.git_init()
+        self.add_file('.git/hooks/pre-commit')
+        self.guet_start(args=['-o'])
+        self.save_file_content('test-env/.git/hooks/pre-commit')
+        self.save_file_content('test-env/.git/hooks/post-commit')
+        self.save_file_content('test-env/.git/hooks/commit-msg')
+        self.execute()
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/post-commit')[0])
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/commit-msg')[0])
+        self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/pre-commit')[0])

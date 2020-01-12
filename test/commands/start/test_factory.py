@@ -51,6 +51,32 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_command.assert_called_once_with(mock_alongside_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
+    @patch('guet.commands.start.factory.any_hooks_present', return_value=True)
+    @patch('guet.commands.start.factory.git_hook_path_from_cwd', return_value='/path')
+    @patch('guet.commands.start.factory.git_present_in_cwd', return_value=True)
+    @patch('guet.commands.start.factory.CreateHookStrategy')
+    @patch('guet.commands.start.factory.StrategyCommand')
+    def test_returns_command_with_create_new_strategy_if_given_dash_o(self, mock_command,
+                                                                      create_hook_strategy, _1,
+                                                                      _2, _3):
+        command = StartCommandFactory().build(['start', '-o'], Settings())
+        create_hook_strategy.assert_called_once_with('/path')
+        mock_command.assert_called_once_with(create_hook_strategy.return_value)
+        self.assertEqual(command, mock_command.return_value)
+
+    @patch('guet.commands.start.factory.any_hooks_present', return_value=True)
+    @patch('guet.commands.start.factory.git_hook_path_from_cwd', return_value='/path')
+    @patch('guet.commands.start.factory.git_present_in_cwd', return_value=True)
+    @patch('guet.commands.start.factory.CreateHookStrategy')
+    @patch('guet.commands.start.factory.StrategyCommand')
+    def test_returns_command_with_create_new_strategy_if_given_dash_dash_overwrite(self, mock_command,
+                                                                                   create_hook_strategy, _1,
+                                                                                   _2, _3):
+        command = StartCommandFactory().build(['start', '--overwrite'], Settings())
+        create_hook_strategy.assert_called_once_with('/path')
+        mock_command.assert_called_once_with(create_hook_strategy.return_value)
+        self.assertEqual(command, mock_command.return_value)
+
     @patch('guet.commands.start.factory.git_hook_path_from_cwd', return_value='/path')
     @patch('guet.commands.start.factory.git_present_in_cwd', return_value=True)
     @patch('guet.commands.start.factory.CreateAlongsideHookStrategy')
