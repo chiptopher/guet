@@ -5,13 +5,15 @@ from guet.util.errors import log_on_error
 
 
 @log_on_error
-def pre_commit():    
+def pre_commit():
     _check_within_timeframe_if_enabled()
+
 
 def _check_within_timeframe_if_enabled():
     settings = get_config()
     if settings.read('pairReset'):
         _fail_if_past_valid_timeframe()
+
 
 def _fail_if_past_valid_timeframe():
     now = current_millis()

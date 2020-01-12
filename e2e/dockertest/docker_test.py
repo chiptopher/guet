@@ -5,7 +5,7 @@ from typing import List
 
 import docker
 
-from e2e.dockertest.file_system import process_file_system
+from e2e.dockertest.file_system import process_file_system, FileSystem
 from e2e.dockertest.logs import process_logs
 
 
@@ -38,7 +38,7 @@ class DockerTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(DockerTest, self).__init__(*args, **kwargs)
         self.logs = None
-        self.file_system = None
+        self.file_system: FileSystem = None
         self.execute_command = None
 
         self.execute_called = False

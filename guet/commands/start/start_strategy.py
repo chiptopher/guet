@@ -1,6 +1,7 @@
 from typing import List
 
 from guet.commands.do_nothing_strategy import DoNothingStrategy
+from guet.commands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.start.create_hook_strategy import CreateHookStrategy
 from guet.commands.start.hook_strategy import HookStrategy
 
@@ -11,7 +12,9 @@ class PromptUserForHookTypeStrategy(HookStrategy):
                'Would you like to overwrite (o), ' +
                'create (c) the file and put it in the hooks folder, or cancel (x)?'))
         val = input()
-        if val == 'o' or val == 'c':
+        if val == 'o':
             CreateHookStrategy(self._hook_path).apply()
+        elif val == 'c':
+            CreateAlongsideHookStrategy(self._hook_path).apply()
         else:
             DoNothingStrategy().apply()
