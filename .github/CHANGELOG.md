@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.2.0
+
+Version 2.2.0 introduces a new command, `guet remove <initials>`, for removing a committer from the system.
+
+Additionally, typing the `-a|--alongside` and `-o|--overwrite` flags were added to `guet start`. When starting guet in a
+directory where there are already hooks. You're promped with the following message:
+```
+$ guet start
+There is already commit hooks in this project. Would you like to overwrite (o),
+create (a) the file and put it in the hooks folder, or cancel (x)?
+```
+
+Now, if you already know that you would like to overwrite the current hooks, `guet start -o` will do that. `guet start -a`
+will automatically create the hooks appended with `-guet`. Both skip the prompt.
+
 ## 2.1.1
 
 Version 2.1.1 introduces help messages for all the commands. For all commands, this can be invoked using `--help` and `-h` flags. Additionally, for all commands other than `init` and `start`, running `guet <command>` will also print the help message.
