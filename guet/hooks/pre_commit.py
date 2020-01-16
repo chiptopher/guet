@@ -1,4 +1,5 @@
 from guet.config.get_config import get_config
+from guet.config.get_current_committers import get_current_committers
 from guet.config.most_recent_committers_set import most_recent_committers_set
 from guet.currentmillis import current_millis
 from guet.util.errors import log_on_error
@@ -6,13 +7,16 @@ from guet.util.errors import log_on_error
 
 @log_on_error
 def pre_commit():
-    _check_within_timeframe_if_enabled()
-
-
-def _check_within_timeframe_if_enabled():
     settings = get_config()
-    if settings.read('pairReset'):
+    if len(get_current_committers()) == 0:
+        _fail_because_there_are_no_current_committers()
+    elif settings.read('pairReset'):
         _fail_if_past_valid_timeframe()
+
+
+def _fail_because_there_are_no_current_committers():
+    print('You must set your pairs before you can commit.\n')
+    exit(1)
 
 
 def _fail_if_past_valid_timeframe():
