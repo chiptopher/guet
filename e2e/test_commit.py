@@ -40,3 +40,15 @@ class TestCommit(DockerTest):
         self.execute()
         self.assert_text_in_logs(16, '    Co-authored-by: name3 <email3@localhost>')
         self.assert_text_in_logs(17, '    Co-authored-by: name4 <email4@localhost>')
+
+    def test_wont_allow_commit_if_guet_set_hasnt_been_done(self):
+        self.guet_init()
+        self.git_init()
+        self.guet_start()
+        self.add_file('A')
+        self.git_add()
+        self.git_commit('Initial commit')
+
+        self.execute()
+
+        self.assert_text_in_logs(1, 'You must set your pairs before you can commit.')
