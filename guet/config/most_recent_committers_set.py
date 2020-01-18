@@ -2,11 +2,12 @@ from os.path import join
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
+from guet.files.read_lines import read_lines
+from guet.config.parse_comitters_set_line import parse_committers_set_line
 
 
 def most_recent_committers_set():
-    set_committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET), 'r')
-    line = set_committers_file.readline()
-    set_committers_file.close()
-    split = line.rstrip().split(',')
-    return int(split[len(split)-1])
+    path = join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET)
+    lines = read_lines(path)
+    *committer_initials, set_time = parse_committers_set_line(lines[0])
+    return int(set_time)
