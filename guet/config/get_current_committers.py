@@ -20,7 +20,7 @@ def _committers_in_order_of_initials(committers: List[Committer],
 
 
 def _process_lines_from_committer_set(lines: List[str]) -> List[Committer]:
-    *committer_initials, set_time = lines[0].rstrip().split(',')
+    *committer_initials, set_time, path_to_git = lines[0].rstrip().split(',')
     committers = get_committers()
     committers_with_initials = filter_committers_with_initials(committers, committer_initials)
     return _committers_in_order_of_initials(committers_with_initials, committer_initials)
