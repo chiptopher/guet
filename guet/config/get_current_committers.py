@@ -6,6 +6,7 @@ from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.committer import Committer, filter_committers_with_initials
 from guet.config.get_committers import get_committers
 from guet.files.read_lines import read_lines
+from guet.git.git_path_from_cwd import git_path_from_cwd
 
 POSITION_OF_LAST_ELEMENT = -1
 
@@ -21,6 +22,8 @@ def _committers_in_order_of_initials(committers: List[Committer],
 
 def _process_lines_from_committer_set(lines: List[str]) -> List[Committer]:
     *committer_initials, set_time, path_to_git = lines[0].rstrip().split(',')
+    if path_to_git != git_path_from_cwd():
+        return []
     committers = get_committers()
     committers_with_initials = filter_committers_with_initials(committers, committer_initials)
     return _committers_in_order_of_initials(committers_with_initials, committer_initials)
