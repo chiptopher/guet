@@ -21,7 +21,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
             Committer('name1', 'email1', 'initials1'),
             Committer('name2', 'email2', 'initials2')
         ]
-        mock_read_lines.return_value = ['initials1,initials2,1000000000\n']
+        mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git\n']
 
         committers = get_current_committers()
         self.assertEqual(committers[0].name, 'name1')
@@ -34,7 +34,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
     def test_reads_committers_from_file(self,
                                         mock_read_lines,
                                         mock_get_committers):
-        mock_read_lines.return_value = ['initials1,initials2,1000000000\n']
+        mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git\n']
         get_current_committers()
         mock_read_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
 
@@ -46,7 +46,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
             Committer('name1', 'email1', 'initials1'),
             Committer('name2', 'email2', 'initials2')
         ]
-        mock_read_lines.return_value = ['initials2,initials1,1000000000\n']
+        mock_read_lines.return_value = ['initials2,initials1,1000000000,/absolute/path/to/.git\n']
 
         committers = get_current_committers()
         self.assertEqual(committers[0].name, 'name2')

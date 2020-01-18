@@ -44,9 +44,11 @@ class DockerTest(unittest.TestCase):
         self.execute_called = False
         self.commands = []
         self.files_to_save = []
+        self.init_called = False
 
     def execute(self):
-        self.save_file_content('.guet/config')
+        if self.init_called:
+            self.save_file_content('.guet/config')
         docker_client = docker.from_env()
         self.execute_command = self._generate_commands_string_to_pass_to_run()
         container = docker_client.containers.run('guettest:0.1.0',
@@ -62,6 +64,7 @@ class DockerTest(unittest.TestCase):
 
     @_called_execute
     def guet_init(self, arguments: List[str] = None):
+        self.init_called = True
         command = 'guet init'
         if arguments:
             command = command + ' ' + ' '.join(arguments)
