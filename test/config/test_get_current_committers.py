@@ -9,13 +9,15 @@ from guet.config.committer import Committer
 from guet.config.get_current_committers import get_current_committers
 
 
+@patch('guet.config.get_current_committers.git_path_from_cwd', return_value='/absolute/path/to/.git')
 @patch('guet.config.get_current_committers.get_committers')
 @patch('guet.config.get_current_committers.read_lines')
 class TestGetCurrentCommitters(unittest.TestCase):
 
     def test_reads_committers_from_file_and_returns_committers(self,
                                                                mock_read_lines,
-                                                               mock_get_committers):
+                                                               mock_get_committers,
+                                                               mock_git_path_from_cwd):
         mock_get_committers.return_value = [
             Committer('name0', 'email0', 'initials0'),
             Committer('name1', 'email1', 'initials1'),
@@ -33,14 +35,16 @@ class TestGetCurrentCommitters(unittest.TestCase):
 
     def test_reads_committers_from_file(self,
                                         mock_read_lines,
-                                        mock_get_committers):
+                                        mock_get_committers,
+                                        mock_git_path_from_cwd):
         mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git\n']
         get_current_committers()
         mock_read_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
 
     def test_get_current_committers_preserves_order_of_committers(self,
                                                                   mock_read_lines,
-                                                                  mock_get_committers):
+                                                                  mock_get_committers,
+                                                                  mock_git_path_from_cwd):
         mock_get_committers.return_value = [
             Committer('name0', 'email0', 'initials0'),
             Committer('name1', 'email1', 'initials1'),
@@ -58,7 +62,8 @@ class TestGetCurrentCommitters(unittest.TestCase):
 
     def test_returns_no_committers_if_committerset_file_is_empty(self,
                                                                  mock_read_lines,
-                                                                 mock_get_committers):
+                                                                 mock_get_committers,
+                                                                 mock_git_path_from_cwd):
         mock_get_committers.return_value = [
             Committer('name0', 'email0', 'initials0'),
             Committer('name1', 'email1', 'initials1'),
@@ -69,3 +74,17 @@ class TestGetCurrentCommitters(unittest.TestCase):
 
         committers = get_current_committers()
         self.assertListEqual([], committers)
+
+    def test_returns_no_committers_if_no_lines_end_with_matching_git_path(self,
+                                                                          mock_read_lines,
+                                                                          _,
+                                                                          mock_git_path_from_cwd):
+        mock_read_lines.return_value = [
+            'initials1,initials2,1000000000,/project1/.git\n',
+            'initials1,initials2,1000000000,/project2/.git\n',
+        ]
+
+        mock_git_path_from_cwd.return_value = '/project3/.git'
+
+        result = get_current_committers()
+        self.assertListEqual([], result)

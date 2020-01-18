@@ -52,3 +52,20 @@ class TestCommit(DockerTest):
         self.execute()
 
         self.assert_text_in_logs(1, 'You must set your pairs before you can commit.')
+
+    def test_wont_allow_commits_in_guet_repo_if_pairs_havent_been_set_in_that_repo(self):
+        self.guet_init()
+        self.guet_add('initials', 'name', 'email@localhost')
+        self.guet_add('initials2', 'name2', 'email2@localhost')
+        self.guet_set(['initials', 'initials2'])
+        self.add_command('mkdir test')
+        self.change_directory('test')
+        self.git_init()
+        self.guet_start()
+        self.add_file('A')
+        self.git_add()
+        self.git_commit('Initial commit')
+
+        self.execute()
+
+        self.assert_text_in_logs(1, 'You must set your pairs before you can commit.')

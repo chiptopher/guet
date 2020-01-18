@@ -62,6 +62,12 @@ class DockerTest(unittest.TestCase):
         docker_client.close()
         self.execute_called = True
 
+    def change_directory(self, path: str):
+        self.add_command(f'cd {path}')
+
+    def return_to_default_directory(self):
+        self.add_command('cd ~/test-env')
+
     @_called_execute
     def guet_init(self, arguments: List[str] = None):
         self.init_called = True
@@ -107,7 +113,7 @@ class DockerTest(unittest.TestCase):
         self.add_command(command)
 
     @_called_execute
-    def git_init(self):
+    def git_init(self, from_path: str = None):
         self.add_command('git init')
         self.add_command('git config --global user.name name')
         self.add_command('git config --global user.email email')
