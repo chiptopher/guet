@@ -46,6 +46,7 @@ class DockerTest(unittest.TestCase):
         self.files_to_save = []
 
     def execute(self):
+        self.save_file_content('.guet/config')
         docker_client = docker.from_env()
         self.execute_command = self._generate_commands_string_to_pass_to_run()
         container = docker_client.containers.run('guettest:0.1.0',
