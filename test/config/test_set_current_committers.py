@@ -25,4 +25,4 @@ class TestSetCurrentCommitters(unittest.TestCase):
         set_current_committers([Committer('name', 'email', 'initials1'), Committer('name', 'email', 'initials2')])
 
         mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET),
-                                            ['initials1,initials2,1000000000000,/absolute/path/to/.git'])
+                                            ['initials1,initials2,1000000000000,/absolute/path/to/.git\n'])
