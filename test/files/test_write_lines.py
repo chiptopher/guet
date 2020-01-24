@@ -25,3 +25,17 @@ class TestWriteLines(unittest.TestCase):
     def test_closes_file(self, mock_open):
         write_lines('path/to/file', [])
         mock_open.return_value.close.assert_called()
+
+    @patch('builtins.open', new_callable=mock_open())
+    def test_appends_newline_to_files_if_one_is_not_present(self, mock_open):
+        given = [
+            'Line1',
+            'Line2\n'
+        ]
+        expected = [
+            'Line1\n',
+            'Line2\n'
+        ]
+        mock_open.return_value.readlines.return_value = given
+        write_lines('path/to/file', given)
+        mock_open.return_value.writelines.assert_called_with(expected)
