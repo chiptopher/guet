@@ -23,7 +23,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
             Committer('name1', 'email1', 'initials1'),
             Committer('name2', 'email2', 'initials2')
         ]
-        mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git\n']
+        mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git']
 
         committers = get_current_committers()
         self.assertEqual(committers[0].name, 'name1')
@@ -37,7 +37,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
                                         mock_read_lines,
                                         mock_get_committers,
                                         mock_git_path_from_cwd):
-        mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git\n']
+        mock_read_lines.return_value = ['initials1,initials2,1000000000,/absolute/path/to/.git']
         get_current_committers()
         mock_read_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
 
@@ -50,7 +50,7 @@ class TestGetCurrentCommitters(unittest.TestCase):
             Committer('name1', 'email1', 'initials1'),
             Committer('name2', 'email2', 'initials2')
         ]
-        mock_read_lines.return_value = ['initials2,initials1,1000000000,/absolute/path/to/.git\n']
+        mock_read_lines.return_value = ['initials2,initials1,1000000000,/absolute/path/to/.git']
 
         committers = get_current_committers()
         self.assertEqual(committers[0].name, 'name2')
@@ -80,11 +80,36 @@ class TestGetCurrentCommitters(unittest.TestCase):
                                                                           _,
                                                                           mock_git_path_from_cwd):
         mock_read_lines.return_value = [
-            'initials1,initials2,1000000000,/project1/.git\n',
-            'initials1,initials2,1000000000,/project2/.git\n',
+            'initials1,initials2,1000000000,/project1/.git',
+            'initials1,initials2,1000000000,/project2/.git',
         ]
 
         mock_git_path_from_cwd.return_value = '/project3/.git'
 
         result = get_current_committers()
         self.assertListEqual([], result)
+
+    def test_returns_committers_that_arent_in_the_first_line(self,
+                                                             mock_read_lines,
+                                                             mock_get_committers,
+                                                             mock_git_path_from_cwd):
+        mock_git_path_from_cwd.return_value = '/absolute/path/to/.git'
+
+        mock_get_committers.return_value = [
+            Committer('name0', 'email0', 'initials0'),
+            Committer('name1', 'email1', 'initials1'),
+            Committer('name2', 'email2', 'initials2')
+        ]
+
+        mock_read_lines.return_value = [
+            'initials0,initials1,1000000000,/absolute/other/path/to/different/.git',
+            'initials1,initials2,1000000000,/absolute/path/to/.git',
+        ]
+
+        committers = get_current_committers()
+        self.assertEqual(committers[0].name, 'name1')
+        self.assertEqual(committers[0].email, 'email1')
+        self.assertEqual(committers[0].initials, 'initials1')
+        self.assertEqual(committers[1].name, 'name2')
+        self.assertEqual(committers[1].email, 'email2')
+        self.assertEqual(committers[1].initials, 'initials2')
