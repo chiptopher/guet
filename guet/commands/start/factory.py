@@ -25,16 +25,13 @@ class StartCommandFactory(CommandFactoryMethod):
         return 'Start guet usage in the repository at current directory'
 
     def build(self, args: List[str], settings: Settings) -> Command:
-        if git_present_in_cwd():
-            hook_path = git_hook_path_from_cwd()
-            if '-a' in args or '--alongside' in args:
-                strategy = CreateAlongsideHookStrategy(hook_path)
-            elif '-o' in args or '--overwrite' in args:
-                strategy = CreateHookStrategy(hook_path)
-            elif not any_hooks_present(hook_path):
-                strategy = CreateHookStrategy(hook_path)
-            else:
-                strategy = PromptUserForHookTypeStrategy(hook_path)
-            return StrategyCommand(strategy)
+        hook_path = git_hook_path_from_cwd()
+        if '-a' in args or '--alongside' in args:
+            strategy = CreateAlongsideHookStrategy(hook_path)
+        elif '-o' in args or '--overwrite' in args:
+            strategy = CreateHookStrategy(hook_path)
+        elif not any_hooks_present(hook_path):
+            strategy = CreateHookStrategy(hook_path)
         else:
-            return StrategyCommand(PrintCommandStrategy('Git not initialized in this directory.'))
+            strategy = PromptUserForHookTypeStrategy(hook_path)
+        return StrategyCommand(strategy)

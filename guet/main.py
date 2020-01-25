@@ -1,6 +1,7 @@
 import sys
 
 from guet.commands.get.get_factory import GetCommandFactory, GET_HELP_MESSAGE
+from guet.commands.git_required_decorator import GitRequiredDecorator
 from guet.commands.help_decorator import HelpDecorator
 from guet.commands.init_required_decorator import InitRequiredDecorator
 from guet.commands.remove.factory import RemoveCommandFactory, REMOVE_HELP_MESSAGE
@@ -19,7 +20,10 @@ def _command_builder_map():
     command_builder_map['init'] = HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True)
     command_builder_map['set'] = InitRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE))
     command_builder_map['start'] = InitRequiredDecorator(
-        HelpDecorator(StartCommandFactory(), START_HELP_MESSAGE, no_args_valid=True))
+        HelpDecorator(
+            GitRequiredDecorator(StartCommandFactory()), START_HELP_MESSAGE, no_args_valid=True
+        )
+    )
     command_builder_map['config'] = InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE))
     command_builder_map['get'] = InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE))
     command_builder_map['remove'] = InitRequiredDecorator(HelpDecorator(RemoveCommandFactory(), REMOVE_HELP_MESSAGE))
