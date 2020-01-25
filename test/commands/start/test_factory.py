@@ -2,20 +2,10 @@ import unittest
 from unittest.mock import Mock, patch, call
 
 from guet.commands.start.factory import StartCommandFactory
-from guet.git.create_hook import HookMode, Hooks
 from guet.settings.settings import Settings
 
 
 class TestStartCommandFactoryMethod(unittest.TestCase):
-    @patch('guet.commands.start.factory.PrintCommandStrategy')
-    @patch('guet.commands.start.factory.StrategyCommand')
-    @patch('guet.commands.start.factory.git_present_in_cwd', return_value=False)
-    def test_returns_print_strategy_with_error_message_if_no_git_present(self, _, mock_strategy_command,
-                                                                         mock_print_strategy):
-        command = StartCommandFactory().build(['start'], Settings())
-        mock_print_strategy.assert_called_with('Git not initialized in this directory.')
-        mock_strategy_command.assert_called_with(mock_print_strategy.return_value)
-        self.assertEqual(command, mock_strategy_command.return_value)
 
     @patch('guet.commands.start.factory.any_hooks_present', return_value=True)
     @patch('guet.commands.start.factory.git_hook_path_from_cwd', return_value='/path')
