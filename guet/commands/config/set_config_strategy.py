@@ -37,6 +37,6 @@ class SetConfigStrategy(CommandStrategy):
     def _separate_key_and_value(self) -> List:
         key_and_value = []
         for arg in _only_args_starting_with_double_dash(self._args):
-            split = arg.split('=')
-            key_and_value.append((_remove_double_dash(split[0]), split[1]))
+            key, value = arg.split('=')
+            key_and_value.append((_remove_double_dash(key), value))
         return key_and_value

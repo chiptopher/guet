@@ -23,9 +23,7 @@ class Settings:
             self._load_attribute(attribute)
 
     def _load_attribute(self, attribute):
-        split = attribute.rstrip().split('=')
-        key = split[0]
-        value = split[1]
+        key, value = attribute.rstrip().split('=')
         try:
             self.set(key, value)
         except KeyError:
