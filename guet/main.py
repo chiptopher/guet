@@ -17,16 +17,26 @@ from guet.commands.config.factory import ConfigCommandFactory, CONFIG_HELP_MESSA
 def _command_builder_map():
     command_builder_map = dict()
     command_builder_map['add'] = InitRequiredDecorator(HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE))
+
     command_builder_map['init'] = HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True)
-    command_builder_map['set'] = InitRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE))
+
+    command_builder_map['set'] = InitRequiredDecorator(
+        GitRequiredDecorator(
+            HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE)
+        )
+    )
+
     command_builder_map['start'] = InitRequiredDecorator(
         HelpDecorator(
             GitRequiredDecorator(StartCommandFactory()), START_HELP_MESSAGE, no_args_valid=True
         )
     )
     command_builder_map['config'] = InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE))
+
     command_builder_map['get'] = InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE))
+
     command_builder_map['remove'] = InitRequiredDecorator(HelpDecorator(RemoveCommandFactory(), REMOVE_HELP_MESSAGE))
+
     return command_builder_map
 
 
