@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.3.1
+Version 2.3.1 makes it so `guet set` cannot be ran in directories where there is no git repository present.
+
+## 2.3.0
+Version 2.3.0 introduces the ability to have multiple `guet set` configurations between repositories. A `guet set` in `ProjectA` and `ProjectB` can be ran without one affecting the other. Previously, if committers were set in `ProjectA`, they would be used in `ProjectB` as well. Currently set committers were shared project wide.
+
+The `--version` flag was added to print the current guet version. 
+
 ## 2.2.0
 
 Version 2.2.0 introduces a new command, `guet remove <initials>`, for removing a committer from the system.
