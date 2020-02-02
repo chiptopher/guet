@@ -30,3 +30,17 @@ class TestAddUser(DockerTest):
 
         committers_file = self.get_file_text('.guet/committers')
         self.assertEqual('initials,name,email', committers_file[0])
+
+    def test_prompts_user_to_overwrite_committers_when_given_same_initials(self):
+        self.guet_init()
+        self.guet_add('initials', 'name1', 'email1')
+        self.guet_add('initials', 'name2', 'email2', overwrite_answer='y')
+        self.guet_get_committers()
+        self.guet_add('initials', 'name1', 'email1', overwrite_answer='x')
+        self.guet_get_committers()
+        self.execute()
+        self.assert_text_in_logs(0, ('Matching initials "initials". Adding "name2" <email2> '
+                                     'will overwrite "name1" <email1>. Would you '
+                                     'like to continue (y) or cancel (x)?'))
+        self.assert_text_in_logs(2, 'initials - name2 <email2>')
+        self.assert_text_in_logs(5, 'initials - name2 <email2>')
