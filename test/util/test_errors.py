@@ -18,13 +18,11 @@ class TestErrorWrapper(unittest.TestCase):
         def func():
             raise ValueError
 
-        mock_format_exc.return_value = [
-            'line1\n'
-        ]
+        mock_format_exc.return_value = 'line1\nline2'
 
         func()
 
-        mock_set_errors.assert_called_with(['line1\n'])
+        mock_set_errors.assert_called_with(['line1', 'line2'])
 
     def test_says_an_error_occurred(self,
                                     mock_format_exc,
@@ -35,26 +33,22 @@ class TestErrorWrapper(unittest.TestCase):
         def func():
             raise ValueError
 
-        mock_format_exc.return_value = [
-            'line1\n'
-        ]
+        mock_format_exc.return_value = 'line1\nline2'
 
         func()
 
         mock_print.assert_called_with('An error has occurred, please refer to error logs for more information\n')
 
     def test_exits_one_on_error(self,
-                                    mock_format_exc,
-                                    mock_set_errors,
-                                    mock_print,
-                                    mock_exit):
+                                mock_format_exc,
+                                mock_set_errors,
+                                mock_print,
+                                mock_exit):
         @log_on_error
         def func():
             raise ValueError
 
-        mock_format_exc.return_value = [
-            'line1\n'
-        ]
+        mock_format_exc.return_value = 'line1'
 
         func()
 
