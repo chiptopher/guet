@@ -37,7 +37,7 @@ class TestErrorWrapper(unittest.TestCase):
 
         func()
 
-        mock_print.assert_called_with('An error has occurred, please refer to error logs for more information\n')
+        mock_print.assert_called_with('An error has occurred, please refer to error logs (~/.guet/errors) for more information\n')
 
     def test_exits_one_on_error(self,
                                 mock_format_exc,
