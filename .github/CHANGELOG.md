@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.2
+Address a bug where each character in the stacktrace for the error message would print on a new line. Also include the path to the file containing stacktraces.
+
+Now, trying to add a new committer with the same initials as an already present committers will prompt the user to confirm if they want to overwrite the committer.
+
 ## 2.3.1
 Version 2.3.1 makes it so `guet set` cannot be ran in directories where there is no git repository present.
 
