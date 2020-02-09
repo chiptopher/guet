@@ -1,0 +1,2 @@
+class PairSetError(Exception):
+    pass

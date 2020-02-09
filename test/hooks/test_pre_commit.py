@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from guet.config.committer import Committer
+from guet.config.errors import PairSetError
 from guet.currentmillis import current_millis
 from guet.hooks.pre_commit import pre_commit
 from guet.settings.settings import Settings
@@ -52,6 +53,14 @@ class TestPreCommit(unittest.TestCase):
     def test_wont_allow_commit_if_no_committers_set(self, mock_exit, mock_print, mock_most_recent_committers_set,
                                                     mock_get_config, mock_current):
         mock_current.return_value = []
+        pre_commit()
+        mock_exit.assert_called_once_with(1)
+        mock_print.assert_called_with('You must set your pairs before you can commit.\n')
+
+    def test_wont_allow_commit_if_invalid_committersset_file(self, mock_exit, mock_print,
+                                                             mock_most_recent_committers_set,
+                                                             mock_get_config, mock_current):
+        mock_most_recent_committers_set.side_effect = PairSetError()
         pre_commit()
         mock_exit.assert_called_once_with(1)
         mock_print.assert_called_with('You must set your pairs before you can commit.\n')
