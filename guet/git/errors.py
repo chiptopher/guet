@@ -1,0 +1,2 @@
+class NotGuetHookError(Exception):
+    pass
