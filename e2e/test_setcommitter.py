@@ -2,12 +2,14 @@ import time
 
 from e2e import DockerTest
 from guet.commands.init_required_decorator import INIT_REQUIRED_ERROR_MESSAGE
+from guet.commands.start_required_decorator import GUET_NOT_STARTED_ERROR
 
 
 class TestGuetSet(DockerTest):
     def test_set_gracefully_displays_error_message_when_setting_committer_with_unknown_initials(self):
         self.guet_init()
         self.git_init()
+        self.guet_start()
         self.guet_set(['ui'])
 
         self.execute()
@@ -20,6 +22,7 @@ class TestGuetSet(DockerTest):
         self.git_init()
         self.guet_add('initials1', 'name1', 'email1')
         self.guet_add('initials2', 'name2', 'email2')
+        self.guet_start()
         self.guet_set(['initials1', 'initials2'])
         self.save_file_content('.guet/committersset')
         self.save_file_content('.guet/committers')
@@ -42,6 +45,7 @@ class TestGuetSet(DockerTest):
     def test_set_committers_displays_help_message_when_no_initials_given(self):
         self.guet_init()
         self.git_init()
+        self.guet_start()
         self.guet_set([])
         self.execute()
         self.assert_text_in_logs(1, 'usage: guet set <initials> [<initials> ...]')
@@ -54,4 +58,4 @@ class TestGuetSet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(0, 'Git not initialized in this directory.')
+        self.assert_text_in_logs(0, GUET_NOT_STARTED_ERROR)

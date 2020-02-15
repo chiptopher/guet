@@ -7,6 +7,7 @@ class TestGet(DockerTest):
         self.git_init()
         self.guet_add('initials1', 'name1', 'email1')
         self.guet_add('initials2', 'name2', 'email2')
+        self.guet_start()
         self.guet_set(['initials1', 'initials2'])
         self.guet_get_current()
         self.save_file_content('.guet/errors')
