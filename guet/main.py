@@ -22,10 +22,7 @@ def _command_builder_map():
     command_builder_map['init'] = HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True)
 
     command_builder_map['set'] = InitRequiredDecorator(
-        StartRequiredDecorator(
-            HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE)
-        )
-    )
+        StartRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE)))
 
     command_builder_map['start'] = InitRequiredDecorator(
         HelpDecorator(

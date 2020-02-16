@@ -29,7 +29,7 @@ def _process_lines_from_committer_set(lines: List[str]) -> List[Committer]:
     line = _line_ending_with_git_path(lines)
     if not line:
         return []
-    *committer_initials, set_time, path_to_git = line.split(',')
+    *committer_initials, _, _ = line.split(',')
     committers = get_committers()
     committers_with_initials = filter_committers_with_initials(committers, committer_initials)
     return _committers_in_order_of_initials(committers_with_initials, committer_initials)

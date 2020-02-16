@@ -1,13 +1,12 @@
-from typing import List, Type
+from typing import List
 
-from guet.commands.argsettingcommand import ArgSettingCommand
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.get.committer_printing_strategy import CommitterPrintingStrategy
 from guet.commands.get.invalid_identifier_strategy import InvalidIdentifierStrategy
 from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
-from guet.commands.strategy_command import StrategyCommand
 from guet.commands.strategy import CommandStrategy
+from guet.commands.strategy_command import StrategyCommand
 from guet.config.committer import Committer
 from guet.config.get_committers import get_committers
 from guet.config.get_current_committers import get_current_committers

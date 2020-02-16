@@ -1,7 +1,4 @@
-from typing import List
-
 from guet.commands.strategy import CommandStrategy
-from guet.settings.settings import Settings
 
 
 class InvalidIdentifierStrategy(CommandStrategy):

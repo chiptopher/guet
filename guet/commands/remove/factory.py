@@ -7,8 +7,8 @@ from guet.commands.remove.remove_strategy import RemoveCommitterStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 
-REMOVE_HELP_MESSAGE = HelpMessageBuilder('guet remove <initials>', 'Remove committer with given initials from system.') \
-    .build()
+REMOVE_HELP_MESSAGE = HelpMessageBuilder('guet remove <initials>', ('Remove committer '
+                                                                    'with given initials from system.')).build()
 
 
 class RemoveCommandFactory(CommandFactoryMethod):

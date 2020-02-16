@@ -16,7 +16,7 @@ class HelpDecorator(CommandFactoryDecorator):
         self._help_message = help_message
 
     def build(self, args: List[str], settings: Settings) -> Command:
-        should_print_help_because_of_no_args = len(args) is 1 and not self._no_args_valid
+        should_print_help_because_of_no_args = len(args) == 1 and len(args) != self._no_args_valid
         if should_print_help_because_of_no_args or '-h' in args or '--help' in args:
             return StrategyCommand(HelpMessageStrategy(self._help_message))
         else:

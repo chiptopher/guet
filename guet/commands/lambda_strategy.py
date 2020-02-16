@@ -1,7 +1,6 @@
-from typing import List, Callable
+from typing import Callable
 
 from guet.commands.strategy import CommandStrategy
-from guet.settings.settings import Settings
 
 
 class LambdaStrategy(CommandStrategy):

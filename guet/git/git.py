@@ -1,7 +1,6 @@
 from os.path import join
 from typing import List
 
-from guet.files.read_lines import read_lines
 from guet.git.errors import NotGuetHookError
 from guet.git.hook import Hook
 
