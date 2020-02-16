@@ -13,7 +13,7 @@ def most_recent_committers_set():
     lines = read_lines(path)
     try:
         line = next(line for line in lines if line.endswith(git_path_from_cwd()))
-        *committer_initials, set_time, path_to_git = parse_committers_set_line(line)
+        *_, set_time, _ = parse_committers_set_line(line)
         return int(set_time)
     except StopIteration:
         raise PairSetError()

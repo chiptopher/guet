@@ -1,5 +1,3 @@
-from typing import List
-
 from guet.commands.do_nothing_strategy import DoNothingStrategy
 from guet.commands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.start.create_hook_strategy import CreateHookStrategy

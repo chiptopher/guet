@@ -1,6 +1,3 @@
-from typing import List
-
-from guet.settings.settings import Settings
 from guet.commands.strategy import CommandStrategy
 
 
