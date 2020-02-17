@@ -35,10 +35,22 @@ class TestHook(TestCase):
         hook = Hook('/path/to/.git/hooks/name', create=True)
         self.assertEqual(GUET_HOOK_FILE, hook.content)
 
+    @patch('guet.git.hook.chmod')
+    @patch('guet.git.hook.stat')
     @patch('guet.git.hook.write_lines')
-    def test_save_writes_lines_to_file(self, mock_write_lines, mock_read_lines):
+    def test_save_writes_lines_to_file(self, mock_write_lines, mock_stat, mock_chmod, mock_read_lines):
         mock_read_lines.side_effect = FileNotFoundError()
         path = '/path/to/.git/hooks/name'
         hook = Hook(path, create=True)
         hook.save()
         mock_write_lines.assert_called_with(path, hook.content)
+
+    @patch('guet.git.hook.chmod')
+    @patch('guet.git.hook.stat')
+    @patch('guet.git.hook.write_lines')
+    def test_save_chmods_file_to_executable(self, mock_write_lines, mock_stat, mock_chmod, mock_read_lines):
+        mock_read_lines.side_effect = FileNotFoundError()
+        path = '/path/to/.git/hooks/name'
+        hook = Hook(path, create=True)
+        hook.save()
+        mock_chmod.assert_called_with(path, mock_stat.return_value.st_mode | 0o111)

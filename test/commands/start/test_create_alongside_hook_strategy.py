@@ -10,10 +10,11 @@ class TestCreateAlongsideHookStrategy(TestCase):
 
     @patch('guet.commands.start.create_alongside_hook_strategy.create_hook')
     def test_creates_hooks_with_alongside_mode(self, mock_create_hook):
-        strategy = CreateAlongsideHookStrategy('/path')
+        hooks_path = '/path/to/.git/hooks'
+        strategy = CreateAlongsideHookStrategy(hooks_path)
         strategy.apply()
         mock_create_hook.assert_has_calls([
-            call('/path', Hooks.PRE_COMMIT, HookMode.CREATE_ALONGSIDE),
-            call('/path', Hooks.POST_COMMIT, HookMode.CREATE_ALONGSIDE),
-            call('/path', Hooks.COMMIT_MSG, HookMode.CREATE_ALONGSIDE)
+            call(hooks_path, Hooks.PRE_COMMIT, HookMode.CREATE_ALONGSIDE),
+            call(hooks_path, Hooks.POST_COMMIT, HookMode.CREATE_ALONGSIDE),
+            call(hooks_path, Hooks.COMMIT_MSG, HookMode.CREATE_ALONGSIDE)
         ])
