@@ -25,7 +25,20 @@ class TestHook(TestCase):
         mock_read_lines.return_value = ['#! /usr/bin/env python3', 'from guet.hooks import manage', 'import sys',
                                         'manage(sys.argv[0])']
         try:
-            hook = Hook('/path/to/.git/hooks/name')
+            Hook('/path/to/.git/hooks/name')
             pass
         except (NotGuetHookError, FileNotFoundError):
             self.fail('Should successfully create hook.')
+
+    def test_init_with_create_flag_catches_file_not_found_error_and_save_content_to_default(self, mock_read_lines):
+        mock_read_lines.side_effect = FileNotFoundError()
+        hook = Hook('/path/to/.git/hooks/name', create=True)
+        self.assertEqual(GUET_HOOK_FILE, hook.content)
+
+    @patch('guet.git.hook.write_lines')
+    def test_save_writes_lines_to_file(self, mock_write_lines, mock_read_lines):
+        mock_read_lines.side_effect = FileNotFoundError()
+        path = '/path/to/.git/hooks/name'
+        hook = Hook(path, create=True)
+        hook.save()
+        mock_write_lines.assert_called_with(path, hook.content)
