@@ -16,42 +16,42 @@ def _mock_hook(path: str):
 @patch('guet.git.git.Hook')
 class TestGit(TestCase):
 
-    def test_init_loads_hooks_from_git_path(self, mock_hook):
+    def test_init_loads_all_possible_hooks(self, mock_hook):
         pre_commit_content = Mock()
         post_commit_content = Mock()
         commit_msg_content = Mock()
-        expected_hooks = [pre_commit_content, post_commit_content, commit_msg_content]
+        pre_commit_alongside_content = Mock()
+        post_commit_alongside_content = Mock()
+        commit_msg_alongside_content = Mock()
+
+        expected_hooks = [pre_commit_content, post_commit_content, commit_msg_content,
+                          pre_commit_alongside_content, post_commit_alongside_content, commit_msg_alongside_content]
+
         mock_hook.side_effect = expected_hooks
 
         git = Git(path_to_git)
 
         mock_hook.assert_has_calls([
-            call(join(path_to_git, 'hooks', 'pre-commit')),
-            call(join(path_to_git, 'hooks', 'post-commit')),
-            call(join(path_to_git, 'hooks', 'commit-msg'))
-        ])
-        self.assertListEqual(expected_hooks, git.hooks)
-
-    def test_init_trys_dash_guet_for_file_name_if_name_without_dash_fails(self, mock_hook):
-        pre_commit_content = Mock()
-        post_commit_content = Mock()
-        commit_msg_content = Mock()
-        expected_hooks = [pre_commit_content, post_commit_content, commit_msg_content]
-        mock_hook.side_effect = [pre_commit_content, post_commit_content, NotGuetHookError(), commit_msg_content]
-
-        git = Git(path_to_git)
-
-        mock_hook.assert_has_calls([
-            call(join(path_to_git, 'hooks', 'pre-commit')),
-            call(join(path_to_git, 'hooks', 'post-commit')),
-            call(join(path_to_git, 'hooks', 'commit-msg')),
-            call(join(path_to_git, 'hooks', 'commit-msg-guet'))
+            call(join(path_to_git, 'hooks', 'pre-commit'), create=False),
+            call(join(path_to_git, 'hooks', 'post-commit'), create=False),
+            call(join(path_to_git, 'hooks', 'commit-msg'), create=False),
+            call(join(path_to_git, 'hooks', 'pre-commit-guet'), create=False),
+            call(join(path_to_git, 'hooks', 'post-commit-guet'), create=False),
+            call(join(path_to_git, 'hooks', 'commit-msg-guet'), create=False)
         ])
         self.assertListEqual(expected_hooks, git.hooks)
 
     def test_init_swallows_file_not_found_error(self, mock_hook):
         mock_hook.side_effect = [FileNotFoundError(), FileNotFoundError(), FileNotFoundError(), FileNotFoundError(),
                                  FileNotFoundError(), FileNotFoundError()]
+
+        git = Git(path_to_git)
+
+        self.assertListEqual([], git.hooks)
+
+    def test_init_swallows_file_not_guet_error(self, mock_hook):
+        mock_hook.side_effect = [NotGuetHookError(), NotGuetHookError(), NotGuetHookError(),
+                                 NotGuetHookError(), NotGuetHookError(), NotGuetHookError()]
 
         git = Git(path_to_git)
 
@@ -74,3 +74,53 @@ class TestGit(TestCase):
             _mock_hook(join(path_to_git, 'hooks', 'commit-msg-guet'))
         ]
         self.assertTrue(git.hooks_present())
+
+    def test_create_hooks_adds_new_files(self, mock_hook):
+        git = Git(path_to_git)
+        git.hooks = []
+
+        mock_hook.reset_mock()
+        pre_commit_hook = Mock()
+        post_commit_hook = Mock()
+        commit_msg_hook = Mock()
+        expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
+        mock_hook.side_effect = expected_hooks
+
+        git.create_hooks()
+
+        self.assertListEqual(expected_hooks, git.hooks)
+
+        mock_hook.assert_has_calls([
+            call(join(path_to_git, 'hooks', 'pre-commit'), create=True),
+            call(join(path_to_git, 'hooks', 'post-commit'), create=True),
+            call(join(path_to_git, 'hooks', 'commit-msg'), create=True),
+        ])
+
+        pre_commit_hook.save.assert_called()
+        post_commit_hook.save.assert_called()
+        commit_msg_hook.save.assert_called()
+
+    def test_create_hooks_adds_new_alongside_hooks(self, mock_hook):
+        git = Git(path_to_git)
+        git.hooks = []
+
+        mock_hook.reset_mock()
+        pre_commit_hook = Mock()
+        post_commit_hook = Mock()
+        commit_msg_hook = Mock()
+        expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
+        mock_hook.side_effect = expected_hooks
+
+        git.create_hooks(alongside=True)
+
+        self.assertListEqual(expected_hooks, git.hooks)
+
+        mock_hook.assert_has_calls([
+            call(join(path_to_git, 'hooks', 'pre-commit-guet'), create=True),
+            call(join(path_to_git, 'hooks', 'post-commit-guet'), create=True),
+            call(join(path_to_git, 'hooks', 'commit-msg-guet'), create=True),
+        ])
+
+        pre_commit_hook.save.assert_called()
+        post_commit_hook.save.assert_called()
+        commit_msg_hook.save.assert_called()
