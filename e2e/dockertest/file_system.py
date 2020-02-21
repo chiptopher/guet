@@ -6,6 +6,9 @@ class DockerFile:
         self.path = path
         self.lines = []
 
+    def __repr__(self):
+        return f'[{self.path}, {self.lines}]'
+
 
 class FileSystem:
     def __init__(self, files: List[DockerFile]):

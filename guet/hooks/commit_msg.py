@@ -1,11 +1,10 @@
 from typing import List
 
+from guet.git.git import Git
 from guet.git.git_path_from_cwd import git_path_from_cwd
 
 from guet.config.committer import Committer
 from guet.config.get_current_committers import get_current_committers
-from guet.git.edit_commit_msg import edit_commit_msg
-from guet.git.given_commit_message import given_commit_message
 from guet.util.errors import log_on_error
 
 
@@ -30,9 +29,10 @@ def _remove_trailing_newline(commit_message_without_co_authored):
 @log_on_error
 def commit_msg():
     git_path = git_path_from_cwd()
-    commit_message = given_commit_message(git_path)
+    git = Git(git_path)
+    commit_message = git.commit_msg
     current_committers = get_current_committers()
     co_authored_lines = [_create_co_authored_line(committer) for committer in current_committers]
     final_commit_message = _replace_already_present_co_authored_messages(
         commit_message, co_authored_lines)
-    edit_commit_msg(git_path, final_commit_message)
+    git.commit_msg = final_commit_message

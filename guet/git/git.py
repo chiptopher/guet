@@ -1,5 +1,8 @@
+from os.path import join
 from typing import List
 
+from guet.files.read_lines import read_lines
+from guet.files.write_lines import write_lines
 from guet.git._all_valid_hooks import all_valid_hooks
 from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
 from guet.git._file_name_strategy import BaseFileNameStrategy, AlongsideFileNameStrategy
@@ -15,6 +18,13 @@ def _load_hooks(hook_strategy: HookLoader) -> List[Hook]:
     return hooks
 
 
+def _load_commit_msg(path_to_repository) -> List[str]:
+    try:
+        return read_lines(join(path_to_repository, 'COMMIT_EDITMSG'))
+    except FileNotFoundError:
+        return []
+
+
 class Git:
 
     def __init__(self, repository_path: str):
@@ -22,6 +32,16 @@ class Git:
         alongside = _load_hooks(HookLoader(repository_path, AlongsideFileNameStrategy(), DontCreateStrategy()))
         self.hooks = default + alongside
         self.path_to_repository = repository_path
+        self._commit_msg = _load_commit_msg(repository_path)
+
+    @property
+    def commit_msg(self):
+        return self._commit_msg
+
+    @commit_msg.setter
+    def commit_msg(self, lines: List[str]):
+        write_lines(join(self.path_to_repository, 'COMMIT_EDITMSG'), lines)
+        self._commit_msg = lines
 
     def hooks_present(self) -> bool:
         return all_valid_hooks(self.hooks)
