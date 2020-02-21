@@ -7,7 +7,6 @@ from guet.commands.start.create_alongside_hook_strategy import CreateAlongsideHo
 from guet.commands.start.create_hook_strategy import CreateHookStrategy
 from guet.commands.start.start_strategy import PromptUserForHookTypeStrategy
 from guet.commands.strategy_command import StrategyCommand
-from guet.git.any_hooks_present import any_hooks_present
 from guet.git.git import Git
 from guet.git.git_path_from_cwd import git_path_from_cwd
 from guet.settings.settings import Settings

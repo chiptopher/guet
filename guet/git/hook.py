@@ -2,7 +2,6 @@ from os import chmod, stat
 
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
-from guet.git.errors import NotGuetHookError
 
 GUET_HOOK_FILE = [
     '#! /usr/bin/env python3',
@@ -25,6 +24,19 @@ class Hook:
 
     @staticmethod
     def _parse_file_content(create, path_to_hook):
+        _content = Hook._get_file_content(path_to_hook, create)
+        if _content != GUET_HOOK_FILE:
+            _content = Hook._handle_mismatched_content(_content, create)
+        return _content
+
+    @staticmethod
+    def _handle_mismatched_content(_content, create):
+        if create:
+            _content = GUET_HOOK_FILE
+        return _content
+
+    @staticmethod
+    def _get_file_content(path_to_hook, create):
         try:
             _content = read_lines(path_to_hook)
         except FileNotFoundError:
@@ -32,9 +44,6 @@ class Hook:
                 _content = GUET_HOOK_FILE
             else:
                 raise
-        if _content != GUET_HOOK_FILE:
-            if create:
-                _content = GUET_HOOK_FILE
         return _content
 
     def save(self):

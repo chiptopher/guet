@@ -1,8 +1,7 @@
 from os.path import join
-from typing import List
 from unittest import TestCase
 from unittest.mock import Mock, patch, call
-from guet.git.errors import NotGuetHookError
+
 from guet.git.git import Git
 
 path_to_git = '/path/to/.git'
@@ -15,7 +14,7 @@ def _mock_hook(path: str, *, is_guet_hook: bool = True):
     return mock
 
 
-@patch('guet.git.git.Hook')
+@patch('guet.git._hook_loader.Hook')
 class TestGit(TestCase):
 
     def test_init_loads_all_possible_hooks(self, mock_hook):
@@ -68,6 +67,16 @@ class TestGit(TestCase):
             _mock_hook(join(path_to_git, 'hooks', 'commit-msg'))
         ]
         self.assertFalse(git.hooks_present())
+
+    def test_hooks_present_returns_true_when_normal_hooks_have_non_guet_content_but_dash_hooks_are_present(self, _):
+        git = Git(path_to_git)
+        git.hooks = [
+            _mock_hook(join(path_to_git, 'hooks', 'post-commit'), is_guet_hook=False),
+            _mock_hook(join(path_to_git, 'hooks', 'pre-commit-guet')),
+            _mock_hook(join(path_to_git, 'hooks', 'post-commit-guet')),
+            _mock_hook(join(path_to_git, 'hooks', 'commit-msg-guet'))
+        ]
+        self.assertTrue(git.hooks_present())
 
     def test_hooks_present_when_all_dash_guet_hooks_are_present(self, mock_hook):
         git = Git(path_to_git)
