@@ -17,6 +17,12 @@ class Hook:
         self.path = path_to_hook
         self.content = self._parse_file_content(create, path_to_hook)
 
+    def __repr__(self) -> str:
+        return f'Hook: path: {self.path}, content: {self.content}'
+
+    def is_guet_hook(self):
+        return self.content == GUET_HOOK_FILE
+
     @staticmethod
     def _parse_file_content(create, path_to_hook):
         try:
@@ -27,7 +33,8 @@ class Hook:
             else:
                 raise
         if _content != GUET_HOOK_FILE:
-            raise NotGuetHookError()
+            if create:
+                _content = GUET_HOOK_FILE
         return _content
 
     def save(self):

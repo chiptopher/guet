@@ -1,4 +1,5 @@
 from os.path import join
+from typing import List
 from unittest import TestCase
 from unittest.mock import Mock, patch, call
 from guet.git.errors import NotGuetHookError
@@ -7,9 +8,10 @@ from guet.git.git import Git
 path_to_git = '/path/to/.git'
 
 
-def _mock_hook(path: str):
+def _mock_hook(path: str, *, is_guet_hook: bool = True):
     mock = Mock()
     mock.path = path
+    mock.is_guet_hook.return_value = is_guet_hook
     return mock
 
 
@@ -49,14 +51,6 @@ class TestGit(TestCase):
 
         self.assertListEqual([], git.hooks)
 
-    def test_init_swallows_file_not_guet_error(self, mock_hook):
-        mock_hook.side_effect = [NotGuetHookError(), NotGuetHookError(), NotGuetHookError(),
-                                 NotGuetHookError(), NotGuetHookError(), NotGuetHookError()]
-
-        git = Git(path_to_git)
-
-        self.assertListEqual([], git.hooks)
-
     def test_hooks_present_returns_true_when_all_normal_hooks_present(self, mock_hook):
         git = Git(path_to_git)
         git.hooks = [
@@ -66,6 +60,15 @@ class TestGit(TestCase):
         ]
         self.assertTrue(git.hooks_present())
 
+    def test_hooks_present_returns_false_if_normal_hooks_have_non_guet_content(self, mock_hook):
+        git = Git(path_to_git)
+        git.hooks = [
+            _mock_hook(join(path_to_git, 'hooks', 'pre-commit')),
+            _mock_hook(join(path_to_git, 'hooks', 'post-commit'), is_guet_hook=False),
+            _mock_hook(join(path_to_git, 'hooks', 'commit-msg'))
+        ]
+        self.assertFalse(git.hooks_present())
+
     def test_hooks_present_when_all_dash_guet_hooks_are_present(self, mock_hook):
         git = Git(path_to_git)
         git.hooks = [
@@ -74,6 +77,27 @@ class TestGit(TestCase):
             _mock_hook(join(path_to_git, 'hooks', 'commit-msg-guet'))
         ]
         self.assertTrue(git.hooks_present())
+
+    def test_non_guet_hooks_present_returns_true_if_any_hooks_have_non_guet_contnet(self, mock_hook):
+        git = Git(path_to_git)
+        non_guet_hook = Mock()
+        non_guet_hook.is_guet_hook.return_value = False
+        guet_hook = Mock()
+        guet_hook.is_guet_hook.return_value = True
+        git.hooks = [non_guet_hook]
+        self.assertTrue(git.non_guet_hooks_present())
+
+    def test_non_guet_hooks_present_returns_false_if_all_hooks_have_guet_content(self, mock_hook):
+        git = Git(path_to_git)
+        guet_hook = Mock()
+        guet_hook.is_guet_hook.return_value = True
+        git.hooks = [guet_hook]
+        self.assertFalse(git.non_guet_hooks_present())
+
+    def test_non_guet_hook_present_returns_false_when_no_hooks_present(self, mock_hook):
+        git = Git(path_to_git)
+        git.hooks = []
+        self.assertFalse(git.non_guet_hooks_present())
 
     def test_create_hooks_adds_new_files(self, mock_hook):
         git = Git(path_to_git)

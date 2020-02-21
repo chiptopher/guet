@@ -51,7 +51,9 @@ class _HookLoader:
         hook_path = join(self.path_to_repository, 'hooks', self.file_name.apply(hook_name))
         try:
             hooks.append(Hook(hook_path, create=self.create.apply()))
-        except (FileNotFoundError, NotGuetHookError):
+        except FileNotFoundError:
+            pass
+        except NotGuetHookError:
             pass
 
 
@@ -62,17 +64,16 @@ def _load_hooks(hook_strategy: _HookLoader) -> List[Hook]:
     return hooks
 
 
-def _default_hooks_present(present_hooks: List[str]) -> bool:
-    return GUET_HOOKS == present_hooks
-
-
-def _alongside_hooks_present(present_hooks: List[str]) -> bool:
-    dash_guet = [hook + '-guet' for hook in GUET_HOOKS]
-    return dash_guet == present_hooks
-
-
-def _check_for_alongside_hooks_if_they_dont_exist_already() -> List[Hook]:
-    pass
+def _all_valid_hooks(hooks: List[Hook]) -> bool:
+    hook_names = [hook.path.split('/')[-1] for hook in hooks]
+    valid_names = GUET_HOOKS == hook_names
+    valid_content = all([hook.is_guet_hook() for hook in hooks])
+    if not (valid_names and valid_content):
+        hook_names = [hook.path.split('/')[-1].replace('-guet', '') for hook in hooks]
+        valid_names = GUET_HOOKS == hook_names
+        valid_content = all([hook.is_guet_hook() for hook in hooks])
+        return valid_names and valid_content
+    return True
 
 
 class Git:
@@ -84,10 +85,14 @@ class Git:
         self.path_to_repository = repository_path
 
     def hooks_present(self) -> bool:
-        names_of_present_hooks = [hook.path.split('/')[-1] for hook in self.hooks]
-        default_hooks_present = _default_hooks_present(names_of_present_hooks)
-        alongside_hooks_present = _alongside_hooks_present(names_of_present_hooks)
-        return default_hooks_present or alongside_hooks_present
+        return _all_valid_hooks(self.hooks)
+
+    def non_guet_hooks_present(self) -> bool:
+        non_guet_hook_found = False
+        for hook in self.hooks:
+            if not hook.is_guet_hook():
+                non_guet_hook_found = True
+        return non_guet_hook_found
 
     def create_hooks(self, alongside=False) -> None:
         if alongside:
