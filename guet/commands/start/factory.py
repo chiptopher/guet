@@ -8,7 +8,8 @@ from guet.commands.start.create_hook_strategy import CreateHookStrategy
 from guet.commands.start.start_strategy import PromptUserForHookTypeStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.git.any_hooks_present import any_hooks_present
-from guet.git.git_path_from_cwd import git_hook_path_from_cwd
+from guet.git.git import Git
+from guet.git.git_path_from_cwd import git_path_from_cwd
 from guet.settings.settings import Settings
 
 START_HELP_MESSAGE = HelpMessageBuilder('guet start',
@@ -22,13 +23,14 @@ class StartCommandFactory(CommandFactoryMethod):
         return 'Start guet usage in the repository at current directory'
 
     def build(self, args: List[str], settings: Settings) -> Command:
-        hook_path = git_hook_path_from_cwd()
+        git_path = git_path_from_cwd().replace('/hooks', '')
+        git = Git(git_path)
         if '-a' in args or '--alongside' in args:
-            strategy = CreateAlongsideHookStrategy(hook_path)
+            strategy = CreateAlongsideHookStrategy(git_path)
         elif '-o' in args or '--overwrite' in args:
-            strategy = CreateHookStrategy(hook_path)
-        elif not any_hooks_present(hook_path):
-            strategy = CreateHookStrategy(hook_path)
+            strategy = CreateHookStrategy(git_path)
+        elif git.non_guet_hooks_present():
+            strategy = PromptUserForHookTypeStrategy(git_path)
         else:
-            strategy = PromptUserForHookTypeStrategy(hook_path)
+            strategy = CreateHookStrategy(git_path)
         return StrategyCommand(strategy)

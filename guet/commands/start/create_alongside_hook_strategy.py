@@ -1,10 +1,9 @@
 from guet.commands.start.hook_strategy import HookStrategy
-from guet.git.create_hook import create_hook, Hooks
-from guet.git.hook_mode import HookMode
+from guet.git.git import Git
 
 
 class CreateAlongsideHookStrategy(HookStrategy):
     def apply(self):
-        create_hook(self._hook_path, Hooks.PRE_COMMIT, HookMode.CREATE_ALONGSIDE)
-        create_hook(self._hook_path, Hooks.POST_COMMIT, HookMode.CREATE_ALONGSIDE)
-        create_hook(self._hook_path, Hooks.COMMIT_MSG, HookMode.CREATE_ALONGSIDE)
+        git_path = self.git_path.replace('/hooks', '')
+        git = Git(git_path)
+        git.create_hooks(alongside=True)

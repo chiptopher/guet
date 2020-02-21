@@ -1,20 +1,15 @@
 from unittest import TestCase
-from unittest.mock import patch, call
+from unittest.mock import patch
 
 from guet.commands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
-from guet.git.create_hook import Hooks
-from guet.git.hook_mode import HookMode
 
 
 class TestCreateAlongsideHookStrategy(TestCase):
 
-    @patch('guet.commands.start.create_alongside_hook_strategy.create_hook')
-    def test_creates_hooks_with_alongside_mode(self, mock_create_hook):
+    @patch('guet.commands.start.create_alongside_hook_strategy.Git')
+    def test_creates_hooks_with_alongside_mode(self, mock_git):
         hooks_path = '/path/to/.git/hooks'
         strategy = CreateAlongsideHookStrategy(hooks_path)
         strategy.apply()
-        mock_create_hook.assert_has_calls([
-            call(hooks_path, Hooks.PRE_COMMIT, HookMode.CREATE_ALONGSIDE),
-            call(hooks_path, Hooks.POST_COMMIT, HookMode.CREATE_ALONGSIDE),
-            call(hooks_path, Hooks.COMMIT_MSG, HookMode.CREATE_ALONGSIDE)
-        ])
+        mock_git.assert_called_with('/path/to/.git')
+        mock_git.return_value.create_hooks.assert_called_with(alongside=True)
