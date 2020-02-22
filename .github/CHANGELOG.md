@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.3
+Address a bug where upgrading from <2.3 would cause the `committersset` file to get into a malformed state.
+
+Blocks `guet set` in a repository where `guet set` hasn't been ran.
+
 ## 2.3.2
 Address a bug where each character in the stacktrace for the error message would print on a new line. Also include the path to the file containing stacktraces.
 
