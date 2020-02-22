@@ -8,7 +8,7 @@ from guet.hooks.post_commit import post_commit
 @patch('guet.hooks.post_commit.set_committer_as_author')
 @patch('guet.hooks.post_commit.set_current_committers')
 @patch('guet.hooks.post_commit.get_current_committers')
-@patch('guet.hooks.post_commit.configure_git_author')
+@patch('guet.hooks.post_commit.Git')
 class TestPostCommit(unittest.TestCase):
 
     def test_manage_rotates_the_commit_names(self,
@@ -41,7 +41,7 @@ class TestPostCommit(unittest.TestCase):
         mock_set_committer_as_author.assert_called_with(committer2)
 
     def test_manage_configures_git_to_use_new_author(self,
-                                                     mock_configure_git_author,
+                                                     mock_git,
                                                      mock_get_committers,
                                                      mock_set_committers,
                                                      mock_set_committer_as_author):
@@ -52,4 +52,6 @@ class TestPostCommit(unittest.TestCase):
 
         post_commit()
 
-        mock_configure_git_author.assert_called_with(committer2.name, committer2.email)
+        git = mock_git()
+        self.assertEqual(git.author.name, committer2.name)
+        self.assertEqual(git.author.email, committer2.email)

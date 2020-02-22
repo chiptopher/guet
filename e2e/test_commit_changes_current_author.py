@@ -63,4 +63,3 @@ class TestGuetCommitRotatesAuthor(DockerTest):
         self.execute()
 
         self.assert_text_in_logs(8, 'Author: {} <{}>'.format('name2', 'email2@localhost'))
-
