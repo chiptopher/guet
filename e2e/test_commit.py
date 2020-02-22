@@ -59,6 +59,8 @@ class TestCommit(DockerTest):
         self.change_directory('test1')
         self.guet_add('initials', 'name', 'email@localhost')
         self.guet_add('initials2', 'name2', 'email2@localhost')
+        self.git_init()
+        self.guet_start()
         self.guet_set(['initials', 'initials2'])
         self.change_directory('..')
         self.add_command('mkdir test2')
@@ -68,6 +70,7 @@ class TestCommit(DockerTest):
         self.add_file('A')
         self.git_add()
         self.git_commit('Initial commit')
+        self.save_file_content('.guet/errors')
 
         self.execute()
 
@@ -79,6 +82,8 @@ class TestCommit(DockerTest):
         self.change_directory('test1')
         self.guet_add('initials', 'name', 'email@localhost')
         self.guet_add('initials2', 'name2', 'email2@localhost')
+        self.git_init()
+        self.guet_start()
         self.guet_set(['initials', 'initials2'])
         self.change_directory('..')
         self.add_command('mkdir test2')

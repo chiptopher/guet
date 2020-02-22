@@ -52,10 +52,11 @@ class TestGuetSet(DockerTest):
 
     def test_errors_if_guet_set_ran_in_folder_with_no_git(self):
         self.guet_init()
+        self.git_init()
         self.guet_add('initials1', 'name1', 'email1')
         self.guet_add('initials2', 'name2', 'email2')
         self.guet_set(['initials1', 'initials2'])
 
         self.execute()
 
-        self.assert_text_in_logs(0, GUET_NOT_STARTED_ERROR)
+        self.assert_text_in_logs(1, GUET_NOT_STARTED_ERROR)

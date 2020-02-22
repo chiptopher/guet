@@ -1,4 +1,4 @@
-from os.path import join
+from os.path import join, isdir
 from typing import List
 
 from guet.files.read_lines import read_lines
@@ -8,6 +8,7 @@ from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
 from guet.git._file_name_strategy import BaseFileNameStrategy, AlongsideFileNameStrategy
 from guet.git._guet_hooks import GUET_HOOKS
 from guet.git._hook_loader import HookLoader
+from guet.git.errors import NoGitPresentError
 from guet.git.hook import Hook
 
 
@@ -28,6 +29,8 @@ def _load_commit_msg(path_to_repository) -> List[str]:
 class Git:
 
     def __init__(self, repository_path: str):
+        if not isdir(repository_path):
+            raise NoGitPresentError()
         default = _load_hooks(HookLoader(repository_path, BaseFileNameStrategy(), DontCreateStrategy()))
         alongside = _load_hooks(HookLoader(repository_path, AlongsideFileNameStrategy(), DontCreateStrategy()))
         self.hooks = default + alongside
