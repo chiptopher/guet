@@ -2,10 +2,23 @@ from os.path import join
 from unittest import TestCase
 from unittest.mock import Mock, patch, call
 
+from guet.git.author import Author
 from guet.git.errors import NoGitPresentError
 from guet.git.git import Git
 
 path_to_git = '/path/to/.git'
+
+default_config_response = ['[core]',
+                           '\trepositoryformatversion = 0',
+                           '\tfilemode = true',
+                           '\tbare = false',
+                           '\tlogallrefupdates = true',
+                           '\tignorecase = true',
+                           '\tprecomposeunicode = true',
+                           '[user]',
+                           '\tname = name',
+                           '\temail = name@localhost'
+                           ]
 
 
 def _mock_hook(path: str, *, is_guet_hook: bool = True):
@@ -15,8 +28,15 @@ def _mock_hook(path: str, *, is_guet_hook: bool = True):
     return mock
 
 
+def _mock_read_lines(path: str):
+    if path.endswith('COMMIT_EDITMSG'):
+        return ['First line of commit message', 'Second line of commit message']
+    elif path.endswith('config'):
+        return default_config_response
+
+
 @patch('guet.git.git.isdir')
-@patch('guet.git.git.read_lines')
+@patch('guet.git.git.read_lines', side_effect=_mock_read_lines)
 @patch('guet.git._hook_loader.Hook')
 class TestGit(TestCase):
 
@@ -60,7 +80,10 @@ class TestGit(TestCase):
         self.assertListEqual(expected_commit_msg, git.commit_msg)
 
     def test_init_handles_there_not_being_a_commit_msg_file_becuase_of_no_commits(self, _1, mock_read_lines, _2):
-        mock_read_lines.side_effect = FileNotFoundError()
+        mock_read_lines.side_effect = [
+            FileNotFoundError(),
+            default_config_response
+        ]
         git = Git(path_to_git)
         self.assertListEqual([], git.commit_msg)
 
@@ -72,12 +95,27 @@ class TestGit(TestCase):
         except NoGitPresentError:
             mock_isdir.assert_called_with(path_to_git)
 
+    def test_init_loads_the_author_from_the_config_file(self, _1, _2, _3):
+        git = Git(path_to_git)
+        self.assertEqual('name', git.author.name)
+        self.assertEqual('name@localhost', git.author.email)
+
     @patch('guet.git.git.write_lines')
     def test_setting_commit_msg_writes_it_to_file(self, mock_write_lines, _1, _2, _3):
         new_content = ['New line 1', 'New line 2']
         git = Git(path_to_git)
         git.commit_msg = new_content
         mock_write_lines.assert_called_with(join(path_to_git, 'COMMIT_EDITMSG'), new_content)
+
+    @patch('guet.git.git.write_lines')
+    def test_setting_author_writes_it_to_file(self, mock_write_lines, _1, _2, _3):
+        new_content = list(default_config_response)
+        new_content[-1] = '\temail = new_email@localhost'
+        new_content[-2] = '\tname = new_name'
+
+        git = Git(path_to_git)
+        git.author = Author(name='new_name', email='new_email@localhost')
+        mock_write_lines.assert_called_with(join(path_to_git, 'config'), new_content)
 
     def test_hooks_present_returns_true_when_all_normal_hooks_present(self, _1, _2, _3):
         git = Git(path_to_git)

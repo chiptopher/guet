@@ -8,6 +8,7 @@ from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
 from guet.git._file_name_strategy import BaseFileNameStrategy, AlongsideFileNameStrategy
 from guet.git._guet_hooks import GUET_HOOKS
 from guet.git._hook_loader import HookLoader
+from guet.git.author import Author
 from guet.git.errors import NoGitPresentError
 from guet.git.hook import Hook
 
@@ -26,6 +27,12 @@ def _load_commit_msg(path_to_repository) -> List[str]:
         return []
 
 
+def _load_author(config_lines: List[str]) -> Author:
+    user = next((line for line in config_lines if line.startswith('\tname = ')), None)
+    email = next((line for line in config_lines if line.startswith('\temail = ')), None)
+    return Author(name=user.replace('\tname = ', ''), email=email.replace('\temail = ', ''))
+
+
 class Git:
 
     def __init__(self, repository_path: str):
@@ -36,6 +43,23 @@ class Git:
         self.hooks = default + alongside
         self.path_to_repository = repository_path
         self._commit_msg = _load_commit_msg(repository_path)
+        self._config_lines = read_lines(join(repository_path, 'config'))
+        self._author: Author = _load_author(self._config_lines)
+
+    @property
+    def author(self) -> Author:
+        return self._author
+
+    @author.setter
+    def author(self, new_author: Author):
+        new_lines = list(self._config_lines)
+        for i, line in enumerate(new_lines):
+            if 'name =' in line:
+                new_lines[i] = f'\tname = {new_author.name}'
+            elif 'email =' in line:
+                new_lines[i] = f'\temail = {new_author.email}'
+        write_lines(join(self.path_to_repository, 'config'), new_lines)
+        self._author = new_author
 
     @property
     def commit_msg(self):
