@@ -100,6 +100,18 @@ class TestGit(TestCase):
         self.assertEqual('name', git.author.name)
         self.assertEqual('name@localhost', git.author.email)
 
+    def test_init_loads_none_when_there_is_no_author_set_in_config(self, _1, mock_read_lines, _3):
+        without_author = list(default_config_response)
+        del without_author[-1]
+        del without_author[-2]
+        del without_author[-3]
+        mock_read_lines.side_effect = [
+            [],
+            without_author
+        ]
+        git = Git(path_to_git)
+        self.assertIsNone(git.author)
+
     @patch('guet.git.git.write_lines')
     def test_setting_commit_msg_writes_it_to_file(self, mock_write_lines, _1, _2, _3):
         new_content = ['New line 1', 'New line 2']
@@ -114,6 +126,20 @@ class TestGit(TestCase):
         new_content[-2] = '\tname = new_name'
 
         git = Git(path_to_git)
+        git.author = Author(name='new_name', email='new_email@localhost')
+        mock_write_lines.assert_called_with(join(path_to_git, 'config'), new_content)
+
+    @patch('guet.git.git.write_lines')
+    def test_setting_writes_author_when_no_author_currently_present(self, mock_write_lines, _1, _2, _3):
+        content_without_author = list(default_config_response)
+        del content_without_author[-1]
+        del content_without_author[-1]
+        del content_without_author[-1]
+
+        new_content = content_without_author + ['[user]', '\tname = new_name', '\temail = new_email@localhost']
+
+        git = Git(path_to_git)
+        git._config_lines = content_without_author
         git.author = Author(name='new_name', email='new_email@localhost')
         mock_write_lines.assert_called_with(join(path_to_git, 'config'), new_content)
 

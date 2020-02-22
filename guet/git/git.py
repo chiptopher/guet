@@ -4,6 +4,7 @@ from typing import List
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 from guet.git._all_valid_hooks import all_valid_hooks
+from guet.git._author_manage import load_author, overwrite_current_author, get_author_lines, append_new_author
 from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
 from guet.git._file_name_strategy import BaseFileNameStrategy, AlongsideFileNameStrategy
 from guet.git._guet_hooks import GUET_HOOKS
@@ -27,12 +28,6 @@ def _load_commit_msg(path_to_repository) -> List[str]:
         return []
 
 
-def _load_author(config_lines: List[str]) -> Author:
-    user = next((line for line in config_lines if line.startswith('\tname = ')), None)
-    email = next((line for line in config_lines if line.startswith('\temail = ')), None)
-    return Author(name=user.replace('\tname = ', ''), email=email.replace('\temail = ', ''))
-
-
 class Git:
 
     def __init__(self, repository_path: str):
@@ -44,7 +39,7 @@ class Git:
         self.path_to_repository = repository_path
         self._commit_msg = _load_commit_msg(repository_path)
         self._config_lines = read_lines(join(repository_path, 'config'))
-        self._author: Author = _load_author(self._config_lines)
+        self._author: Author = load_author(self._config_lines)
 
     @property
     def author(self) -> Author:
@@ -53,11 +48,11 @@ class Git:
     @author.setter
     def author(self, new_author: Author):
         new_lines = list(self._config_lines)
-        for i, line in enumerate(new_lines):
-            if 'name =' in line:
-                new_lines[i] = f'\tname = {new_author.name}'
-            elif 'email =' in line:
-                new_lines[i] = f'\temail = {new_author.email}'
+        user, email = get_author_lines(self._config_lines)
+        if user is not None and email is not None:
+            overwrite_current_author(new_lines, new_author)
+        else:
+            append_new_author(new_lines, new_author)
         write_lines(join(self.path_to_repository, 'config'), new_lines)
         self._author = new_author
 
