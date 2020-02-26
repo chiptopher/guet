@@ -1,6 +1,8 @@
 from os.path import join, isdir
 from typing import List
 
+from guet.config.committer import Committer
+from guet.context.author_observer import AuthorObserver
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 from guet.git._all_valid_hooks import all_valid_hooks
@@ -28,9 +30,10 @@ def _load_commit_msg(path_to_repository) -> List[str]:
         return []
 
 
-class Git:
+class Git(AuthorObserver):
 
     def __init__(self, repository_path: str):
+        super().__init__()
         if not isdir(repository_path):
             raise NoGitPresentError()
         default = _load_hooks(HookLoader(repository_path, BaseFileNameStrategy(), DontCreateStrategy()))
@@ -83,3 +86,6 @@ class Git:
         self.hooks = _load_hooks(hook_loader)
         for hook in self.hooks:
             hook.save()
+
+    def notify_of_author(self, new_author: Committer):
+        self.author = Author(name=new_author.name, email=new_author.email)

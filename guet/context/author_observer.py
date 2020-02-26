@@ -7,4 +7,4 @@ class AuthorObserver:
         pass
 
     def notify_of_author(self, new_author: Committer):
-        pass
+        raise NotImplementedError()
