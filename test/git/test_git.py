@@ -257,6 +257,6 @@ class TestGit(TestCase):
     def test_notify_of_author_sets_the_author_proprty(self, mock_write_lines, _1, _2, _3):
         git = Git(path_to_git)
         committer = Committer(name='new_name', email='new_email', initials='initials')
-        git.notify_of_author(committer)
+        git.notify_of_committer_set([committer])
         self.assertEqual('new_name', git.author.name)
         self.assertEqual('new_email', git.author.email)
