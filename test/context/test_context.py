@@ -2,9 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 
 from guet.config.committer import Committer
-from guet.context.author_observer import AuthorObserver
+from guet.context.set_committer_observer import SetCommitterObserver
 from guet.context.context import Context
-from test.context.errors import InvalidCommittersError
+from guet.context.errors import InvalidCommittersError
 
 
 @patch('guet.context.context.Git')
@@ -16,18 +16,18 @@ class TestContext(TestCase):
         committer1 = Committer(name='name1', email='email1', initials='initials1')
         committer2 = Committer(name='name2', email='email2', initials='initials2')
 
-        observer: AuthorObserver = Mock()
-        context.add_author_observer(observer)
+        observer: SetCommitterObserver = Mock()
+        context.add_set_committer_observer(observer)
 
         context.set_committers([committer1, committer2])
 
-        observer.notify_of_author.assert_called_with(committer1)
+        observer.notify_of_committer_set.assert_called_with([committer1, committer2])
 
     def test_set_committers_raises_exception_when_given_an_empty_list(self, mock_git):
         context = Context('current/working/directory/')
 
-        observer: AuthorObserver = Mock()
-        context.add_author_observer(observer)
+        observer: SetCommitterObserver = Mock()
+        context.add_set_committer_observer(observer)
 
         try:
             context.set_committers([])
@@ -44,4 +44,4 @@ class TestContext(TestCase):
 
         expected_author_observers = [mock_git.return_value]
 
-        self.assertListEqual(expected_author_observers, context.author_observers)
+        self.assertListEqual(expected_author_observers, context.current_committers_observer)
