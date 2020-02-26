@@ -7,10 +7,11 @@ from guet.context.context import Context
 from guet.context.errors import InvalidCommittersError
 
 
+@patch('guet.context.context.Committers')
 @patch('guet.context.context.Git')
 class TestContext(TestCase):
 
-    def test_set_committers_notifies_author_observers_that_committer_in_first_position_is_author(self, mock_git):
+    def test_set_committers_notifies_author_observers_that_committers_are_set(self, mock_git, mock_committers):
         context = Context('current/working/directory')
 
         committer1 = Committer(name='name1', email='email1', initials='initials1')
@@ -23,7 +24,7 @@ class TestContext(TestCase):
 
         observer.notify_of_committer_set.assert_called_with([committer1, committer2])
 
-    def test_set_committers_raises_exception_when_given_an_empty_list(self, mock_git):
+    def test_set_committers_raises_exception_when_given_an_empty_list(self, mock_git, mock_committers):
         context = Context('current/working/directory/')
 
         observer: SetCommitterObserver = Mock()
@@ -35,13 +36,13 @@ class TestContext(TestCase):
         except InvalidCommittersError:
             pass
 
-    def test_init_loads_git_from_project_root_path_plus_git_directory(self, mock_git):
+    def test_init_loads_git_from_project_root_path_plus_git_directory(self, mock_git, mock_committers):
         Context('path/to/project/root/')
         mock_git.assert_called_with('path/to/project/root/.git')
 
-    def test_loads_author_observers(self, mock_git):
+    def test_loads_author_observers(self, mock_git, mock_committers):
         context = Context('path/to/project/root/')
 
-        expected_author_observers = [mock_git.return_value]
+        expected_author_observers = [mock_git.return_value, mock_committers.return_value]
 
         self.assertListEqual(expected_author_observers, context.current_committers_observer)
