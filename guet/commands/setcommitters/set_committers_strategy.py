@@ -4,8 +4,6 @@ from typing import List
 from guet.commands.strategy import CommandStrategy
 from guet.config.committer import filter_committers_with_initials, Committer
 from guet.config.get_committers import get_committers
-from guet.config.set_author import set_committer_as_author
-from guet.config.set_current_committers import set_current_committers as set_committers
 from guet.context.context import Context
 
 
