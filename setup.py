@@ -31,5 +31,6 @@ setup(name='guet',
           'guet.settings',
           'guet.git',
           'guet.config',
+          'guet.context',
           'guet.util'
       ])
