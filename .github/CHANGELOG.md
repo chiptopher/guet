@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.4
+Address a bug where initial `guet set` calls would not configure the first commit to use the set committer as the git author. Instead, the system author would be used. Now the first committer supplied to the `guet set` call is used as the commit author.
+
 ## 2.3.3
 Address a bug where upgrading from <2.3 would cause the `committersset` file to get into a malformed state.
 
