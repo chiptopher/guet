@@ -18,6 +18,8 @@ The version of **guet** installed can be upgraded using the following command:
 pip3 install guet --upgrade
 ```
 
+To see the version releases, changes between them, and upgrade guides, check the [change log](./.github/CHANGELOG.md)
+
 #### Development Version
 The most recent develoment version can be downloaded and installed as well:
 
@@ -43,10 +45,6 @@ For full usage details, using `guet` will print out all commands and a descripti
 #### Set Committers
 `guet set [<initials>, ...]` will register the committers with the given initials to have their names attached to all
 following commits.
-
-## Changelog
-
-To see the version releases, changes between them, and upgrade guides, check the [change log](./.github/CHANGELOG.md)
 
 ## Contribution
 
