@@ -1,3 +1,4 @@
+from os import getcwd
 from os.path import join
 from typing import List
 
@@ -9,12 +10,17 @@ from guet.context.errors import InvalidCommittersError
 
 
 class Context(SetCommittersObservable):
+    @staticmethod
+    def instance():
+        return Context(getcwd())
+
     def __init__(self, project_root_directory: str):
         super().__init__()
         git = Git(join(project_root_directory, '.git'))
         committers = Committers()
         self.add_set_committer_observer(git)
         self.add_set_committer_observer(committers)
+        self.project_root_directory = project_root_directory
 
     def set_committers(self, committers: List[Committer]):
         if len(committers) > 0:
