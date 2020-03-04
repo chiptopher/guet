@@ -25,7 +25,7 @@ class SetCommittersStrategy(CommandStrategy):
                     print(f"No committer exists with initials '{initials}'")
         else:
             context = Context(getcwd())
-            context.notify_set_committer_observers(committers_to_set)
+            context.set_committers(committers_to_set)
 
     def _committer_with_initials_present(self, committers: List[Committer], initials: str):
         committer_with_initial_present = False

@@ -11,7 +11,7 @@ from guet.context.context import Context
 @patch('guet.commands.setcommitters.set_committers_strategy.get_committers')
 class TestSetCommittersStrategy(TestCase):
 
-    def test_initializes_context(self, mock_get_committers, mock_context, mock_getcwd):
+    def test_apply_set_commiters_with_context(self, mock_get_committers, mock_context, mock_getcwd):
         committer1 = Committer(name='name1', email='email1', initials='initials1')
         committer2 = Committer(name='name2', email='email2', initials='initials2')
         mock_get_committers.return_value = [committer1, committer2]
@@ -20,7 +20,7 @@ class TestSetCommittersStrategy(TestCase):
         strategy.apply()
 
         context: Context = mock_context.return_value
-        context.notify_set_committer_observers.assert_called_with([committer1, committer2])
+        context.set_committers.assert_called_with([committer1, committer2])
 
     @patch('builtins.print')
     def test_execute_prints_out_error_message_when_the_given_initials_arent_in_the_system(
