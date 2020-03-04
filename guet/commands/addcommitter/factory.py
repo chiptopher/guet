@@ -5,6 +5,7 @@ from guet.commands.command import Command
 from guet.commands.do_nothing_strategy import DoNothingStrategy
 from guet.commands.help.help_message_builder import HelpMessageBuilder
 from guet.config.get_committers import get_committers
+from guet.context.context import Context
 from guet.settings.settings import Settings
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.strategy_command import StrategyCommand
@@ -18,6 +19,8 @@ ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <e
 
 
 class AddCommitterFactory(CommandFactoryMethod):
+    def __init__(self):
+        self.context: Context = Context.instance(load_git=False)
 
     def build(self, args: List[str], settings: Settings) -> Command:
         strategy = self._choose_strategy(args[1:], settings)
@@ -27,10 +30,11 @@ class AddCommitterFactory(CommandFactoryMethod):
         return 'Add committer to the list of available committers'
 
     def _initials_already_present(self, initials):
-        return len([committer for committer in get_committers() if committer.initials == initials]) != 0
+        return len([committer for committer in self.context.committers.all() if committer.initials == initials]) != 0
 
     def _prompt(self, new_initials: str, new_name: str, new_email: str) -> str:
-        matching_committer = next((committer for committer in get_committers() if committer.initials == new_initials))
+        matching_committer = next(
+            (committer for committer in self.context.committers.all() if committer.initials == new_initials))
         warning = (f'Matching initials "{new_initials}". Adding "{new_name}" <{new_email}> '
                    f'will overwrite "{matching_committer.name}" <{matching_committer.email}>. Would you '
                    f'like to continue (y) or cancel (x)?')

@@ -5,6 +5,7 @@ from guet.config.committer import Committer
 from guet.context.set_committer_observer import SetCommitterObserver
 from guet.context.context import Context
 from guet.context.errors import InvalidCommittersError
+from guet.git.errors import NoGitPresentError
 
 
 @patch('guet.context.context.Committers')
@@ -40,13 +41,22 @@ class TestContext(TestCase):
         except InvalidCommittersError:
             pass
 
-    def test_init_loads_git_from_project_root_path_plus_git_directory(self, mock_git, mock_committers):
-        Context('path/to/project/root/')
-        mock_git.assert_called_with('path/to/project/root/.git')
-
-    def test_loads_author_observers(self, mock_git, mock_committers):
+    def test_git_prop_loads_the_git_object(self, mock_git, mock_committers):
         context = Context('path/to/project/root/')
+        self.assertEqual(mock_git.return_value, context.git)
+        self.assertIn(mock_git.return_value, context.current_committers_observer)
 
-        expected_author_observers = [mock_git.return_value, mock_committers.return_value]
+    def test_committers_prop_loads_the_committers_if_not_loaded_and_adds_as_observer(self, _1, mock_committers):
+        context = Context('path/to/project/root/')
+        self.assertEqual(mock_committers.return_value, context.committers)
+        self.assertIn(context.committers, context.current_committers_observer)
 
-        self.assertListEqual(expected_author_observers, context.current_committers_observer)
+    def test_set_committers_attempts_to_load_git_module_if_not_already_present(self, _1, _2):
+        context = Context('path/to/project/root')
+        context.set_committers([Mock()])
+        self.assertIsNotNone(context._git)
+
+    def test_init_doesnt_load_git_observer_if_git_not_present_when_ignore_git_flag_present(self, mock_git, _1):
+        mock_git.side_effect = NoGitPresentError()
+        context = Context('path/to/project/root/', load_git=False)
+        self.assertNotIn(mock_git.return_value, context.current_committers_observer)
