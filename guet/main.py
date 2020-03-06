@@ -7,7 +7,8 @@ from guet.commands.init_required_decorator import InitRequiredDecorator
 from guet.commands.remove.factory import RemoveCommandFactory, REMOVE_HELP_MESSAGE
 from guet.commands.start.factory import StartCommandFactory, START_HELP_MESSAGE
 from guet.commands.start_required_decorator import StartRequiredDecorator
-from guet.factory import CommandFactory
+from guet.commands.version_decorator import VersionDecorator
+from guet.executor import CommandFactory
 from guet.util.errors import log_on_error
 from guet.commands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
 from guet.commands.init.factory import InitCommandFactory, INIT_HELP_MESSAGE
@@ -17,23 +18,28 @@ from guet.commands.config.factory import ConfigCommandFactory, CONFIG_HELP_MESSA
 
 def _command_builder_map():
     command_builder_map = dict()
-    command_builder_map['add'] = InitRequiredDecorator(HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE))
+    command_builder_map['add'] = VersionDecorator(
+        InitRequiredDecorator(HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE)))
 
-    command_builder_map['init'] = HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True)
+    command_builder_map['init'] = VersionDecorator(
+        HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True))
 
-    command_builder_map['set'] = InitRequiredDecorator(
-        StartRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE)))
+    command_builder_map['set'] = VersionDecorator(InitRequiredDecorator(
+        StartRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE))))
 
-    command_builder_map['start'] = InitRequiredDecorator(
+    command_builder_map['start'] = VersionDecorator(InitRequiredDecorator(
         HelpDecorator(
             GitRequiredDecorator(StartCommandFactory()), START_HELP_MESSAGE, no_args_valid=True
         )
-    )
-    command_builder_map['config'] = InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE))
+    ))
+    command_builder_map['config'] = VersionDecorator(
+        InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE)))
 
-    command_builder_map['get'] = InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE))
+    command_builder_map['get'] = VersionDecorator(
+        InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE)))
 
-    command_builder_map['remove'] = InitRequiredDecorator(HelpDecorator(RemoveCommandFactory(), REMOVE_HELP_MESSAGE))
+    command_builder_map['remove'] = VersionDecorator(
+        InitRequiredDecorator(HelpDecorator(RemoveCommandFactory(), REMOVE_HELP_MESSAGE)))
 
     return command_builder_map
 
