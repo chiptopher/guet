@@ -2,13 +2,13 @@ from typing import List
 
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
+from guet.commands.command_factory_with_context import CommandFactoryMethodWithContext
 from guet.commands.get.committer_printing_strategy import CommitterPrintingStrategy
 from guet.commands.get.invalid_identifier_strategy import InvalidIdentifierStrategy
 from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
 from guet.commands.strategy import CommandStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.config.committer import Committer
-from guet.config.get_committers import get_committers
 from guet.config.get_current_committers import get_current_committers
 from guet.settings.settings import Settings
 
@@ -27,7 +27,7 @@ GET_HELP_MESSAGE = HelpMessageBuilder('guet get <identifier> [-flag, ...]', 'Get
     .flags(FlagsBuilder([FlagBuilder('l', 'Print values as truncated list')])).build()
 
 
-class GetCommandFactory(CommandFactoryMethod):
+class GetCommandFactory(CommandFactoryMethodWithContext):
     def short_help_message(self):
         return 'Get information about the current state of the system'
 
@@ -40,7 +40,7 @@ class GetCommandFactory(CommandFactoryMethod):
 
     def _determine_identifier(self, identifier: str):
         if identifier == 'committers':
-            return get_committers(), lambda: print('All committers')
+            return self.context.committers.all(), lambda: print('All committers')
         elif identifier == 'current':
             return get_current_committers(), lambda: print('Currently set committers')
         raise AttributeError
