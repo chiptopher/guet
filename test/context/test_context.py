@@ -58,5 +58,5 @@ class TestContext(TestCase):
 
     def test_init_doesnt_load_git_observer_if_git_not_present_when_ignore_git_flag_present(self, mock_git, _1):
         mock_git.side_effect = NoGitPresentError()
-        context = Context('path/to/project/root/', load_git=False)
+        context = Context('path/to/project/root/')
         self.assertNotIn(mock_git.return_value, context.current_committers_observer)

@@ -29,12 +29,11 @@ def _attempt_to_load_committers(f):
 
 class Context(SetCommittersObservable):
     @staticmethod
-    def instance(*, load_git: bool = False):
-        return Context(getcwd(), load_git=load_git)
+    def instance():
+        return Context(getcwd())
 
-    def __init__(self, project_root_directory: str, *, load_git: bool = True):
+    def __init__(self, project_root_directory: str):
         super().__init__()
-        self._load_git = load_git
         self._committers = None
         self._git = None
         self.project_root_directory = project_root_directory
@@ -48,7 +47,7 @@ class Context(SetCommittersObservable):
 
     @property
     def git(self):
-        if self._git is None and self._load_git:
+        if self._git is None:
             self._git = Git(join(self.project_root_directory, '.git'))
             self.add_set_committer_observer(self._git)
         return self._git
