@@ -1,7 +1,7 @@
 from typing import List
 
 from guet.commands.command import Command
-from guet.commands.command_factory_with_context import CommandFactoryMethodWithContext
+from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.help.help_message_builder import HelpMessageBuilder
 from guet.commands.lambda_strategy import LambdaStrategy
 from guet.commands.print_strategy import PrintCommandStrategy
@@ -13,7 +13,7 @@ from guet.settings.settings import Settings
 INIT_HELP_MESSAGE = HelpMessageBuilder('guet init', 'Initialized guet for use on this computer.').build()
 
 
-class InitCommandFactory(CommandFactoryMethodWithContext):
+class InitCommandFactory(CommandFactoryMethod):
 
     def short_help_message(self) -> str:
         return 'Initialize guet for use'

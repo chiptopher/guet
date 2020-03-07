@@ -9,7 +9,7 @@ from guet.settings.settings import Settings
 
 @patch('builtins.print')
 @patch('guet.commands.get.get_factory.get_current_committers')
-@patch('guet.commands.command_factory_with_context.Context')
+@patch('guet.commands.command_factory.Context')
 class TestGetCommand(TestCase):
 
     def test_get_prints_all_committers_in_short_list(self, mock_context,

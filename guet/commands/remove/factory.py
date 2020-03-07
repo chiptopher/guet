@@ -1,7 +1,7 @@
 from typing import List
 
 from guet.commands.command import Command
-from guet.commands.command_factory_with_context import CommandFactoryMethodWithContext
+from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.help.help_message_builder import HelpMessageBuilder
 from guet.commands.remove.remove_strategy import RemoveCommitterStrategy
 from guet.commands.strategy_command import StrategyCommand
@@ -11,7 +11,7 @@ REMOVE_HELP_MESSAGE = HelpMessageBuilder('guet remove <initials>', ('Remove comm
                                                                     'with given initials from system.')).build()
 
 
-class RemoveCommandFactory(CommandFactoryMethodWithContext):
+class RemoveCommandFactory(CommandFactoryMethod):
 
     def short_help_message(self) -> str:
         return 'Removes committer'

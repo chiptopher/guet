@@ -3,7 +3,7 @@ from typing import List
 from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
 from guet.commands.cancellable_strategy import CancelableCommandStrategy
 from guet.commands.command import Command
-from guet.commands.command_factory_with_context import CommandFactoryMethodWithContext
+from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.do_nothing_strategy import DoNothingStrategy
 from guet.commands.help.help_message_builder import HelpMessageBuilder
 from guet.commands.strategy import CommandStrategy
@@ -16,7 +16,7 @@ ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <e
                                                 "Add committer to make available for commit tracking.").build()
 
 
-class AddCommitterFactory(CommandFactoryMethodWithContext):
+class AddCommitterFactory(CommandFactoryMethod):
     def __init__(self):
         super().__init__()
 

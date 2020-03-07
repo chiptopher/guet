@@ -6,7 +6,7 @@ from guet.config.committer import Committer
 from guet.settings.settings import Settings
 
 
-@patch('guet.commands.command_factory_with_context.Context')
+@patch('guet.commands.command_factory.Context')
 @patch('builtins.print')
 @patch('guet.commands.remove.remove_strategy.set_committers')
 @patch('guet.commands.remove.remove_strategy.get_committers')

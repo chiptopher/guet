@@ -8,7 +8,7 @@ from guet.context.context import Context
 from guet.settings.settings import Settings
 
 
-@patch('guet.commands.command_factory_with_context.Context')
+@patch('guet.commands.command_factory.Context')
 @patch('guet.commands.addcommitter.add_committer_strategy.add_committer')
 @patch('builtins.print')
 class TestAddCommitterFactory(TestCase):

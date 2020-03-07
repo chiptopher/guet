@@ -5,7 +5,7 @@ from guet.commands.start.factory import StartCommandFactory
 from guet.settings.settings import Settings
 
 
-@patch('guet.commands.command_factory_with_context.Context')
+@patch('guet.commands.command_factory.Context')
 @patch('guet.commands.start.factory.Git')
 class TestStartCommandFactoryMethod(unittest.TestCase):
 

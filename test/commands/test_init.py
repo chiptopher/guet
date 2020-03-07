@@ -5,7 +5,7 @@ from guet.commands.init.factory import InitCommandFactory
 from guet.settings.settings import Settings
 
 
-@patch('guet.commands.command_factory_with_context.Context')
+@patch('guet.commands.command_factory.Context')
 class TestInitDataSourceCommand(unittest.TestCase):
 
     @patch('guet.commands.init.factory.already_initialized')

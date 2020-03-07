@@ -5,7 +5,7 @@ from guet.settings.settings import Settings
 from guet.commands.config.factory import ConfigCommandFactory
 
 
-@patch('guet.commands.command_factory_with_context.Context')
+@patch('guet.commands.command_factory.Context')
 class ConfigSetTest(unittest.TestCase):
 
     @patch('guet.commands.config.set_config_strategy.set_config')

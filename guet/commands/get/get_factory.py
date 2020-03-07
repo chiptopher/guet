@@ -2,7 +2,6 @@ from typing import List
 
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
-from guet.commands.command_factory_with_context import CommandFactoryMethodWithContext
 from guet.commands.get.committer_printing_strategy import CommitterPrintingStrategy
 from guet.commands.get.invalid_identifier_strategy import InvalidIdentifierStrategy
 from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
@@ -27,7 +26,7 @@ GET_HELP_MESSAGE = HelpMessageBuilder('guet get <identifier> [-flag, ...]', 'Get
     .flags(FlagsBuilder([FlagBuilder('l', 'Print values as truncated list')])).build()
 
 
-class GetCommandFactory(CommandFactoryMethodWithContext):
+class GetCommandFactory(CommandFactoryMethod):
     def short_help_message(self):
         return 'Get information about the current state of the system'
 
