@@ -17,9 +17,6 @@ ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <e
 
 
 class AddCommitterFactory(CommandFactoryMethod):
-    def __init__(self):
-        super().__init__()
-
     def build(self, args: List[str], settings: Settings) -> Command:
         strategy = self._choose_strategy(args[1:], settings)
         return StrategyCommand(strategy)

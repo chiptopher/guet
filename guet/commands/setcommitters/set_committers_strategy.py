@@ -1,4 +1,3 @@
-from os import getcwd
 from typing import List
 
 from guet.commands.strategy import CommandStrategy

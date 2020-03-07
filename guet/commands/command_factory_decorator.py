@@ -7,6 +7,7 @@ from guet.settings.settings import Settings
 
 class CommandFactoryDecorator(CommandFactoryMethod):
     def __init__(self, decorated: CommandFactoryMethod):
+        super().__init__()
         self.decorated = decorated
 
     def short_help_message(self):

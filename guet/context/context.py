@@ -9,20 +9,20 @@ from guet.git.git import Git
 from guet.context.errors import InvalidCommittersError
 
 
-def _attempt_to_load_git(f):
+def _attempt_to_load_git(function):
     def wrapper(*args, **kwargs):
         context: Context = args[0]
-        context.git
-        return f(*args, **kwargs)
+        context.__getattribute__('git')
+        return function(*args, **kwargs)
 
     return wrapper
 
 
-def _attempt_to_load_committers(f):
+def _attempt_to_load_committers(function):
     def wrapper(*args, **kwargs):
         context: Context = args[0]
-        context.committers
-        return f(*args, **kwargs)
+        context.__getattribute__('committers')
+        return function(*args, **kwargs)
 
     return wrapper
 
