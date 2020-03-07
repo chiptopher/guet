@@ -5,6 +5,7 @@ from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.add_committer import add_committer
 from guet.config.committer import Committer
+from guet.config.errors import InvalidInitialsError
 from guet.config.set_author import set_committer_as_author
 from guet.config.set_current_committers import set_current_committers
 from guet.context.set_committer_observer import SetCommitterObserver
@@ -37,6 +38,12 @@ class Committers(SetCommitterObserver):
         if committer not in self.all():
             self._committers.append(committer)
             add_committer(committer.initials, committer.name, committer.email)
+
+    def by_initials(self, initials: str):
+        try:
+            return next((committer for committer in self._committers if committer.initials == initials))
+        except StopIteration:
+            raise InvalidInitialsError()
 
     def remove(self, committer: Committer):
         self._committers.remove(committer)

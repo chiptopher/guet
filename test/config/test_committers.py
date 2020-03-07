@@ -6,6 +6,7 @@ from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.committer import Committer
 from guet.config.committers import Committers
+from guet.config.errors import InvalidInitialsError
 
 default_mock_read_lines_return_value = [
     'initials1,name1,email1\n',
@@ -93,3 +94,16 @@ class TestCommitters(TestCase):
         mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), [
             'initials1,name1,email1',
         ])
+
+    def test_by_initials_gets_committer_with_matching_initials(self, mock_read_lines):
+        committers = Committers()
+        found = committers.by_initials('initials2')
+        self.assertEqual(Committer(name='name2', email='email2', initials='initials2'), found)
+
+    def test_by_initials_raises_exception_when_asking_by_initials_that_dont_exist(self, mock_read_lines):
+        committers = Committers()
+        try:
+            committers.by_initials('initials3')
+            self.fail('Should raise exceotion')
+        except InvalidInitialsError:
+            pass
