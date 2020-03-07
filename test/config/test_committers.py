@@ -1,6 +1,9 @@
+from os.path import join
 from unittest import TestCase
 from unittest.mock import patch
 
+from guet import constants
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.committer import Committer
 from guet.config.committers import Committers
 
@@ -72,3 +75,21 @@ class TestCommitters(TestCase):
         committer = Committer(name='name', email='email', initials='initials')
         committers.add(committer)
         self.assertIn(committer, committers.all())
+
+    def test_remove_removes_committer_from_list_committers(self, mock_read_lines):
+        mock_read_lines.return_value = [
+            'initials,name,email\n'
+        ]
+        committers = Committers()
+        committer = Committer(name='name', email='email', initials='initials')
+        committers.remove(committer)
+        self.assertListEqual([], committers.all())
+
+    @patch('guet.config.committers.write_lines')
+    def test_remove_writes_new_committers_to_file(self, mock_write_lines, mock_read_lines):
+        committers = Committers()
+        committer = Committer(name='name2', email='email2', initials='initials2')
+        committers.remove(committer)
+        mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), [
+            'initials1,name1,email1',
+        ])
