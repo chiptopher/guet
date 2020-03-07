@@ -8,7 +8,7 @@ from guet.commands.remove.factory import RemoveCommandFactory, REMOVE_HELP_MESSA
 from guet.commands.start.factory import StartCommandFactory, START_HELP_MESSAGE
 from guet.commands.start_required_decorator import StartRequiredDecorator
 from guet.commands.version_decorator import VersionDecorator
-from guet.executor import CommandFactory
+from guet.executor import Executor
 from guet.util.errors import log_on_error
 from guet.commands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
 from guet.commands.init.factory import InitCommandFactory, INIT_HELP_MESSAGE
@@ -46,6 +46,6 @@ def _command_builder_map():
 
 @log_on_error
 def main():
-    command_factory = CommandFactory(_command_builder_map())
+    command_factory = Executor(_command_builder_map())
     command = command_factory.create(sys.argv[1:])
     command.execute()

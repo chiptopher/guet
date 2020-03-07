@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, Mock
 import guet
 from guet.commands.help.guet_usage import guet_usage
-from guet.executor import CommandFactory
+from guet.executor import Executor
 
 
 @patch('guet.executor.already_initialized', return_value=True)
@@ -15,7 +15,7 @@ class TestCommandFactory(unittest.TestCase):
         mock_factory = Mock()
         builder_map['command'] = mock_factory
 
-        command_factory = CommandFactory(builder_map)
+        command_factory = Executor(builder_map)
         args = ['command']
         command_factory.create(args)
         mock_factory.build.assert_called_with(args, mock_get_settings.return_value)
@@ -25,7 +25,7 @@ class TestCommandFactory(unittest.TestCase):
                                                              mock_already_init):
         builder_map = dict()
         builder_map['command'] = Mock()
-        command_factory = CommandFactory(builder_map)
+        command_factory = Executor(builder_map)
         result = command_factory.create([])
         result.execute()
         mock_print.assert_called_with(guet_usage(builder_map))
@@ -37,7 +37,7 @@ class TestCommandFactory(unittest.TestCase):
         builder_map = dict()
         builder_map['command'] = Mock()
 
-        command_factory = CommandFactory(builder_map)
+        command_factory = Executor(builder_map)
 
         result = command_factory.create(['--version'])
         result.execute()
@@ -50,7 +50,7 @@ class TestCommandFactory(unittest.TestCase):
         builder_map = dict()
         builder_map['command'] = Mock()
 
-        command_factory = CommandFactory(builder_map)
+        command_factory = Executor(builder_map)
 
         result = command_factory.create(['-v'])
         result.execute()
@@ -63,7 +63,7 @@ class TestCommandFactory(unittest.TestCase):
         builder_map = dict()
         builder_map['command'] = Mock()
 
-        command_factory = CommandFactory(builder_map)
+        command_factory = Executor(builder_map)
 
         result = command_factory.create(['-h'])
         result.execute()

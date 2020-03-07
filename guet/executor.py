@@ -10,7 +10,7 @@ from guet.config.get_config import get_config
 from guet.config.already_initialized import already_initialized
 
 
-class CommandFactory:
+class Executor:
     def __init__(self, command_builder_map):
         self.command_builder_map = command_builder_map
 
@@ -24,14 +24,25 @@ class CommandFactory:
 
     def _create_with_settings(self, args: list, settings: Settings) -> Command:
         if len(args) > 0:
-            command_arg = args[0]
-            try:
-                command_factory: CommandFactoryMethod = self.command_builder_map[command_arg]
-                return command_factory.build(args, settings)
-            except KeyError:
-                return self._guet_ussage_command()
+            return self.load_command_factory_from_map(args, settings)
         else:
             return self._guet_ussage_command()
 
-    def _guet_ussage_command(self):
-        return StrategyCommand(HelpMessageStrategy(guet_usage(self.command_builder_map)))
+    def load_command_factory_from_map(self, args, settings):
+        command_arg = args[0]
+        try:
+            command_factory: CommandFactoryMethod = self.command_builder_map[command_arg]
+            return command_factory.build(args, settings)
+        except KeyError:
+            return self.load_invalid_command(command_arg)
+
+    def load_invalid_command(self, command_arg: str):
+        if command_arg == '-h' or command_arg == '--help':
+            return self._guet_ussage_command()
+        return self._guet_ussage_command(invalid_command=command_arg)
+
+    def _guet_ussage_command(self, *, invalid_command: str = ''):
+        message = guet_usage(self.command_builder_map)
+        if invalid_command:
+            message = f'guet has no command "{invalid_command}" that can be ran.\n\n' + message
+        return StrategyCommand(HelpMessageStrategy(message))

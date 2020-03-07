@@ -6,10 +6,9 @@ from guet.config.committer import Committer
 from guet.context.context import Context
 
 
-@patch('guet.commands.setcommitters.set_committers_strategy.getcwd', return_value='/path/to/cwd')
 class TestSetCommittersStrategy(TestCase):
 
-    def test_apply_set_commiters_with_context(self, mock_getcwd):
+    def test_apply_set_commiters_with_context(self):
         mock_context = Mock()
         mock_committers = Mock()
         mock_context.committers = mock_committers
@@ -23,8 +22,7 @@ class TestSetCommittersStrategy(TestCase):
         mock_context.set_committers.assert_called_with([committer1, committer2])
 
     @patch('builtins.print')
-    def test_execute_prints_out_error_message_when_the_given_initials_arent_in_the_system(self, mock_print,
-                                                                                          mock_getcwd):
+    def test_execute_prints_out_error_message_when_the_given_initials_arent_in_the_system(self, mock_print):
         mock_context = Mock()
         mock_committers = Mock()
         mock_context.committers = mock_committers
@@ -33,7 +31,7 @@ class TestSetCommittersStrategy(TestCase):
         strategy.apply()
         mock_print.assert_called_once_with("No committer exists with initials 'initials'")
 
-    def test_execute_failing_doesnt_set_committers_still(self, mock_getcwd):
+    def test_execute_failing_doesnt_set_committers_still(self):
         mock_context = Mock()
         mock_committers = Mock()
         mock_context.committers = mock_committers
