@@ -3,6 +3,7 @@ from typing import List
 from guet.commands.strategy import CommandStrategy
 from guet.config.get_config import get_config
 from guet.config.set_config import set_config
+from guet.context.context import Context
 from guet.settings.settings import Settings
 
 
@@ -25,8 +26,9 @@ def _append_key_and_value_to_config(config: Settings, key_and_value: List):
 
 class SetConfigStrategy(CommandStrategy):
 
-    def __init__(self, args: List[str]):
+    def __init__(self, args: List[str], context: Context):
         self._args = args
+        self.context = context
 
     def apply(self):
         config = get_config()

@@ -5,11 +5,12 @@ from guet.settings.settings import Settings
 from guet.commands.config.factory import ConfigCommandFactory
 
 
+@patch('guet.commands.command_factory_with_context.Context')
 class ConfigSetTest(unittest.TestCase):
 
     @patch('guet.commands.config.set_config_strategy.set_config')
     @patch('guet.commands.config.set_config_strategy.get_config')
-    def test_execute_writes_the_new_config(self, mock_get_config, mock_set_config):
+    def test_execute_writes_the_new_config(self, mock_get_config, mock_set_config, _1):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
         command = ConfigCommandFactory().build(['config', '--debug=True'], Settings())
@@ -20,7 +21,7 @@ class ConfigSetTest(unittest.TestCase):
     @patch('guet.commands.config.set_config_strategy.set_config')
     @patch('guet.commands.config.set_config_strategy.get_config')
     def test_execute_writes_the_new_config_with_multiple_configs(self, mock_get_config,
-                                                                 mock_set_config):
+                                                                 mock_set_config, _1):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
         command = ConfigCommandFactory().build(['config', '--debug=True', '--pairReset=False'], Settings())
@@ -31,7 +32,7 @@ class ConfigSetTest(unittest.TestCase):
 
     @patch('guet.commands.config.set_config_strategy.set_config')
     @patch('guet.commands.config.set_config_strategy.get_config')
-    def test_execute_writes_multiple_configs(self, mock_get_config, mock_set_config):
+    def test_execute_writes_multiple_configs(self, mock_get_config, mock_set_config, _1):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
         command = ConfigCommandFactory().build(['config', '--debug=True', 'noDoubleDash=True'], Settings())
@@ -44,7 +45,7 @@ class ConfigSetTest(unittest.TestCase):
     @patch('guet.commands.config.set_config_strategy.set_config')
     @patch('guet.commands.config.set_config_strategy.get_config')
     def test_execute_prints_error_message_when_given_bad_key(self, mock_get_config, mock_set_config,
-                                                             mock_print, mock_exit):
+                                                             mock_print, mock_exit, _1):
         mock_settings = Settings()
         mock_get_config.return_value = mock_settings
         command = ConfigCommandFactory().build(['config', '--invalidKey=true'], Settings())
