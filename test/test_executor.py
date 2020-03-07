@@ -55,3 +55,16 @@ class TestCommandFactory(unittest.TestCase):
         result = command_factory.create(['-v'])
         result.execute()
         mock_print.assert_called_with(f'{guet.__version__}')
+
+    @patch('builtins.print')
+    def test_returns_command_that_prints_usage(self, mock_print,
+                                               mock_get_settings,
+                                               mock_already_init):
+        builder_map = dict()
+        builder_map['command'] = Mock()
+
+        command_factory = CommandFactory(builder_map)
+
+        result = command_factory.create(['-h'])
+        result.execute()
+        mock_print.assert_called_with(guet_usage(builder_map))

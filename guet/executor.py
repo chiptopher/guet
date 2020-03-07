@@ -1,4 +1,3 @@
-
 import guet
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
@@ -26,7 +25,13 @@ class CommandFactory:
     def _create_with_settings(self, args: list, settings: Settings) -> Command:
         if len(args) > 0:
             command_arg = args[0]
-            command_factory: CommandFactoryMethod = self.command_builder_map[command_arg]
-            return command_factory.build(args, settings)
+            try:
+                command_factory: CommandFactoryMethod = self.command_builder_map[command_arg]
+                return command_factory.build(args, settings)
+            except KeyError:
+                return self._guet_ussage_command()
         else:
-            return StrategyCommand(HelpMessageStrategy(guet_usage(self.command_builder_map)))
+            return self._guet_ussage_command()
+
+    def _guet_ussage_command(self):
+        return StrategyCommand(HelpMessageStrategy(guet_usage(self.command_builder_map)))
