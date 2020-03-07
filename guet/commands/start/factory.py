@@ -2,6 +2,7 @@ from typing import List
 
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
+from guet.commands.command_factory_with_context import CommandFactoryMethodWithContext
 from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
 from guet.commands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.start.create_hook_strategy import CreateHookStrategy
@@ -17,7 +18,7 @@ START_HELP_MESSAGE = HelpMessageBuilder('guet start',
                          FlagBuilder('-o/--overwrite', 'Overwrite current hooks')])).build()
 
 
-class StartCommandFactory(CommandFactoryMethod):
+class StartCommandFactory(CommandFactoryMethodWithContext):
     def short_help_message(self) -> str:
         return 'Start guet usage in the repository at current directory'
 
@@ -25,11 +26,11 @@ class StartCommandFactory(CommandFactoryMethod):
         git_path = git_path_from_cwd().replace('/hooks', '')
         git = Git(git_path)
         if '-a' in args or '--alongside' in args:
-            strategy = CreateAlongsideHookStrategy(git_path)
+            strategy = CreateAlongsideHookStrategy(git_path, self.context)
         elif '-o' in args or '--overwrite' in args:
-            strategy = CreateHookStrategy(git_path)
+            strategy = CreateHookStrategy(git_path, self.context)
         elif git.non_guet_hooks_present():
-            strategy = PromptUserForHookTypeStrategy(git_path)
+            strategy = PromptUserForHookTypeStrategy(git_path, self.context)
         else:
-            strategy = CreateHookStrategy(git_path)
+            strategy = CreateHookStrategy(git_path, self.context)
         return StrategyCommand(strategy)

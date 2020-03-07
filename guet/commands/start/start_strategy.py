@@ -11,8 +11,8 @@ class PromptUserForHookTypeStrategy(HookStrategy):
                'create (a) the file and put it in the hooks folder, or cancel (x)?'))
         val = input()
         if val == 'o':
-            CreateHookStrategy(self.git_path).apply()
+            CreateHookStrategy(self.git_path, self.context).apply()
         elif val == 'a':
-            CreateAlongsideHookStrategy(self.git_path).apply()
+            CreateAlongsideHookStrategy(self.git_path, self.context).apply()
         else:
             DoNothingStrategy().apply()
