@@ -1,6 +1,7 @@
 from guet.commands.strategy import CommandStrategy
 from guet.config.get_committers import get_committers
 from guet.config.set_committers import set_committers
+from guet.context.context import Context
 
 
 def _without_committer_with_initials(initials, all_committers):
@@ -8,7 +9,7 @@ def _without_committer_with_initials(initials, all_committers):
 
 
 class RemoveCommitterStrategy(CommandStrategy):
-    def __init__(self, initials: str):
+    def __init__(self, initials: str, context: Context):
         self._initials = initials
 
     def apply(self):
