@@ -1,6 +1,5 @@
 from guet.commands.strategy import CommandStrategy
-from guet.config.get_committers import get_committers
-from guet.config.set_committers import set_committers
+from guet.config.errors import InvalidInitialsError
 from guet.context.context import Context
 
 
@@ -14,12 +13,8 @@ class RemoveCommitterStrategy(CommandStrategy):
         self.context = context
 
     def apply(self):
-        all_committers = get_committers()
-        filtered_committers = _without_committer_with_initials(self._initials, all_committers)
-
-        committer_was_removed = len(all_committers) == len(filtered_committers)
-
-        if committer_was_removed:
+        try:
+            committer_to_be_removed = self.context.committers.by_initials(self._initials)
+            self.context.committers.remove(committer_to_be_removed)
+        except InvalidInitialsError:
             print(f'No committer exists with initials "{self._initials}"')
-        else:
-            set_committers(filtered_committers)

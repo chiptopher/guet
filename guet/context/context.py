@@ -45,6 +45,10 @@ class Context(SetCommittersObservable):
             self.add_set_committer_observer(self._committers)
         return self._committers
 
+    @committers.setter
+    def committers(self, new_committers):
+        self._committers = new_committers
+
     @property
     def git(self):
         if self._git is None:
