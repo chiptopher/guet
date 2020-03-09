@@ -116,10 +116,11 @@ class DockerTest(unittest.TestCase):
         self.add_command(command)
 
     @_called_execute
-    def git_init(self, from_path: str = None):
+    def git_init(self, from_path: str = None, *, with_author_config: bool = False):
         self.add_command('git init')
-        self.add_command('git config --global user.name name')
-        self.add_command('git config --global user.email email')
+        if with_author_config:
+            self.add_command('git config --global user.name name')
+            self.add_command('git config --global user.email email')
 
     @_called_execute
     def git_add(self):
