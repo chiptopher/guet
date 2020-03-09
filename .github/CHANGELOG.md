@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.5
+Addresses a few bugs. When running `guet --help` / `guet -h` you should get the help message instead of an error. Also, providing an invalid commend (`guet invalid`) will print an error message saying `invalid` isn't a command, and then include the help message.
+
+When working with [husky](https://github.com/typicode/husky) you have to provide `.git/hooks/pre-commit-guet` as the hook command in the husky definition. However, when calling that command it wouldn't actually run the guet script. It should now _actually_ run.
+
 ## 2.3.4
 Address a bug where initial `guet set` calls would not configure the first commit to use the set committer as the git author. Instead, the system author would be used. Now the first committer supplied to the `guet set` call is used as the commit author.
 
