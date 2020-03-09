@@ -15,7 +15,8 @@ class Executor:
         self.command_builder_map = command_builder_map
 
     def create(self, args: list) -> Command:
-        if '--version' in args or '-v' in args:
+        command_arg = args[0]
+        if command_arg in ('--version', '-v'):
             return StrategyCommand(PrintCommandStrategy(guet.__version__))
         elif already_initialized():
             return self._create_with_settings(args, get_config())
@@ -37,7 +38,7 @@ class Executor:
             return self.load_invalid_command(command_arg)
 
     def load_invalid_command(self, command_arg: str):
-        if command_arg == '-h' or command_arg == '--help':
+        if command_arg in ('-h', '--help'):
             return self._guet_ussage_command()
         return self._guet_ussage_command(invalid_command=command_arg)
 
