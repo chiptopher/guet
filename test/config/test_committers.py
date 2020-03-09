@@ -77,7 +77,8 @@ class TestCommitters(TestCase):
         committers.add(committer)
         self.assertIn(committer, committers.all())
 
-    def test_remove_removes_committer_from_list_committers(self, mock_read_lines):
+    @patch('guet.config.committers.write_lines')
+    def test_remove_removes_committer_from_list_committers(self, mock_write_lines, mock_read_lines):
         mock_read_lines.return_value = [
             'initials,name,email\n'
         ]
