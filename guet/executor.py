@@ -15,16 +15,16 @@ class Executor:
         self.command_builder_map = command_builder_map
 
     def create(self, args: list) -> Command:
-        command_arg = args[0]
-        if command_arg in ('--version', '-v'):
-            return StrategyCommand(PrintCommandStrategy(guet.__version__))
-        elif already_initialized():
+        if already_initialized():
             return self._create_with_settings(args, get_config())
         else:
             return self._create_with_settings(args, Settings())
 
     def _create_with_settings(self, args: list, settings: Settings) -> Command:
         if len(args) > 0:
+            command_arg = args[0]
+            if command_arg in ('--version', '-v'):
+                return StrategyCommand(PrintCommandStrategy(guet.__version__))
             return self.load_command_factory_from_map(args, settings)
         else:
             return self._guet_ussage_command()
