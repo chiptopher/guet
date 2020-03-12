@@ -22,7 +22,7 @@ def print_only_initials(committers: List[Committer]) -> None:
 
 
 GET_HELP_MESSAGE = HelpMessageBuilder('guet get <identifier> [-flag, ...]', 'Get currently set information.') \
-    .explanation('Valid Identifier\n\n\tcurrent - lists currently set committers\n\tcomitters - lists all committers') \
+    .explanation('Valid Identifier\n\n\tcurrent - lists currently set committers\n\committers - lists all committers') \
     .flags(FlagsBuilder([FlagBuilder('l', 'Print values as truncated list')])).build()
 
 
