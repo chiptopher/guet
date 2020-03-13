@@ -47,4 +47,4 @@ class TestGet(DockerTest):
         self.assert_text_in_logs(2, 'Get currently set information.')
         self.assert_text_in_logs(4, 'Valid Identifier')
         self.assert_text_in_logs(6, '\tcurrent - lists currently set committers')
-        self.assert_text_in_logs(7, '\tcomitters - lists all committers')
+        self.assert_text_in_logs(7, '\tcommitters - lists all committers')
