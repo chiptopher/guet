@@ -19,6 +19,20 @@ class TestCommit(DockerTest):
         self.assert_text_in_logs(10, '    Co-authored-by: name <email@localhost>')
         self.assert_text_in_logs(11, '    Co-authored-by: name2 <email2@localhost>')
 
+    def test_if_only_one_committer_set_no_co_authored_by_lines_are_added(self):
+        self.guet_init()
+        self.guet_add('initials', 'name', 'email@localhost')
+        self.git_init()
+        self.guet_start()
+        self.guet_set(['initials'])
+        self.add_file('A')
+        self.git_add()
+        self.git_commit('Initial commit')
+        self.show_git_log()
+
+        self.execute()
+        self.assertEqual(10, len(self.logs))
+
     def test_replaces_co_authored_messages_when_editing_commit(self):
         self.guet_init()
         self.guet_add('initials', 'name', 'email@localhost')
