@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.6
+Addresses a typo in `guet get --help` which misspelled the `committers` identifier as `comitters`.
+
+When committing with only one committer, guet will not append the `Co-authored` line in a commit.
+
+
 ## 2.3.5
 Addresses a few bugs. When running `guet --help` / `guet -h` you should get the help message instead of an error. Also, providing an invalid commend (`guet invalid`) will print an error message saying `invalid` isn't a command, and then include the help message.
 
