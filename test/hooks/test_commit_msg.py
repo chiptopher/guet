@@ -29,6 +29,24 @@ class TestCommitMsg(unittest.TestCase):
         ]
         self.assertListEqual(expected, git.commit_msg)
 
+    def test_doesnt_change_commit_message_if_only_one_committer_is_provided(self,
+                                                                            mock_git,
+                                                                            mock_get_current_committers,
+                                                                            mock_git_path_from_cwd):
+        mock_git_path_from_cwd.return_value = 'path/to/.git'
+        mock_get_current_committers.return_value = [
+            Committer('name1', 'email1', 'initials1'),
+        ]
+        git = mock_git.return_value
+        git.commit_msg = [
+            'Text\n'
+        ]
+        commit_msg()
+        expected = [
+            'Text\n'
+        ]
+        self.assertListEqual(expected, git.commit_msg)
+
     def test_replaces_co_authored_with_new_committers_if_already_present(self,
                                                                          mock_git,
                                                                          mock_get_current_committers,

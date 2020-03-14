@@ -32,7 +32,8 @@ def commit_msg():
     git = Git(git_path)
     commit_message = git.commit_msg
     current_committers = get_current_committers()
-    co_authored_lines = [_create_co_authored_line(committer) for committer in current_committers]
-    final_commit_message = _replace_already_present_co_authored_messages(
-        commit_message, co_authored_lines)
-    git.commit_msg = final_commit_message
+    if len(current_committers) > 1:
+        co_authored_lines = [_create_co_authored_line(committer) for committer in current_committers]
+        final_commit_message = _replace_already_present_co_authored_messages(
+            commit_message, co_authored_lines)
+        git.commit_msg = final_commit_message
