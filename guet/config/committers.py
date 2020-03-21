@@ -2,6 +2,7 @@ from os.path import join
 from typing import List
 
 from guet import constants
+from guet.committers.global_committer import GlobalCommitter
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.add_committer import add_committer
 from guet.config.committer import Committer
@@ -13,12 +14,12 @@ from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 
 
-def _load_committers(path: str):
+def _load_committers(path: str) -> List[Committer]:
     lines = read_lines(path)
     committers = []
     for line in lines:
         initials, name, email = line.rstrip().split(',')
-        committers.append(Committer(initials=initials, name=name, email=email))
+        committers.append(GlobalCommitter(initials=initials, name=name, email=email))
     return committers
 
 
@@ -55,7 +56,7 @@ class Committers(SetCommitterObserver):
     def add(self, committer: Committer):
         if committer not in self.all():
             self._committers.append(committer)
-            add_committer(committer.initials, committer.name, committer.email)
+            committer.save()
 
     def by_initials(self, initials: str):
         try:

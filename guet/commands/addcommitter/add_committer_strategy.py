@@ -1,9 +1,9 @@
 from guet.commands.strategy import CommandStrategy
-from guet.config.committer import Committer
+from guet.committers.global_committer import GlobalCommitter
 from guet.config.committers import Committers
 
 
-class AddCommitterStrategy(CommandStrategy):
+class AddCommitterGloballyStrategy(CommandStrategy):
     def __init__(self, initials: str, name: str, email: str, committers: Committers):
         super().__init__()
         self._name = name
@@ -12,4 +12,4 @@ class AddCommitterStrategy(CommandStrategy):
         self._committers = committers
 
     def apply(self):
-        self._committers.add(Committer(name=self._name, email=self._email, initials=self._initials))
+        self._committers.add(GlobalCommitter(name=self._name, email=self._email, initials=self._initials))

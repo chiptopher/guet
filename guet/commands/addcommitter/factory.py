@@ -1,7 +1,7 @@
 from typing import List
 
 from guet.commands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
-from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
+from guet.commands.addcommitter.add_committer_strategy import AddCommitterGloballyStrategy
 from guet.commands.cancellable_strategy import CancelableCommandStrategy
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
@@ -48,7 +48,7 @@ class AddCommitterFactory(CommandFactoryMethod):
             if add_locally:
                 add_committers_strategy = AddCommitterLocallyStrategy()
             else:
-                add_committers_strategy = AddCommitterStrategy(initials, name, email, self.context.committers)
+                add_committers_strategy = AddCommitterGloballyStrategy(initials, name, email, self.context.committers)
             if self._initials_already_present(initials):
                 return CancelableCommandStrategy(self._prompt(initials, name, email),
                                                  add_committers_strategy,
