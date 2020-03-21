@@ -1,3 +1,4 @@
+from os import getcwd
 from typing import List
 
 from guet.commands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
@@ -46,7 +47,9 @@ class AddCommitterFactory(CommandFactoryMethod):
         else:
             initials, name, email = args_without_flag
             if add_locally:
-                add_committers_strategy = AddCommitterLocallyStrategy()
+                add_committers_strategy = AddCommitterLocallyStrategy(initials, name, email,
+                                                                      project_root=getcwd(),
+                                                                      committers=self.context.committers)
             else:
                 add_committers_strategy = AddCommitterGloballyStrategy(initials, name, email, self.context.committers)
             if self._initials_already_present(initials):

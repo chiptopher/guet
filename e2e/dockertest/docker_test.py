@@ -82,10 +82,12 @@ class DockerTest(unittest.TestCase):
         self.add_command(command)
 
     @_called_execute
-    def guet_add(self, initials: str, name: str, email: str, *, overwrite_answer=None):
+    def guet_add(self, initials: str, name: str, email: str, *, overwrite_answer=None, local=False):
         command = f'guet add {initials} "{name}" {email}'
         if overwrite_answer:
             command = f'printf {overwrite_answer} | {command}'
+        if local:
+            command = f'guet add --local {initials} "{name}" {email}'
         self.add_command(command)
 
     @_called_execute

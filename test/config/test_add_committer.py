@@ -17,7 +17,7 @@ class AddCommitterTest(unittest.TestCase):
         ]
         add_committer('initials3', 'name3', 'email3')
         mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'r')
-        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w')
+        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w+')
         mock_open.return_value.writelines.assert_called_with([
             'initials1,name1,email1\n',
             'initials2,name2,email2\n',

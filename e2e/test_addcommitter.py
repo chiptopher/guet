@@ -45,3 +45,13 @@ class TestAddUser(DockerTest):
                                      'like to continue (y) or cancel (x)?'))
         self.assert_text_in_logs(2, 'initials - name2 <email2>')
         self.assert_text_in_logs(5, 'initials - name2 <email2>')
+
+    def test_including_local_flag_adds_committer_to_the_repository(self):
+        self.guet_init()
+        self.guet_add('initials', 'name1', 'email1', local=True)
+        self.save_file_content('test-env/.guet/committers')
+
+        self.execute()
+
+        text = self.get_file_text('test-env/.guet/committers')
+        self.assertListEqual(['initials,name1,email1'], text)
