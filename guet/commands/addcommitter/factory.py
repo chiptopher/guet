@@ -48,7 +48,7 @@ class AddCommitterFactory(CommandFactoryMethod):
             if add_locally:
                 add_committers_strategy = AddCommitterLocallyStrategy()
             else:
-                add_committers_strategy = AddCommitterStrategy(initials, name, email)
+                add_committers_strategy = AddCommitterStrategy(initials, name, email, self.context.committers)
             if self._initials_already_present(initials):
                 return CancelableCommandStrategy(self._prompt(initials, name, email),
                                                  add_committers_strategy,
