@@ -1,6 +1,6 @@
 from os.path import join
 from unittest import TestCase
-from unittest.mock import patch, call
+from unittest.mock import patch, call, Mock
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
@@ -47,26 +47,23 @@ class TestCommitters(TestCase):
         actual = committers.all()
         self.assertListEqual(expected_committers, actual)
 
-    @patch('guet.config.committers.add_committer')
-    def test_add_writes_committer_to_file(self,
-                                          mock_add_committer,
-                                          _1):
+    def test_add_writes_committer_to_file(self, _1):
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
+        committer.save = Mock()
         committers.add(committer)
-        mock_add_committer.assert_called_with('initials', 'name', 'email')
+        committer.save.assert_called()
 
-    @patch('guet.config.committers.add_committer')
     def test_add_doesnt_write_committer_to_file_if_committer_already_present(self,
-                                                                             mock_add_committer,
                                                                              mock_read_lines):
         mock_read_lines.side_effect = [[
             'initials,name,email\n',
         ], FileNotFoundError()]
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
+        committer.save = Mock()
         committers.add(committer)
-        mock_add_committer.assert_not_called()
+        committer.save.assert_not_called()
 
     @patch('guet.config.committers.add_committer')
     def test_add_saves_committer_in_list_of_all_committers(self,
@@ -74,6 +71,7 @@ class TestCommitters(TestCase):
                                                            _1):
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
+        committer.save = Mock()
         committers.add(committer)
         self.assertIn(committer, committers.all())
 
