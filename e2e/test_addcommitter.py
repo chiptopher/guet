@@ -55,3 +55,14 @@ class TestAddUser(DockerTest):
 
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials,name1,email1'], text)
+
+    def test_adding_local_committers_only_saves_the_local_committers(self):
+        self.guet_init()
+        self.guet_add('initials1', 'name1', 'email1')
+        self.guet_add('initials2', 'name2', 'email2', local=True)
+        self.save_file_content('test-env/.guet/committers')
+
+        self.execute()
+
+        text = self.get_file_text('test-env/.guet/committers')
+        self.assertListEqual(['initials2,name2,email2'], text)
