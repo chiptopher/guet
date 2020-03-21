@@ -6,11 +6,13 @@ from guet.config import CONFIGURATION_DIRECTORY
 
 _COMMITTER_NOT_PRESENT = -1
 
+_GLOBAL = join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)
 
-def add_committer(initials: str, name: str, email: str) -> None:
+
+def add_committer(initials: str, name: str, email: str, *, file_path: str = _GLOBAL) -> None:
     all_committers = _read_all_committers_from_file()
     _add_committer_to_committers(all_committers, initials, name, email)
-    _write_committers_to_file(all_committers)
+    _write_committers_to_file(all_committers, file_path)
 
 
 def _add_committer_to_committers(all_committers: List[str], initials: str, name: str, email: str):
@@ -36,7 +38,7 @@ def _read_all_committers_from_file() -> List[str]:
     return all_lines
 
 
-def _write_committers_to_file(committers: List[str]) -> None:
-    committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), 'w')
+def _write_committers_to_file(committers: List[str], path: str) -> None:
+    committers_file = open(path, 'w')
     committers_file.writelines(committers)
     committers_file.close()
