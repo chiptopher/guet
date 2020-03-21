@@ -1,6 +1,6 @@
 from os.path import join
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, call
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
@@ -8,13 +8,13 @@ from guet.config.committer import Committer
 from guet.config.committers import Committers
 from guet.config.errors import InvalidInitialsError
 
-default_mock_read_lines_return_value = [
+default_read_lines_side_effects = [[
     'initials1,name1,email1\n',
     'initials2,name2,email2\n'
-]
+], FileNotFoundError()]
 
 
-@patch('guet.config.committers.read_lines', return_value=default_mock_read_lines_return_value)
+@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestCommitters(TestCase):
     @patch('guet.config.committers.set_committer_as_author')
     @patch('guet.config.committers.set_current_committers')
@@ -60,9 +60,9 @@ class TestCommitters(TestCase):
     def test_add_doesnt_write_committer_to_file_if_committer_already_present(self,
                                                                              mock_add_committer,
                                                                              mock_read_lines):
-        mock_read_lines.return_value = [
+        mock_read_lines.side_effect = [[
             'initials,name,email\n',
-        ]
+        ], FileNotFoundError()]
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
         committers.add(committer)
@@ -79,9 +79,9 @@ class TestCommitters(TestCase):
 
     @patch('guet.config.committers.write_lines')
     def test_remove_removes_committer_from_list_committers(self, mock_write_lines, mock_read_lines):
-        mock_read_lines.return_value = [
+        mock_read_lines.side_effect = [[
             'initials,name,email\n'
-        ]
+        ], FileNotFoundError()]
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
         committers.remove(committer)
@@ -108,3 +108,29 @@ class TestCommitters(TestCase):
             self.fail('Should raise exceotion')
         except InvalidInitialsError:
             pass
+
+
+something = [[
+    'initials1,name1,email1\n',
+    'initials2,name2,email2\n'
+], [
+    'initials1,othername1,otheremail1\n'
+]]
+
+
+@patch('guet.config.committers.read_lines', side_effect=something)
+class TestCommittersWithLocal(TestCase):
+    path_to_project_root = '/path/to/project/root'
+
+    def test_loads_committers_from_global_file_and_local_file(self, mock_read_lines):
+        Committers(path_to_project_root=self.path_to_project_root)
+        mock_read_lines.assert_has_calls([
+            call(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)),
+            call(join(self.path_to_project_root, '.guet', constants.COMMITTERS))
+        ])
+
+    def test_local_committers_overwrite_global_committers_with_matching_initials(self, mock_read_lines):
+        committers = Committers(path_to_project_root=self.path_to_project_root)
+        local_committer1 = Committer(initials='initials1', name='othername1', email='otheremail1')
+        global_commtter2 = Committer(initials='initials2', name='name2', email='email2')
+        self.assertListEqual([local_committer1, global_commtter2], committers.all())

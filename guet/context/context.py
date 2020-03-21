@@ -34,7 +34,7 @@ class Context(SetCommittersObservable):
 
     def __init__(self, project_root_directory: str):
         super().__init__()
-        self._committers = None
+        self._committers: Committers = None
         self._git = None
         self.project_root_directory = project_root_directory
 
