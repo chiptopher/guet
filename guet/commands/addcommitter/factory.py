@@ -1,5 +1,6 @@
 from typing import List
 
+from guet.commands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
 from guet.commands.addcommitter.add_committer_strategy import AddCommitterStrategy
 from guet.commands.cancellable_strategy import CancelableCommandStrategy
 from guet.commands.command import Command
@@ -36,13 +37,18 @@ class AddCommitterFactory(CommandFactoryMethod):
         return warning
 
     def _choose_strategy(self, args: List[str], _: Settings) -> CommandStrategy:
-        if len(args) < 3:
+        add_locally = '--local' in args
+        args_without_flag = [arg for arg in args if arg != '--local']
+        if len(args_without_flag) < 3:
             return TooFewArgsStrategy(ADD_COMMITTER_HELP_MESSAGE)
-        elif len(args) > 3:
+        elif len(args_without_flag) > 3:
             return TooManyArgsStrategy()
         else:
-            initials, name, email = args
-            add_committers_strategy = AddCommitterStrategy(initials, name, email)
+            initials, name, email = args_without_flag
+            if add_locally:
+                add_committers_strategy = AddCommitterLocallyStrategy()
+            else:
+                add_committers_strategy = AddCommitterStrategy(initials, name, email)
             if self._initials_already_present(initials):
                 return CancelableCommandStrategy(self._prompt(initials, name, email),
                                                  add_committers_strategy,

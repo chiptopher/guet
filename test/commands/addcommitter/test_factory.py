@@ -1,8 +1,10 @@
 from unittest import TestCase
 from unittest.mock import patch, call, Mock
 
+from guet.commands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
 from guet.commands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
 from guet.commands.cancellable_strategy import CancelableCommandStrategy
+from guet.commands.too_many_args import TooManyArgsStrategy
 from guet.config.committer import Committer
 from guet.context.context import Context
 from guet.settings.settings import Settings
@@ -58,3 +60,14 @@ class TestAddCommitterFactory(TestCase):
         command.execute()
 
         mock_add_commiter.assert_called_with('initials', 'name', 'email')
+
+
+class TestBuildLocal(TestCase):
+
+    def test_uses_add_local_strategy_when_given_local_flag(self):
+        initials = 'initials'
+        name = 'name'
+        email = 'email'
+        command = AddCommitterFactory().build(['add', '--local', initials, name, email], Settings())
+        command.execute()
+        self.assertIsInstance(command.strategy, AddCommitterLocallyStrategy)
