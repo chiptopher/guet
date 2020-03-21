@@ -10,7 +10,7 @@ _GLOBAL = join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)
 
 
 def add_committer(initials: str, name: str, email: str, *, file_path: str = _GLOBAL) -> None:
-    all_committers = _read_all_committers_from_file()
+    all_committers = _read_all_committers_from_file(file_path)
     _add_committer_to_committers(all_committers, initials, name, email)
     _write_committers_to_file(all_committers, file_path)
 
@@ -31,11 +31,14 @@ def _position_of_committer_with_initials(all_committers: List[str], initials: st
     return _COMMITTER_NOT_PRESENT
 
 
-def _read_all_committers_from_file() -> List[str]:
-    committers_file = open(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), 'r')
-    all_lines = committers_file.readlines()
-    committers_file.close()
-    return all_lines
+def _read_all_committers_from_file(path) -> List[str]:
+    try:
+        committers_file = open(path, 'r')
+        all_lines = committers_file.readlines()
+        committers_file.close()
+        return all_lines
+    except FileNotFoundError:
+        return []
 
 
 def _write_committers_to_file(committers: List[str], path: str) -> None:

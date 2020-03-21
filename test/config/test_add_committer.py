@@ -17,7 +17,7 @@ class AddCommitterTest(unittest.TestCase):
         ]
         add_committer('initials3', 'name3', 'email3')
         mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'r')
-        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w+')
+        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w')
         mock_open.return_value.writelines.assert_called_with([
             'initials1,name1,email1\n',
             'initials2,name2,email2\n',
@@ -38,3 +38,25 @@ class AddCommitterTest(unittest.TestCase):
             'initials3,name3,email3\n'
         ])
 
+    @patch('builtins.open', new_callable=unittest.mock.mock_open())
+    def test_providing_a_file_path_uses_that_file_path_instead(self, mock_open):
+        mock_open.return_value.readlines.side_effect = FileNotFoundError()
+        add_committer('initials3', 'name3', 'email3')
+        mock_open.return_value.writelines.assert_called_with([
+            'initials3,name3,email3\n',
+        ])
+
+    @patch('builtins.open', new_callable=unittest.mock.mock_open())
+    def test_read_returns_empty_list_when_file_doesnt_exist(self, mock_open):
+        mock_open.return_value.readlines.return_value = [
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n'
+        ]
+        add_committer('initials3', 'name3', 'email3')
+        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'r')
+        mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w')
+        mock_open.return_value.writelines.assert_called_with([
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n',
+            'initials3,name3,email3\n',
+        ])
