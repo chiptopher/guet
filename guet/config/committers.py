@@ -3,6 +3,7 @@ from typing import List
 
 from guet import constants
 from guet.committers.global_committer import GlobalCommitter
+from guet.committers.local_committer import LocalCommitter
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.add_committer import add_committer
 from guet.config.committer import Committer
@@ -14,12 +15,21 @@ from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 
 
-def _load_committers(path: str) -> List[Committer]:
+def _load_global_committers(path: str) -> List[Committer]:
     lines = read_lines(path)
     committers = []
     for line in lines:
         initials, name, email = line.rstrip().split(',')
         committers.append(GlobalCommitter(initials=initials, name=name, email=email))
+    return committers
+
+
+def _load_local_committers(path: str, path_to_project_root: str) -> List[Committer]:
+    lines = read_lines(path)
+    committers = []
+    for line in lines:
+        initials, name, email = line.rstrip().split(',')
+        committers.append(LocalCommitter(initials=initials, name=name, email=email, project_root=path_to_project_root))
     return committers
 
 
@@ -42,9 +52,10 @@ def _replace_global_committers_with_local_committers_if_ids_match(global_committ
 class Committers(SetCommitterObserver):
     def __init__(self, *, path_to_project_root: str = ''):
         super().__init__()
-        global_committers = _load_committers(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
+        global_committers = _load_global_committers(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
         try:
-            local_committers = _load_committers(join(path_to_project_root, '.guet', constants.COMMITTERS))
+            local_committers = _load_local_committers(join(path_to_project_root, '.guet', constants.COMMITTERS),
+                                                      path_to_project_root)
         except FileNotFoundError:
             local_committers = []
         final = _replace_global_committers_with_local_committers_if_ids_match(global_committers, local_committers)
