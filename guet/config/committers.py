@@ -13,8 +13,8 @@ from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 
 
-def _load_committers():
-    lines = read_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
+def _load_committers(path: str):
+    lines = read_lines(path)
     committers = []
     for line in lines:
         initials, name, email = line.rstrip().split(',')
@@ -26,10 +26,28 @@ def _write_committers(committers: List[Committer]):
     write_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), [str(committer) for committer in committers])
 
 
+def _replace_global_committers_with_local_committers_if_ids_match(global_committers: List[Committer],
+                                                                  local_committers: List[Committer]):
+    final = []
+    for committer in global_committers:
+        try:
+            matching_committer = next(local for local in local_committers if local.initials == committer.initials)
+            final.append(matching_committer)
+        except StopIteration:
+            final.append(committer)
+    return final
+
+
 class Committers(SetCommitterObserver):
-    def __init__(self):
+    def __init__(self, *, path_to_project_root: str = ''):
         super().__init__()
-        self._committers = _load_committers()
+        global_committers = _load_committers(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
+        try:
+            local_committers = _load_committers(join(path_to_project_root, '.guet', constants.COMMITTERS))
+        except FileNotFoundError:
+            local_committers = []
+        final = _replace_global_committers_with_local_committers_if_ids_match(global_committers, local_committers)
+        self._committers = final
 
     def all(self):
         return self._committers
