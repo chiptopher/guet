@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.0
+Adds the `--local` flag to the `guet add` command that creates a `.guet/committers` directory with the committers saved. This committer can now be committed as a part of the repository. This commiter takes precedence over a globally saved committer.
+
+Adds an error message for attempting to `guet set` from a folder that doesn't have a `.git` directory, usually signifying that the user is not in the project's root directory.
+
 ## 2.3.6
 Addresses a typo in `guet get --help` which misspelled the `committers` identifier as `comitters`.
 
