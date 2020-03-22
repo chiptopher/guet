@@ -41,7 +41,7 @@ class Context(SetCommittersObservable):
     @property
     def committers(self):
         if self._committers is None:
-            self._committers = Committers()
+            self._committers = Committers(path_to_project_root=self.project_root_directory)
             self.add_set_committer_observer(self._committers)
         return self._committers
 

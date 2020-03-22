@@ -60,5 +60,4 @@ class TestBuildLocal(TestCase):
         name = 'name'
         email = 'email'
         command = AddCommitterFactory().build(['add', '--local', initials, name, email], Settings())
-        command.execute()
         self.assertIsInstance(command.strategy, AddCommitterLocallyStrategy)

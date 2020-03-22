@@ -12,6 +12,7 @@ from guet.commands.strategy import CommandStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.commands.too_few_args import TooFewArgsStrategy
 from guet.commands.too_many_args import TooManyArgsStrategy
+from guet.config.committer import Committer
 from guet.settings.settings import Settings
 
 ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <email>',
@@ -26,8 +27,11 @@ class AddCommitterFactory(CommandFactoryMethod):
     def short_help_message(self):
         return 'Add committer to the list of available committers'
 
-    def _initials_already_present(self, initials):
-        return len([committer for committer in self.context.committers.all() if committer.initials == initials]) != 0
+    def _commiter_with_matching_initials(self, initials) -> Committer:
+        try:
+            return next(committer for committer in self.context.committers.all() if committer.initials == initials)
+        except StopIteration:
+            return None
 
     def _prompt(self, new_initials: str, new_name: str, new_email: str) -> str:
         matching_committer = next(
@@ -46,13 +50,17 @@ class AddCommitterFactory(CommandFactoryMethod):
             return TooManyArgsStrategy()
         else:
             initials, name, email = args_without_flag
+            found = self._commiter_with_matching_initials(initials)
             if add_locally:
+                if found:
+                    print((f'Adding committer with initials "{initials}" shadows the '
+                           f'global committer "{found.initials}" - "{found.name}" <{found.email}>'))
                 add_committers_strategy = AddCommitterLocallyStrategy(initials, name, email,
                                                                       project_root=getcwd(),
                                                                       committers=self.context.committers)
             else:
                 add_committers_strategy = AddCommitterGloballyStrategy(initials, name, email, self.context.committers)
-            if self._initials_already_present(initials):
+            if found and not add_locally:
                 return CancelableCommandStrategy(self._prompt(initials, name, email),
                                                  add_committers_strategy,
                                                  DoNothingStrategy())
