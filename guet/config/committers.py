@@ -5,7 +5,6 @@ from guet import constants
 from guet.committers.global_committer import GlobalCommitter
 from guet.committers.local_committer import LocalCommitter
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.config.add_committer import add_committer
 from guet.config.committer import Committer
 from guet.config.errors import InvalidInitialsError
 from guet.config.set_author import set_committer_as_author

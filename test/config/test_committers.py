@@ -65,10 +65,7 @@ class TestCommitters(TestCase):
         committers.add(committer)
         committer.save.assert_not_called()
 
-    @patch('guet.config.committers.add_committer')
-    def test_add_saves_committer_in_list_of_all_committers(self,
-                                                           mock_add_committer,
-                                                           _1):
+    def test_add_saves_committer_in_list_of_all_committers(self, _1):
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
         committer.save = Mock()
