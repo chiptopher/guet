@@ -2,7 +2,8 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 
 from guet.commands.print_strategy import PrintCommandStrategy
-from guet.commands.start_required_decorator import StartRequiredDecorator
+from guet.commands.start_required_decorator import StartRequiredDecorator, NOT_RAN_IN_ROOT_DIRECTORY_ERROR
+from guet.git.errors import NoGitPresentError
 from guet.settings.settings import Settings
 
 
@@ -22,3 +23,11 @@ class TestStartRequiredDecorator(TestCase):
         command = decorator.build([], Settings())
 
         self.assertIsInstance(command.strategy, PrintCommandStrategy)
+
+    def test_returns_command_with_print_strategy_with_error_message(self, mock_git, mock_git_path_from_cwd):
+        mock_git.side_effect = NoGitPresentError()
+        decorator = StartRequiredDecorator(Mock())
+        command = decorator.build([], Settings())
+
+        self.assertIsInstance(command.strategy, PrintCommandStrategy)
+        self.assertEqual(NOT_RAN_IN_ROOT_DIRECTORY_ERROR, command.strategy._text)

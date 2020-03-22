@@ -2,7 +2,7 @@ import time
 
 from e2e import DockerTest
 from guet.commands.init_required_decorator import INIT_REQUIRED_ERROR_MESSAGE
-from guet.commands.start_required_decorator import GUET_NOT_STARTED_ERROR
+from guet.commands.start_required_decorator import GUET_NOT_STARTED_ERROR, NOT_RAN_IN_ROOT_DIRECTORY_ERROR
 
 
 class TestGuetSet(DockerTest):
@@ -60,3 +60,17 @@ class TestGuetSet(DockerTest):
         self.execute()
 
         self.assert_text_in_logs(1, GUET_NOT_STARTED_ERROR)
+
+    def test_errors_if_ran_in_folder_with_no_git(self):
+        self.guet_init()
+        self.git_init()
+        self.guet_add('initials1', 'name1', 'email1')
+        self.guet_add('initials2', 'name2', 'email2')
+        self.guet_start()
+        self.add_command('mkdir api')
+        self.change_directory('api')
+        self.guet_set(['initials1', 'initials2'])
+
+        self.execute()
+
+        self.assert_text_in_logs(1, NOT_RAN_IN_ROOT_DIRECTORY_ERROR)
