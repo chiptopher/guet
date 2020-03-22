@@ -20,6 +20,12 @@ pip3 install guet --upgrade
 
 To see the version releases, changes between them, and upgrade guides, check the [change log](./.github/CHANGELOG.md)
 
+### Installing a Specific Version
+Installing a specific version of guet can be done with the following comming:
+```
+pip3 install guet==1.0.0
+```
+
 #### Development Version
 The most recent develoment version can be downloaded and installed as well:
 
