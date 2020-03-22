@@ -66,3 +66,13 @@ class TestAddUser(DockerTest):
 
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials2,name2,email2'], text)
+
+    def test_prints_error_message_when_adding_local_committer_that_has_same_initials_as_global_committer(self):
+        self.guet_init()
+        self.guet_add('initials', 'name1', 'email1')
+        self.guet_add('initials', 'name2', 'emial2', local=True)
+
+        self.execute()
+
+        self.assert_text_in_logs(0, ('Adding committer with initials "initials" shadows the '
+                                     'global committer "initials" - "name1" <email1>'))

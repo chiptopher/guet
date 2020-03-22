@@ -60,3 +60,8 @@ class TestContext(TestCase):
         mock_git.side_effect = NoGitPresentError()
         context = Context('path/to/project/root/')
         self.assertNotIn(mock_git.return_value, context.current_committers_observer)
+
+    def test_committers_loaded_with_project_root(self, _1, mock_committers):
+        context = Context('path/to/project/root/')
+        context.__getattribute__('committers')
+        mock_committers.assert_called_with(path_to_project_root='path/to/project/root/')
