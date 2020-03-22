@@ -19,6 +19,14 @@ ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <e
                                                 "Add committer to make available for commit tracking.").build()
 
 
+def _should_add_local(args):
+    return '--local' in args
+
+
+def _args_without_local_flag(args):
+    return [arg for arg in args if arg != '--local']
+
+
 class AddCommitterFactory(CommandFactoryMethod):
     def build(self, args: List[str], settings: Settings) -> Command:
         strategy = self._choose_strategy(args[1:], settings)
@@ -42,27 +50,28 @@ class AddCommitterFactory(CommandFactoryMethod):
         return warning
 
     def _choose_strategy(self, args: List[str], _: Settings) -> CommandStrategy:
-        add_locally = '--local' in args
-        args_without_flag = [arg for arg in args if arg != '--local']
-        if len(args_without_flag) < 3:
+        if len(_args_without_local_flag(args)) < 3:
             return TooFewArgsStrategy(ADD_COMMITTER_HELP_MESSAGE)
-        elif len(args_without_flag) > 3:
+        elif len(_args_without_local_flag(args)) > 3:
             return TooManyArgsStrategy()
         else:
-            initials, name, email = args_without_flag
-            found = self._commiter_with_matching_initials(initials)
-            if add_locally:
-                if found:
-                    print((f'Adding committer with initials "{initials}" shadows the '
-                           f'global committer "{found.initials}" - "{found.name}" <{found.email}>'))
-                add_committers_strategy = AddCommitterLocallyStrategy(initials, name, email,
-                                                                      project_root=getcwd(),
-                                                                      committers=self.context.committers)
-            else:
-                add_committers_strategy = AddCommitterGloballyStrategy(initials, name, email, self.context.committers)
-            if found and not add_locally:
-                return CancelableCommandStrategy(self._prompt(initials, name, email),
-                                                 add_committers_strategy,
-                                                 DoNothingStrategy())
-            else:
-                return add_committers_strategy
+            return self._choose_creation_strategy(args)
+
+    def _choose_creation_strategy(self, args):
+        initials, name, email = _args_without_local_flag(args)
+        found = self._commiter_with_matching_initials(initials)
+        if _should_add_local(args):
+            if found:
+                print((f'Adding committer with initials "{initials}" shadows the '
+                       f'global committer "{found.initials}" - "{found.name}" <{found.email}>'))
+            add_committers_strategy = AddCommitterLocallyStrategy(initials, name, email,
+                                                                  project_root=getcwd(),
+                                                                  committers=self.context.committers)
+        else:
+            add_committers_strategy = AddCommitterGloballyStrategy(initials, name, email, self.context.committers)
+        if found and not _should_add_local(args):
+            return CancelableCommandStrategy(self._prompt(initials, name, email),
+                                             add_committers_strategy,
+                                             DoNothingStrategy())
+        else:
+            return add_committers_strategy
