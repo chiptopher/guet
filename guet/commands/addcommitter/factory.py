@@ -7,7 +7,7 @@ from guet.commands.cancellable_strategy import CancelableCommandStrategy
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.do_nothing_strategy import DoNothingStrategy
-from guet.commands.help.help_message_builder import HelpMessageBuilder
+from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagsBuilder, FlagBuilder
 from guet.commands.strategy import CommandStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.commands.too_few_args import TooFewArgsStrategy
@@ -16,7 +16,8 @@ from guet.config.committer import Committer
 from guet.settings.settings import Settings
 
 ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <email>',
-                                                "Add committer to make available for commit tracking.").build()
+                                                "Add committer to make available for commit tracking.") \
+    .flags(FlagsBuilder([FlagBuilder('--local', 'Save the committer locally')])).build()
 
 
 def _should_add_local(args):
