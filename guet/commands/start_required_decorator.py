@@ -1,8 +1,6 @@
 from os.path import join
 from typing import List
 
-from guet.git.errors import NoGitPresentError
-
 from guet.commands.command import Command
 from guet.commands.command_factory_decorator import CommandFactoryDecorator
 from guet.commands.print_strategy import PrintCommandStrategy
