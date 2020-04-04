@@ -62,6 +62,16 @@ class TestGetCommand(TestCase):
                                                                                                                 mock_context,
                                                                                                                 mock_get_current_committers,
                                                                                                                 mock_print):
+        mock_committers = Mock()
+        context: Context = mock_context.instance.return_value
+        context.committers = mock_committers
+        committers = [
+            Committer('name1', 'email1', 'initials1'),
+            Committer('name2', 'email2', 'initials2')
+        ]
+        context.committers.return_value = committers
+        mock_committers.all.return_value = committers
+
         committers = [
             Committer('name1', 'email1', 'initials1'),
             Committer('name2', 'email2', 'initials2')

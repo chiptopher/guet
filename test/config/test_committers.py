@@ -47,6 +47,34 @@ class TestCommitters(TestCase):
         actual = committers.all()
         self.assertListEqual(expected_committers, actual)
 
+    def test_current_only_returns_committers_that_are_currently_set(self, mock_read_lines):
+        mock_read_lines.side_effect = [[
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n'
+        ], FileNotFoundError(), [
+            'initials1,initials2,1000000000,/project1/.git',
+            'initials1,1000000000,/project2/.git',
+        ]]
+
+        expected_committers = [
+            Committer(name='name1', email='email1', initials='initials1'),
+            Committer(name='name2', email='email2', initials='initials2')
+        ]
+        committers = Committers(path_to_project_root='/project1')
+        actual = committers.current()
+        self.assertListEqual(expected_committers, actual)
+
+    def test_current_only_returns_committers_that_are_currently_set(self, mock_read_lines):
+        mock_read_lines.side_effect = [[
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n'
+        ], FileNotFoundError(), [
+            'initials1,initials2,1000000000,/project1/.git',
+        ]]
+        committers = Committers(path_to_project_root='/other_project')
+        actual = committers.current()
+        self.assertListEqual([], actual)
+
     def test_add_writes_committer_to_file(self, _1):
         committers = Committers()
         committer = Committer(name='name', email='email', initials='initials')
@@ -105,7 +133,7 @@ class TestCommitters(TestCase):
             pass
 
 
-something = [[
+local_committers_with_match = [[
     'initials1,name1,email1\n',
     'initials2,name2,email2\n'
 ], [
@@ -113,7 +141,7 @@ something = [[
 ]]
 
 
-@patch('guet.config.committers.read_lines', side_effect=something)
+@patch('guet.config.committers.read_lines', side_effect=local_committers_with_match)
 class TestCommittersWithLocal(TestCase):
     path_to_project_root = '/path/to/project/root'
 
@@ -133,3 +161,15 @@ class TestCommittersWithLocal(TestCase):
     def test_doesnt_load_local_committers_if_no_project_root_passed(self, mock_read_lines):
         Committers()
         mock_read_lines.assert_called_once_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
+
+    def test_loads_local_committers_that_arent_in_global_committers(self, mock_read_lines):
+        local_committers_with_match = [[
+            'initials2,name2,email2\n'
+        ], [
+            'initials1,othername1,otheremail1\n'
+        ]]
+        mock_read_lines.side_effect = local_committers_with_match
+        committers = Committers(path_to_project_root=self.path_to_project_root)
+        local_committer1 = Committer(initials='initials1', name='othername1', email='otheremail1')
+        global_commtter2 = Committer(initials='initials2', name='name2', email='email2')
+        self.assertListEqual([local_committer1, global_commtter2], committers.all())

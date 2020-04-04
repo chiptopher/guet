@@ -36,15 +36,26 @@ def _write_committers(committers: List[Committer]):
     write_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), [str(committer) for committer in committers])
 
 
+def _current_initials(project_root: str) -> List[str]:
+    lines = read_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
+    try:
+        git_path = join(project_root, '.git')
+        project_set_line = next(project_line for project_line in lines if project_line.endswith(git_path))
+        *initials, _, _ = project_set_line.split(',')
+        return initials
+    except StopIteration:
+        return []
+
+
 def _replace_global_committers_with_local_committers_if_ids_match(global_committers: List[Committer],
                                                                   local_committers: List[Committer]):
-    final = []
+    final = local_committers.copy()
+
+    local_initials = [committer.initials for committer in local_committers]
     for committer in global_committers:
-        try:
-            matching_committer = next(local for local in local_committers if local.initials == committer.initials)
-            final.append(matching_committer)
-        except StopIteration:
+        if committer.initials not in local_initials:
             final.append(committer)
+
     return final
 
 
@@ -54,16 +65,21 @@ class Committers(SetCommitterObserver):
         global_committers = _load_global_committers(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
         local_committers = []
         try:
-            if path_to_project_root:
+            if path_to_project_root is not None:
                 local_committers = _load_local_committers(join(path_to_project_root, '.guet', constants.COMMITTERS),
                                                           path_to_project_root)
         except FileNotFoundError:
             pass
         final = _replace_global_committers_with_local_committers_if_ids_match(global_committers, local_committers)
         self._committers = final
+        self.project_root = path_to_project_root
 
     def all(self):
         return self._committers
+
+    def current(self) -> List[Committer]:
+        current_initials = _current_initials(self.project_root)
+        return [committer for committer in self.all() if committer.initials in current_initials]
 
     def add(self, committer: Committer):
         if committer not in self.all():
