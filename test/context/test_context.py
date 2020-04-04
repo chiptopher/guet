@@ -67,3 +67,9 @@ class TestContext(TestCase):
         context = Context('path/to/project/root/')
         context.__getattribute__('committers')
         mock_committers.assert_called_with(path_to_project_root='path/to/project/root/')
+
+    @patch('guet.context.context.project_root', side_effect=FileNotFoundError)
+    def test_committers_loaded_without_root_path_if_none(self, mock_project_root, _1, mock_committers):
+        context = Context(None)
+        context.__getattribute__('committers')
+        mock_committers.assert_called_with(path_to_project_root=None)

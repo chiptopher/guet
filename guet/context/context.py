@@ -1,6 +1,5 @@
-from os import getcwd
 from os.path import join
-from typing import List
+from typing import List, Union
 
 from guet.config.committer import Committer
 from guet.config.committers import Committers
@@ -35,14 +34,13 @@ class Context(SetCommittersObservable):
 
     def __init__(self, project_root_directory: str):
         super().__init__()
-        self._committers: Committers = None
+        self._committers: Union[Committers, None] = None
         self._git = None
         self._project_root_directory = project_root_directory
 
     @property
     def project_root_directory(self) -> str:
         if self._project_root_directory is None:
-            # TODO handle situations where there isn't necessarily a project root ie. guet add without local
             root = project_root()
             self._project_root_directory = root
         return self._project_root_directory
@@ -54,7 +52,11 @@ class Context(SetCommittersObservable):
     @property
     def committers(self):
         if self._committers is None:
-            self._committers = Committers(path_to_project_root=self.project_root_directory)
+            try:
+                project_dir = self.project_root_directory
+            except FileNotFoundError:
+                project_dir = None
+            self._committers = Committers(path_to_project_root=project_dir)
             self.add_set_committer_observer(self._committers)
         return self._committers
 
