@@ -15,11 +15,12 @@ max-line-length=120
 # R0201: Method could be a function (no-self-use)
 # W0108: Lambda may not be necessary (unnecessary-lambda)
 # R0903: Too few public methods (0/1) (too-few-public-methods)
+# R0401: Cyclic import (cyclic-import)
 
 max-complexity=5
 max-args=6
 
-disable=R1705,R1722,R0801,C0114,C0116,C0115,R0201,W0108,R0903
+disable=R1705,R1722,R0801,C0114,C0116,C0115,R0201,W0108,R0903,R0401
 
 min-public-methods=1
 
