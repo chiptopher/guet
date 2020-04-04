@@ -1,5 +1,5 @@
 from os.path import join
-from typing import List
+from typing import List, Union
 
 from guet import constants
 from guet.committers.global_committer import GlobalCommitter
@@ -49,14 +49,16 @@ def _replace_global_committers_with_local_committers_if_ids_match(global_committ
 
 
 class Committers(SetCommitterObserver):
-    def __init__(self, *, path_to_project_root: str = ''):
+    def __init__(self, *, path_to_project_root: Union[str, None] = None):
         super().__init__()
         global_committers = _load_global_committers(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
+        local_committers = []
         try:
-            local_committers = _load_local_committers(join(path_to_project_root, '.guet', constants.COMMITTERS),
-                                                      path_to_project_root)
+            if path_to_project_root:
+                local_committers = _load_local_committers(join(path_to_project_root, '.guet', constants.COMMITTERS),
+                                                          path_to_project_root)
         except FileNotFoundError:
-            local_committers = []
+            pass
         final = _replace_global_committers_with_local_committers_if_ids_match(global_committers, local_committers)
         self._committers = final
 

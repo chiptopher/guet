@@ -129,3 +129,7 @@ class TestCommittersWithLocal(TestCase):
         local_committer1 = Committer(initials='initials1', name='othername1', email='otheremail1')
         global_commtter2 = Committer(initials='initials2', name='name2', email='email2')
         self.assertListEqual([local_committer1, global_commtter2], committers.all())
+
+    def test_doesnt_load_local_committers_if_no_project_root_passed(self, mock_read_lines):
+        Committers()
+        mock_read_lines.assert_called_once_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
