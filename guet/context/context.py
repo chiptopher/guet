@@ -7,6 +7,7 @@ from guet.config.committers import Committers
 from guet.context.set_committers_observable import SetCommittersObservable
 from guet.git.git import Git
 from guet.context.errors import InvalidCommittersError
+from guet.util import project_root
 
 
 def _attempt_to_load_git(function):
@@ -30,13 +31,25 @@ def _attempt_to_load_committers(function):
 class Context(SetCommittersObservable):
     @staticmethod
     def instance():
-        return Context(getcwd())
+        return Context(None)
 
     def __init__(self, project_root_directory: str):
         super().__init__()
         self._committers: Committers = None
         self._git = None
-        self.project_root_directory = project_root_directory
+        self._project_root_directory = project_root_directory
+
+    @property
+    def project_root_directory(self) -> str:
+        if self._project_root_directory is None:
+            # TODO handle situations where there isn't necessarily a project root ie. guet add without local
+            root = project_root()
+            self._project_root_directory = root
+        return self._project_root_directory
+
+    @project_root_directory.setter
+    def project_root_directory(self, new: str) -> None:
+        self._project_root_directory = new
 
     @property
     def committers(self):
