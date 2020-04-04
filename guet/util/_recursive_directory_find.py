@@ -11,6 +11,6 @@ def _recursive_directory_find(path: Path, directory_name: str) -> str:
         raise FileNotFoundError()
     joined_with_driectory = path.joinpath(directory_name)
     if joined_with_driectory.is_dir():
-        return str(joined_with_driectory)
+        return str(path)
     else:
         return _recursive_directory_find(path.parent, directory_name)

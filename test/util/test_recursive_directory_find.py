@@ -22,7 +22,7 @@ class TestRecursiveDirectoryFind(TestCase):
         mock_path.side_effect = [given_mock_path]
 
         result = recursive_directory_find('.', '.git')
-        self.assertEqual(join('.', '.git'), result)
+        self.assertEqual('.', result)
 
     def test_checks_parent_directory_for_desired_directory(self, mock_path, mock_is_mount):
         parent_joined_with_git = Mock()
@@ -44,7 +44,7 @@ class TestRecursiveDirectoryFind(TestCase):
         mock_path.side_effect = [given_mock_path]
 
         result = recursive_directory_find('./path', '.git')
-        self.assertEqual(join('.', '.git'), result)
+        self.assertEqual('.', result)
 
     def test_raises_exception_if_mount_is_found(self, mock_path, mock_expanduser):
         parent: Path = Mock()
