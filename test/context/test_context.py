@@ -11,10 +11,12 @@ from guet.git.errors import NoGitPresentError
 @patch('guet.context.context.Committers')
 @patch('guet.context.context.Git')
 class TestContext(TestCase):
-    @patch('guet.context.context.getcwd', return_value='/path/to/cwd')
-    def test_instace_returns_instance_with_cwd_as_project_root(self, mock_getcwd, _1, _2):
+
+    @patch('guet.context.context.project_root', return_value='/path/to/cwd')
+    def test_instance_only_load_project_root_if_its_used(self, mock_project_root, _1, _2):
         instance: Context = Context.instance()
-        self.assertEqual(mock_getcwd.return_value, instance.project_root_directory)
+        self.assertIsNone(instance._project_root_directory)
+        self.assertEqual(instance.project_root_directory, '/path/to/cwd')
 
     def test_set_committers_notifies_author_observers_that_committers_are_set(self, mock_git, mock_committers):
         context = Context('current/working/directory')
