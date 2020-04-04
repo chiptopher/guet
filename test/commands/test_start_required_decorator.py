@@ -3,11 +3,10 @@ from unittest.mock import Mock, patch
 
 from guet.commands.print_strategy import PrintCommandStrategy
 from guet.commands.start_required_decorator import StartRequiredDecorator, NOT_RAN_IN_ROOT_DIRECTORY_ERROR
-from guet.git.errors import NoGitPresentError
 from guet.settings.settings import Settings
 
 
-@patch('guet.commands.start_required_decorator.project_root')
+@patch('guet.commands.start_required_decorator.project_root', return_value='.')
 @patch('guet.commands.start_required_decorator.Git')
 class TestStartRequiredDecorator(TestCase):
     def test_calls_decorated_build(self, mock_git, mock_project_root):

@@ -18,6 +18,8 @@ class TestRecursiveDirectoryFind(TestCase):
 
         given_mock_path = Mock()
         given_mock_path.joinpath.return_value = joined_with_git
+        given_mock_path.__str__ = Mock()
+        given_mock_path.__str__.return_value = '.'
 
         mock_path.side_effect = [given_mock_path]
 
@@ -27,11 +29,11 @@ class TestRecursiveDirectoryFind(TestCase):
     def test_checks_parent_directory_for_desired_directory(self, mock_path, mock_is_mount):
         parent_joined_with_git = Mock()
         parent_joined_with_git.is_dir.return_value = True
-        parent_joined_with_git.__str__ = Mock()
-        parent_joined_with_git.__str__.return_value = join('.', '.git')
 
         parent = Mock()
         parent.joinpath.return_value = parent_joined_with_git
+        parent.__str__ = Mock()
+        parent.__str__.return_value = '.'
 
         joined_with_git = Mock()
 
