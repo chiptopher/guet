@@ -19,11 +19,11 @@ class TestCommitters(TestCase):
     @patch('guet.config.committers.set_committer_as_author')
     @patch('guet.config.committers.set_current_committers')
     def test_notify_of_committer_set_sets_current_committers(self, mock_set_current_committers, _1, _2):
-        observer = Committers()
+        observer = Committers(path_to_project_root='/path/to/project/root')
         committer1 = Committer(name='name1', email='email1', initials='initials1')
         committer2 = Committer(name='name2', email='email2', initials='initials2')
         observer.notify_of_committer_set([committer1, committer2])
-        mock_set_current_committers.assert_called_with([committer1, committer2])
+        mock_set_current_committers.assert_called_with([committer1, committer2], '/path/to/project/root')
 
     @patch('guet.config.committers.set_committer_as_author')
     @patch('guet.config.committers.set_current_committers')

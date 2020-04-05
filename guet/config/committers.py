@@ -39,8 +39,7 @@ def _write_committers(committers: List[Committer]):
 def _current_initials(project_root: str) -> List[str]:
     lines = read_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
     try:
-        git_path = join(project_root, '.git')
-        project_set_line = next(project_line for project_line in lines if project_line.endswith(git_path))
+        project_set_line = next(project_line for project_line in lines if project_line.endswith(project_root))
         *initials, _, _ = project_set_line.split(',')
         return initials
     except StopIteration:
@@ -97,5 +96,5 @@ class Committers(SetCommitterObserver):
         _write_committers(self._committers)
 
     def notify_of_committer_set(self, new_committers: List[Committer]):
-        set_current_committers(new_committers)
+        set_current_committers(new_committers, self.project_root)
         set_committer_as_author(new_committers[0])
