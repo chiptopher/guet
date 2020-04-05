@@ -52,8 +52,8 @@ class TestCommitters(TestCase):
             'initials1,name1,email1\n',
             'initials2,name2,email2\n'
         ], FileNotFoundError(), [
-            'initials1,initials2,1000000000,/project1/.git',
-            'initials1,1000000000,/project2/.git',
+            'initials1,initials2,1000000000,/project1',
+            'initials1,1000000000,/project2',
         ]]
 
         expected_committers = [
@@ -64,7 +64,23 @@ class TestCommitters(TestCase):
         actual = committers.current()
         self.assertListEqual(expected_committers, actual)
 
-    def test_current_only_returns_committers_that_are_currently_set(self, mock_read_lines):
+    def test_current_maintains_currently_set_order(self, mock_read_lines):
+        mock_read_lines.side_effect = [[
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n'
+        ], FileNotFoundError(), [
+            'initials2,initials1,1000000000,/project1',
+        ]]
+
+        expected_committers = [
+            Committer(name='name2', email='email2', initials='initials2'),
+            Committer(name='name1', email='email1', initials='initials1')
+        ]
+        committers = Committers(path_to_project_root='/project1')
+        actual = committers.current()
+        self.assertListEqual(expected_committers, actual)
+
+    def test_current_returns_empty_list_when_no_committers_present(self, mock_read_lines):
         mock_read_lines.side_effect = [[
             'initials1,name1,email1\n',
             'initials2,name2,email2\n'

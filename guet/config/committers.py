@@ -78,7 +78,14 @@ class Committers(SetCommitterObserver):
 
     def current(self) -> List[Committer]:
         current_initials = _current_initials(self.project_root)
-        return [committer for committer in self.all() if committer.initials in current_initials]
+        final = []
+        for initials in current_initials:
+            try:
+                committer = next((committer for committer in self.all() if committer.initials == initials))
+                final.append(committer)
+            except StopIteration:
+                pass
+        return final
 
     def add(self, committer: Committer):
         if committer not in self.all():

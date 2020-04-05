@@ -35,15 +35,16 @@ class TestGuetCommitRotatesAuthor(DockerTest):
         self.add_file('B')
         self.git_add()
         self.git_commit('Second commit')
-        self.save_file_content('.guet/authornames')
-        self.save_file_content('.guet/authoremails')
-        self.save_file_content('.guet/committers')
-        self.save_file_content('.guet/committersset')
+        self.add_file('C')
+        self.git_add()
+        self.git_commit('Third commit')
+        self.show_git_log()
 
         self.execute()
 
-        self.assertEqual('name3', self.get_file_text('.guet/authornames')[0])
-        self.assertEqual('email3@localhost', self.get_file_text('.guet/authoremails')[0])
+        self.assert_text_in_logs(31, 'Author: {} <{}>'.format('name', 'email@localhost'))
+        self.assert_text_in_logs(21, 'Author: {} <{}>'.format('name2', 'email2@localhost'))
+        self.assert_text_in_logs(11, 'Author: {} <{}>'.format('name3', 'email3@localhost'))
 
     def test_second_commit_uses_second_pair_name_and_email(self):
         self.guet_init()
