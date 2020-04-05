@@ -5,13 +5,13 @@ from guet.commands.usercommands.addcommitter.add_committer_locally_strategy impo
 from guet.commands.usercommands.addcommitter.add_committer_strategy import AddCommitterGloballyStrategy
 from guet.commands.strategies.cancellable_strategy import CancelableCommandStrategy
 from guet.commands.command import Command
-from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.strategies.do_nothing_strategy import DoNothingStrategy
 from guet.commands.strategies.strategy import CommandStrategy
 from guet.commands.strategies.strategy_command import StrategyCommand
 from guet.commands.strategies.too_few_args import TooFewArgsStrategy
 from guet.commands.strategies.too_many_args import TooManyArgsStrategy
 from guet.commands.usercommands.help.help_message_builder import FlagBuilder, HelpMessageBuilder, FlagsBuilder
+from guet.commands.usercommands.usercommand_factory import UserCommandFactory
 from guet.config.committer import Committer
 from guet.settings.settings import Settings
 
@@ -28,7 +28,7 @@ def _args_without_local_flag(args):
     return [arg for arg in args if arg != '--local']
 
 
-class AddCommitterFactory(CommandFactoryMethod):
+class AddCommitterFactory(UserCommandFactory):
     def build(self, args: List[str], settings: Settings) -> Command:
         strategy = self._choose_strategy(args[1:], settings)
         return StrategyCommand(strategy)

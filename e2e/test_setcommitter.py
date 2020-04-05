@@ -1,8 +1,8 @@
 import time
 
 from e2e import DockerTest
-from guet.commands.init_required_decorator import INIT_REQUIRED_ERROR_MESSAGE
-from guet.commands.start_required_decorator import GUET_NOT_STARTED_ERROR, NOT_RAN_IN_ROOT_DIRECTORY_ERROR
+from guet.commands.decorators.init_required_decorator import INIT_REQUIRED_ERROR_MESSAGE
+from guet.commands.decorators.start_required_decorator import GUET_NOT_STARTED_ERROR
 
 
 class TestGuetSet(DockerTest):
@@ -81,3 +81,21 @@ class TestGuetSet(DockerTest):
         set_text_split = set_text.split(',')
         self.assertEqual('initials1', set_text_split[0])
         self.assertEqual('initials2', set_text_split[1])
+
+    def test_setting_committers_includes_local_committers(self):
+        self.guet_init()
+        self.git_init()
+        self.guet_add('initials1', 'name1', 'email1', local=True)
+        self.guet_add('initials2', 'name2', 'email2')
+        self.guet_start()
+        self.add_command('mkdir api')
+        self.change_directory('api')
+        self.guet_set(['initials1', 'initials2'])
+        self.guet_get_current()
+        self.save_file_content('test-env/.guet/committers')
+
+        self.execute()
+
+        self.assert_text_in_logs(1, 'Currently set committers')
+        self.assert_text_in_logs(2, 'initials1 - name1 <email1>')
+        self.assert_text_in_logs(3, 'initials2 - name2 <email2>')

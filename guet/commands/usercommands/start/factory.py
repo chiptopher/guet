@@ -1,12 +1,12 @@
 from typing import List
 
 from guet.commands.command import Command
-from guet.commands.command_factory import CommandFactoryMethod
 from guet.commands.usercommands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
 from guet.commands.usercommands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.usercommands.start.create_hook_strategy import CreateHookStrategy
 from guet.commands.usercommands.start.start_strategy import PromptUserForHookTypeStrategy
 from guet.commands.strategies.strategy_command import StrategyCommand
+from guet.commands.usercommands.usercommand_factory import UserCommandFactory
 from guet.git.git import Git
 from guet.git.git_path_from_cwd import git_path_from_cwd
 from guet.settings.settings import Settings
@@ -17,7 +17,7 @@ START_HELP_MESSAGE = HelpMessageBuilder('guet start',
                          FlagBuilder('-o/--overwrite', 'Overwrite current hooks')])).build()
 
 
-class StartCommandFactory(CommandFactoryMethod):
+class StartCommandFactory(UserCommandFactory):
     def short_help_message(self) -> str:
         return 'Start guet usage in the repository at current directory'
 

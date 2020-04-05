@@ -1,6 +1,6 @@
 
 from e2e import DockerTest
-from guet.commands.init_required_decorator import INIT_REQUIRED_ERROR_MESSAGE
+from guet.commands.decorators.init_required_decorator import INIT_REQUIRED_ERROR_MESSAGE
 
 
 class TestConfig(DockerTest):
