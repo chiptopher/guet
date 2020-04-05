@@ -13,6 +13,9 @@ class Committer:
     def __str__(self):
         return f'{self.initials},{self.name},{self.email}'
 
+    def __repr__(self):
+        return f'<{str(self)}>'
+
     def pretty(self):
         return f'{self.initials} - {self.name} <{self.email}>'
 
