@@ -8,7 +8,6 @@ from guet.commands.help.help_message_builder import HelpMessageBuilder, FlagBuil
 from guet.commands.strategy import CommandStrategy
 from guet.commands.strategy_command import StrategyCommand
 from guet.config.committer import Committer
-from guet.config.get_current_committers import get_current_committers
 from guet.settings.settings import Settings
 
 
@@ -43,7 +42,7 @@ class GetCommandFactory(CommandFactoryMethod):
         if identifier == 'committers':
             return self.context.committers.all(), lambda: print('All committers')
         elif identifier == 'current':
-            return get_current_committers(), lambda: print('Currently set committers')
+            return self.context.committers.current(), lambda: print('Currently set committers')
         raise AttributeError
 
     def _determine_strategy(self, args: List[str]) -> CommandStrategy:
