@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, Mock
 import guet
-from guet.commands.help.guet_usage import guet_usage
+from guet.commands.usercommands.help.guet_usage import guet_usage
 from guet.executor import Executor
 
 

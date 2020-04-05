@@ -1,10 +1,10 @@
 import guet
 from guet.commands.command import Command
 from guet.commands.command_factory import CommandFactoryMethod
-from guet.commands.help.guet_usage import guet_usage
-from guet.commands.help_message_strategy import HelpMessageStrategy
-from guet.commands.print_strategy import PrintCommandStrategy
-from guet.commands.strategy_command import StrategyCommand
+from guet.commands.usercommands.help.guet_usage import guet_usage
+from guet.commands.strategies.help_message_strategy import HelpMessageStrategy
+from guet.commands.strategies.print_strategy import PrintCommandStrategy
+from guet.commands.strategies.strategy_command import StrategyCommand
 from guet.settings.settings import Settings
 from guet.config.get_config import get_config
 from guet.config.already_initialized import already_initialized
