@@ -52,12 +52,16 @@ class TestAddCommitterFactory(TestCase):
                          AddCommitterFactory().short_help_message())
 
 
+@patch('guet.commands.usercommands.addcommitter.factory.AddCommitterLocallyStrategy')
 @patch('guet.commands.command_factory.Context')
 class TestBuildLocal(TestCase):
 
-    def test_uses_add_local_strategy_when_given_local_flag(self, mock_context):
+    def test_uses_add_local_strategy_when_given_local_flag(self, mock_context, mock_strategy):
+        instance: Context = mock_context.instance.return_value
         initials = 'initials'
         name = 'name'
         email = 'email'
         command = AddCommitterFactory().build(['add', '--local', initials, name, email], Settings())
-        self.assertIsInstance(command.strategy, AddCommitterLocallyStrategy)
+        self.assertEqual(command.strategy, mock_strategy.return_value)
+        mock_strategy.assert_called_with(initials, name, email, project_root=instance.project_root_directory,
+                                         committers=instance.committers)
