@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import patch, call, Mock
+from unittest.mock import patch, call, Mock, PropertyMock
 
 from guet.commands.usercommands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
 from guet.commands.usercommands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
@@ -52,11 +52,11 @@ class TestAddCommitterFactory(TestCase):
                          AddCommitterFactory().short_help_message())
 
 
-@patch('guet.commands.usercommands.addcommitter.factory.AddCommitterLocallyStrategy')
 @patch('guet.commands.command_factory.Context')
 class TestBuildLocal(TestCase):
 
-    def test_uses_add_local_strategy_when_given_local_flag(self, mock_context, mock_strategy):
+    @patch('guet.commands.usercommands.addcommitter.factory.AddCommitterLocallyStrategy')
+    def test_uses_add_local_strategy_when_given_local_flag(self, mock_strategy, mock_context):
         instance: Context = mock_context.instance.return_value
         initials = 'initials'
         name = 'name'
