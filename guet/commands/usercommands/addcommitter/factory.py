@@ -1,6 +1,6 @@
-from os import getcwd
 from typing import List
 
+from guet.commands.strategies.print_strategy import PrintCommandStrategy
 from guet.commands.usercommands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
 from guet.commands.usercommands.addcommitter.add_committer_strategy import AddCommitterGloballyStrategy
 from guet.commands.strategies.cancellable_strategy import CancelableCommandStrategy
@@ -56,7 +56,10 @@ class AddCommitterFactory(UserCommandFactory):
         elif len(_args_without_local_flag(args)) > 3:
             return TooManyArgsStrategy()
         else:
-            return self._choose_creation_strategy(args)
+            try:
+                return self._choose_creation_strategy(args)
+            except FileNotFoundError:
+                return PrintCommandStrategy('No git folder, so project root cannot be determined.')
 
     def _choose_creation_strategy(self, args):
         initials, name, email = _args_without_local_flag(args)

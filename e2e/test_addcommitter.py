@@ -91,3 +91,11 @@ class TestAddUser(DockerTest):
 
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials1,name1,email1'], text)
+
+    def test_adding_local_committers_with_no_git_prints_error_message(self):
+        self.guet_init()
+        self.guet_add('initials1', 'name1', 'email1', local=True)
+
+        self.execute()
+
+        self.assert_text_in_logs(0, 'No git folder, so project root cannot be determined.')
