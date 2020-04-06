@@ -66,7 +66,7 @@ class AddCommitterFactory(UserCommandFactory):
                 print((f'Adding committer with initials "{initials}" shadows the '
                        f'global committer "{found.initials}" - "{found.name}" <{found.email}>'))
             add_committers_strategy = AddCommitterLocallyStrategy(initials, name, email,
-                                                                  project_root=getcwd(),
+                                                                  project_root=self.context.project_root_directory,
                                                                   committers=self.context.committers)
         else:
             add_committers_strategy = AddCommitterGloballyStrategy(initials, name, email, self.context.committers)
