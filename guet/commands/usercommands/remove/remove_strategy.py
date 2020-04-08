@@ -9,7 +9,7 @@ def _without_committer_with_initials(initials, all_committers):
 
 class RemoveCommitterStrategy(CommandStrategy):
     def __init__(self, initials: str, context: Context):
-        self._initials = initials
+        self._initials = str.lower(initials)
         self.context = context
 
     def apply(self):

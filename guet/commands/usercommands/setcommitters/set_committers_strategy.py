@@ -13,7 +13,7 @@ class SetCommittersStrategy(CommandStrategy):
 
     def apply(self):
         committers = self.context.committers.all()
-        committer_initials = self.args
+        committer_initials = [str.lower(initials) for initials in self.args]
         committers_to_set = filter_committers_with_initials(committers, committer_initials)
 
         correct_number_of_committers_present = len(committers_to_set) is len(committer_initials)
