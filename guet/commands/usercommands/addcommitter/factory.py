@@ -63,6 +63,7 @@ class AddCommitterFactory(UserCommandFactory):
 
     def _choose_creation_strategy(self, args):
         initials, name, email = _args_without_local_flag(args)
+        initials = str.lower(initials)
         found = self._commiter_with_matching_initials(initials)
         if _should_add_local(args):
             if found:

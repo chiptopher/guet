@@ -37,6 +37,22 @@ class TestGuetSet(DockerTest):
         self.assertEqual('initials2', set_text_split[1])
         self.assertTrue(start_time + 10000 > int(set_text_split[2]) > start_time)
 
+    def test_set_committers_ignores_case_of_initials(self):
+        self.guet_init()
+        self.git_init()
+        self.guet_add('initials1', 'name1', 'email1')
+        self.guet_add('initials2', 'name2', 'email2')
+        self.guet_start()
+        self.guet_set(['INITIALS1', 'initials2'])
+        self.guet_get_current()
+
+        self.execute()
+
+        self.assert_text_in_logs(1, 'Currently set committers')
+        self.assert_text_in_logs(2, 'initials1 - name1 <email1>')
+        self.assert_text_in_logs(3, 'initials2 - name2 <email2>')
+
+
     def test_set_committer_required_init_to_have_ran_before_usage(self):
         self.guet_set(['initials1'])
         self.execute()
