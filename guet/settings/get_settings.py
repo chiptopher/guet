@@ -6,7 +6,7 @@ from guet.files.read_lines import read_lines
 from guet.settings.settings import Settings
 
 
-def get_config() -> Settings:
+def get_settings() -> Settings:
     lines = read_lines(join(CONFIGURATION_DIRECTORY, constants.CONFIG))
     settings = Settings()
     settings.load(lines)

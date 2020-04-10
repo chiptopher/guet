@@ -6,7 +6,7 @@ from guet.executor import Executor
 
 
 @patch('guet.executor.already_initialized', return_value=True)
-@patch('guet.executor.get_config')
+@patch('guet.executor.get_settings')
 class TestCommandFactory(unittest.TestCase):
 
     def test_returns_command_with_settings_from_settings_file(self, mock_get_settings,
