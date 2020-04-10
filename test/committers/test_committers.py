@@ -6,7 +6,7 @@ from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.committers.committer import Committer
 from guet.committers.committers import Committers
-from guet.config.errors import InvalidInitialsError
+from guet.errors import InvalidInitialsError
 
 default_read_lines_side_effects = [[
     'initials1,name1,email1\n',

@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from guet.commands.usercommands.remove.remove_strategy import RemoveCommitterStrategy
 from guet.committers.committer import Committer
-from guet.config.errors import InvalidInitialsError
+from guet.errors import InvalidInitialsError
 from guet.context.context import Context
 
 

@@ -1,4 +1,4 @@
-from guet.config.add_committer import add_committer
+from guet.committers._add_committer import add_committer
 from guet.committers.committer import Committer
 
 

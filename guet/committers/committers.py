@@ -8,8 +8,8 @@ from guet.committers.global_committer import GlobalCommitter
 from guet.committers.local_committer import LocalCommitter
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.committers.committer import Committer
-from guet.config.errors import InvalidInitialsError
-from guet.config.set_current_committers import set_current_committers
+from guet.errors import InvalidInitialsError
+from guet.committers._set_current_committers import set_current_committers
 from guet.context.set_committer_observer import SetCommitterObserver
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines

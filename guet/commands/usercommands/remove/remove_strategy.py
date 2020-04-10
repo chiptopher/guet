@@ -1,5 +1,5 @@
 from guet.commands.strategies.strategy import CommandStrategy
-from guet.config.errors import InvalidInitialsError
+from guet.errors import InvalidInitialsError
 from guet.context.context import Context
 
 

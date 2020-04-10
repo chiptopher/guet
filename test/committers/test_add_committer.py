@@ -3,7 +3,7 @@ from os.path import join
 from unittest.mock import patch
 
 from guet import constants
-from guet.config.add_committer import add_committer
+from guet.committers._add_committer import add_committer
 from test.config import app_config_directory_path
 
 
