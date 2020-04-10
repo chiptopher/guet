@@ -1,7 +1,7 @@
 from os.path import join
 from typing import List, Union
 
-from guet.currentmillis import current_millis
+from guet.util import current_millis
 
 from guet import constants
 from guet.committers.global_committer import GlobalCommitter
