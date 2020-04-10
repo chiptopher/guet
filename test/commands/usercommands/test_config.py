@@ -8,7 +8,7 @@ from guet.commands.usercommands.config.factory import ConfigCommandFactory
 @patch('guet.commands.command_factory.Context')
 class ConfigSetTest(unittest.TestCase):
 
-    @patch('guet.commands.usercommands.config.set_config_strategy.set_config')
+    @patch('guet.commands.usercommands.config.set_config_strategy.set_settings')
     @patch('guet.commands.usercommands.config.set_config_strategy.get_settings')
     def test_execute_writes_the_new_config(self, mock_get_settings, mock_set_config, _1):
         mock_settings = Settings()
@@ -18,7 +18,7 @@ class ConfigSetTest(unittest.TestCase):
         mock_set_config.assert_called_with(mock_settings)
         self.assertEqual(True, mock_settings.read('debug'))
 
-    @patch('guet.commands.usercommands.config.set_config_strategy.set_config')
+    @patch('guet.commands.usercommands.config.set_config_strategy.set_settings')
     @patch('guet.commands.usercommands.config.set_config_strategy.get_settings')
     def test_execute_writes_the_new_config_with_multiple_configs(self, mock_get_settings,
                                                                  mock_set_config, _1):
@@ -30,7 +30,7 @@ class ConfigSetTest(unittest.TestCase):
         self.assertEqual(True, mock_settings.read('debug'))
         self.assertEqual(False, mock_settings.read('pairReset'))
 
-    @patch('guet.commands.usercommands.config.set_config_strategy.set_config')
+    @patch('guet.commands.usercommands.config.set_config_strategy.set_settings')
     @patch('guet.commands.usercommands.config.set_config_strategy.get_settings')
     def test_execute_writes_multiple_configs(self, mock_get_settings, mock_set_config, _1):
         mock_settings = Settings()
@@ -42,7 +42,7 @@ class ConfigSetTest(unittest.TestCase):
 
     @patch('builtins.exit')
     @patch('builtins.print')
-    @patch('guet.commands.usercommands.config.set_config_strategy.set_config')
+    @patch('guet.commands.usercommands.config.set_config_strategy.set_settings')
     @patch('guet.commands.usercommands.config.set_config_strategy.get_settings')
     def test_execute_prints_error_message_when_given_bad_key(self, mock_get_settings, mock_set_config,
                                                              mock_print, mock_exit, _1):

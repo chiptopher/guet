@@ -4,11 +4,11 @@ from unittest.mock import patch
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.config.set_config import set_config
+from guet.settings.set_settings import set_settings
 from guet.settings.settings import Settings
 
 
-@patch('guet.config.set_config.write_lines')
+@patch('guet.settings.set_settings.write_lines')
 class TestSetConfig(unittest.TestCase):
 
     def test_converts_settings_to_lines_and_writes_to_config_file(self,
@@ -19,7 +19,7 @@ class TestSetConfig(unittest.TestCase):
             '\n',
             'pairReset=False\n'
         ])
-        set_config(settings)
+        set_settings(settings)
         expected_result = [
             '2.0.0\n',
             '\n',

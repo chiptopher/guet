@@ -2,7 +2,7 @@ from typing import List
 
 from guet.commands.strategies.strategy import CommandStrategy
 from guet.settings.get_settings import get_settings
-from guet.config.set_config import set_config
+from guet.settings.set_settings import set_settings
 from guet.context.context import Context
 from guet.settings.settings import Settings
 
@@ -34,7 +34,7 @@ class SetConfigStrategy(CommandStrategy):
         config = get_settings()
         key_and_value = self._separate_key_and_value()
         _append_key_and_value_to_config(config, key_and_value)
-        set_config(config)
+        set_settings(config)
 
     def _separate_key_and_value(self) -> List:
         key_and_value = []

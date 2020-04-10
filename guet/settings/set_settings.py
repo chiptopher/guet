@@ -6,6 +6,6 @@ from guet.files.write_lines import write_lines
 from guet.settings.settings import Settings
 
 
-def set_config(settings: Settings) -> None:
+def set_settings(settings: Settings) -> None:
     lines = settings.write()
     write_lines(join(CONFIGURATION_DIRECTORY, constants.CONFIG), lines)
