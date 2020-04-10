@@ -1,10 +1,9 @@
 from unittest import TestCase
-from unittest.mock import patch, call, Mock, PropertyMock
+from unittest.mock import patch, call, Mock
 
-from guet.commands.usercommands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
 from guet.commands.usercommands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
 from guet.commands.strategies.cancellable_strategy import CancelableCommandStrategy
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.context.context import Context
 from guet.settings.settings import Settings
 

@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.context.set_committers_observable import SetCommittersObservable
 from guet.context.set_committer_observer import SetCommitterObserver
 

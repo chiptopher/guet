@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from guet.commands.strategies.error_strategy import ErrorStrategy
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 
 from guet.commands.strategies.strategy_command import StrategyCommand
 from guet.settings.settings import Settings

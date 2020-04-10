@@ -3,7 +3,7 @@ from os.path import isdir, join
 
 from guet.commands.strategies.strategy import CommandStrategy
 from guet.committers.local_committer import LocalCommitter
-from guet.config.committers import Committers
+from guet.committers.committers import Committers
 
 
 class AddCommitterLocallyStrategy(CommandStrategy):

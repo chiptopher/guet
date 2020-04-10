@@ -1,5 +1,5 @@
 from guet.config.add_committer import add_committer
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 
 
 class GlobalCommitter(Committer):

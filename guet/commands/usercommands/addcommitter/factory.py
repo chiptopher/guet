@@ -12,7 +12,7 @@ from guet.commands.strategies.too_few_args import TooFewArgsStrategy
 from guet.commands.strategies.too_many_args import TooManyArgsStrategy
 from guet.commands.usercommands.help.help_message_builder import FlagBuilder, HelpMessageBuilder, FlagsBuilder
 from guet.commands.usercommands.usercommand_factory import UserCommandFactory
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.settings.settings import Settings
 
 ADD_COMMITTER_HELP_MESSAGE = HelpMessageBuilder('guet add <initials> <"name"> <email>',

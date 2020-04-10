@@ -1,7 +1,7 @@
 from typing import List, Callable
 
 from guet.commands.strategies.strategy import CommandStrategy
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 
 
 class CommitterPrintingStrategy(CommandStrategy):

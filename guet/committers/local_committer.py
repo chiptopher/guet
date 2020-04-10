@@ -2,7 +2,7 @@ from os.path import join
 
 from guet import constants
 from guet.config.add_committer import add_committer
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 
 
 class LocalCommitter(Committer):

@@ -7,7 +7,7 @@ from guet.commands.strategies.strategy import CommandStrategy
 from guet.commands.strategies.strategy_command import StrategyCommand
 from guet.commands.usercommands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
 from guet.commands.usercommands.usercommand_factory import UserCommandFactory
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.settings.settings import Settings
 
 

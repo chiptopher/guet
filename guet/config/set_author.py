@@ -2,7 +2,7 @@ from os.path import join
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 
 
 def set_committer_as_author(committer: Committer):

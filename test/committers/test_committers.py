@@ -4,8 +4,8 @@ from unittest.mock import patch, call, Mock
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.config.committer import Committer
-from guet.config.committers import Committers
+from guet.committers.committer import Committer
+from guet.committers.committers import Committers
 from guet.config.errors import InvalidInitialsError
 
 default_read_lines_side_effects = [[
@@ -14,10 +14,10 @@ default_read_lines_side_effects = [[
 ], FileNotFoundError()]
 
 
-@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+@patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestNotifyOfCommitters(TestCase):
-    @patch('guet.config.committers.set_committer_as_author')
-    @patch('guet.config.committers.set_current_committers')
+    @patch('guet.committers.committers.set_committer_as_author')
+    @patch('guet.committers.committers.set_current_committers')
     def test_notify_of_committer_set_sets_current_committers(self, mock_set_current_committers, _1, _2):
         observer = Committers(path_to_project_root='/path/to/project/root')
         committer1 = Committer(name='name1', email='email1', initials='initials1')
@@ -25,8 +25,8 @@ class TestNotifyOfCommitters(TestCase):
         observer.notify_of_committer_set([committer1, committer2])
         mock_set_current_committers.assert_called_with([committer1, committer2], '/path/to/project/root')
 
-    @patch('guet.config.committers.set_committer_as_author')
-    @patch('guet.config.committers.set_current_committers')
+    @patch('guet.committers.committers.set_committer_as_author')
+    @patch('guet.committers.committers.set_current_committers')
     def test_notify_of_committer_set_sets_first_committer_author(self, _1, mock_set_author, _2):
         observer = Committers()
         committer1 = Committer(name='name1', email='email1', initials='initials1')
@@ -35,7 +35,7 @@ class TestNotifyOfCommitters(TestCase):
         mock_set_author.assert_called_with(committer1)
 
 
-@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+@patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestCommittersAll(TestCase):
     def test_all_property_reads_committers_from_file(self, mock_read_lines):
         mock_read_lines.return_value = [
@@ -51,8 +51,8 @@ class TestCommittersAll(TestCase):
         self.assertListEqual(expected_committers, actual)
 
 
-@patch('guet.config.committers.current_millis', return_value=1000000000)
-@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+@patch('guet.committers.committers.current_millis', return_value=1000000000)
+@patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestCommittersCurrent(TestCase):
 
     def test_current_only_returns_committers_that_are_currently_set(self, mock_read_lines, mock_current_millis):
@@ -114,7 +114,7 @@ class TestCommittersCurrent(TestCase):
         self.assertListEqual([], actual)
 
 
-@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+@patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestCommittersAdd(TestCase):
 
     def test_add_writes_committer_to_file(self, _1):
@@ -143,10 +143,10 @@ class TestCommittersAdd(TestCase):
         self.assertIn(committer, committers.all())
 
 
-@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+@patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestCommittersRemove(TestCase):
 
-    @patch('guet.config.committers.write_lines')
+    @patch('guet.committers.committers.write_lines')
     def test_remove_removes_committer_from_list_committers(self, mock_write_lines, mock_read_lines):
         mock_read_lines.side_effect = [[
             'initials,name,email\n'
@@ -156,7 +156,7 @@ class TestCommittersRemove(TestCase):
         committers.remove(committer)
         self.assertListEqual([], committers.all())
 
-    @patch('guet.config.committers.write_lines')
+    @patch('guet.committers.committers.write_lines')
     def test_remove_writes_new_committers_to_file(self, mock_write_lines, mock_read_lines):
         committers = Committers()
         committer = Committer(name='name2', email='email2', initials='initials2')
@@ -166,7 +166,7 @@ class TestCommittersRemove(TestCase):
         ])
 
 
-@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+@patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)
 class TestCommittersByInitials(TestCase):
 
     def test_by_initials_gets_committer_with_matching_initials(self, mock_read_lines):
@@ -191,7 +191,7 @@ local_committers_with_match = [[
 ]]
 
 
-@patch('guet.config.committers.read_lines', side_effect=local_committers_with_match)
+@patch('guet.committers.committers.read_lines', side_effect=local_committers_with_match)
 class TestCommittersWithLocal(TestCase):
     path_to_project_root = '/path/to/project/root'
 

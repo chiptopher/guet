@@ -1,6 +1,6 @@
 from typing import List
 
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 
 from guet.context.context import Context
 

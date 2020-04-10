@@ -1,7 +1,7 @@
 from os.path import join, isdir
 from typing import List
 
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.context.set_committer_observer import SetCommitterObserver
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines

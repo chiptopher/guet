@@ -2,7 +2,7 @@ from os.path import join
 from unittest import TestCase
 from unittest.mock import Mock, patch, call
 
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.git.author import Author
 from guet.git.errors import NoGitPresentError
 from guet.git.git import Git

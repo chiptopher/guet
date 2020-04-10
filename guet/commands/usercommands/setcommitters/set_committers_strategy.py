@@ -1,7 +1,7 @@
 from typing import List
 
 from guet.commands.strategies.strategy import CommandStrategy
-from guet.config.committer import filter_committers_with_initials, Committer
+from guet.committers.committer import filter_committers_with_initials, Committer
 from guet.context.context import Context
 
 

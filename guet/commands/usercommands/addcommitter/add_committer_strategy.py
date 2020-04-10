@@ -1,6 +1,6 @@
 from guet.commands.strategies.strategy import CommandStrategy
 from guet.committers.global_committer import GlobalCommitter
-from guet.config.committers import Committers
+from guet.committers.committers import Committers
 
 
 class AddCommitterGloballyStrategy(CommandStrategy):

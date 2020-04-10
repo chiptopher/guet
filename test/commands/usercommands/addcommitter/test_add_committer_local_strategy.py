@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 
 from guet.commands.usercommands.addcommitter.add_committer_locally_strategy import AddCommitterLocallyStrategy
 from guet.committers.local_committer import LocalCommitter
-from guet.config.committers import Committers
+from guet.committers.committers import Committers
 
 
 @patch('guet.commands.usercommands.addcommitter.add_committer_locally_strategy.mkdir', return_value=True)

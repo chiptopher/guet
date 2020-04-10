@@ -4,7 +4,7 @@ from typing import List
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.files.write_lines import write_lines
 from guet.files.read_lines import read_lines
 

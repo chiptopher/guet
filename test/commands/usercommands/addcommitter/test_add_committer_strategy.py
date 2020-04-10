@@ -2,8 +2,8 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 from guet.commands.usercommands.addcommitter.add_committer_strategy import AddCommitterGloballyStrategy
-from guet.config.committer import Committer
-from guet.config.committers import Committers
+from guet.committers.committer import Committer
+from guet.committers.committers import Committers
 
 
 class TestAddCommitterStrategy(TestCase):

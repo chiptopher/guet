@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from guet.commands.usercommands.get.get_factory import GetCommandFactory
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.context.context import Context
 from guet.settings.settings import Settings
 

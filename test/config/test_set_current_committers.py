@@ -1,10 +1,10 @@
 import unittest
 from os.path import join
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.config.committer import Committer
+from guet.committers.committer import Committer
 from guet.config.set_current_committers import set_current_committers
 
 

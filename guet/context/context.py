@@ -1,8 +1,8 @@
 from os.path import join
 from typing import List, Union
 
-from guet.config.committer import Committer
-from guet.config.committers import Committers
+from guet.committers.committer import Committer
+from guet.committers.committers import Committers
 from guet.context.set_committers_observable import SetCommittersObservable
 from guet.git.git import Git
 from guet.context.errors import InvalidCommittersError
