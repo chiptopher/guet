@@ -1,6 +1,8 @@
 from os.path import join
 from typing import List, Union
 
+from guet.currentmillis import current_millis
+
 from guet import constants
 from guet.committers.global_committer import GlobalCommitter
 from guet.committers.local_committer import LocalCommitter
@@ -12,6 +14,8 @@ from guet.config.set_current_committers import set_current_committers
 from guet.context.set_committer_observer import SetCommitterObserver
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
+
+_TWENTY_FOUR_HOURS_IN_MILLISECONDS = 86400000
 
 
 def _load_global_committers(path: str) -> List[Committer]:
@@ -40,7 +44,10 @@ def _current_initials(project_root: str) -> List[str]:
     lines = read_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
     try:
         project_set_line = next(project_line for project_line in lines if project_line.endswith(project_root))
-        *initials, _, _ = project_set_line.split(',')
+        *initials, set_time, _ = project_set_line.split(',')
+        current_time = current_millis()
+        if int(set_time) + _TWENTY_FOUR_HOURS_IN_MILLISECONDS < current_time:
+            return []
         return initials
     except StopIteration:
         return []

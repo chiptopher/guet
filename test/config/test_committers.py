@@ -15,7 +15,7 @@ default_read_lines_side_effects = [[
 
 
 @patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
-class TestCommitters(TestCase):
+class TestNotifyOfCommitters(TestCase):
     @patch('guet.config.committers.set_committer_as_author')
     @patch('guet.config.committers.set_current_committers')
     def test_notify_of_committer_set_sets_current_committers(self, mock_set_current_committers, _1, _2):
@@ -34,6 +34,9 @@ class TestCommitters(TestCase):
         observer.notify_of_committer_set([committer1, committer2])
         mock_set_author.assert_called_with(committer1)
 
+
+@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+class TestCommittersAll(TestCase):
     def test_all_property_reads_committers_from_file(self, mock_read_lines):
         mock_read_lines.return_value = [
             'initials1,name1,email1\n',
@@ -47,7 +50,12 @@ class TestCommitters(TestCase):
         actual = committers.all()
         self.assertListEqual(expected_committers, actual)
 
-    def test_current_only_returns_committers_that_are_currently_set(self, mock_read_lines):
+
+@patch('guet.config.committers.current_millis', return_value=1000000000)
+@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+class TestCommittersCurrent(TestCase):
+
+    def test_current_only_returns_committers_that_are_currently_set(self, mock_read_lines, mock_current_millis):
         mock_read_lines.side_effect = [[
             'initials1,name1,email1\n',
             'initials2,name2,email2\n'
@@ -64,7 +72,7 @@ class TestCommitters(TestCase):
         actual = committers.current()
         self.assertListEqual(expected_committers, actual)
 
-    def test_current_maintains_currently_set_order(self, mock_read_lines):
+    def test_current_maintains_currently_set_order(self, mock_read_lines, mock_current_millis):
         mock_read_lines.side_effect = [[
             'initials1,name1,email1\n',
             'initials2,name2,email2\n'
@@ -80,7 +88,7 @@ class TestCommitters(TestCase):
         actual = committers.current()
         self.assertListEqual(expected_committers, actual)
 
-    def test_current_returns_empty_list_when_no_committers_present(self, mock_read_lines):
+    def test_current_returns_empty_list_when_no_committers_present(self, mock_read_lines, mock_current_millis):
         mock_read_lines.side_effect = [[
             'initials1,name1,email1\n',
             'initials2,name2,email2\n'
@@ -90,6 +98,24 @@ class TestCommitters(TestCase):
         committers = Committers(path_to_project_root='/other_project')
         actual = committers.current()
         self.assertListEqual([], actual)
+
+    def test_current_returns_empty_list_when_current_time_is_after_set_time(self, mock_read_lines, mock_current_millis):
+        current_time = 1000000000
+        mock_current_millis.return_value = current_time
+        set_time = current_time - 86400000 - 1
+        mock_read_lines.side_effect = [[
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n'
+        ], FileNotFoundError(), [
+            f'initials1,initials2,{set_time},/project1/.git',
+        ]]
+        committers = Committers(path_to_project_root='/project1/.git')
+        actual = committers.current()
+        self.assertListEqual([], actual)
+
+
+@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+class TestCommittersAdd(TestCase):
 
     def test_add_writes_committer_to_file(self, _1):
         committers = Committers()
@@ -116,6 +142,10 @@ class TestCommitters(TestCase):
         committers.add(committer)
         self.assertIn(committer, committers.all())
 
+
+@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+class TestCommittersRemove(TestCase):
+
     @patch('guet.config.committers.write_lines')
     def test_remove_removes_committer_from_list_committers(self, mock_write_lines, mock_read_lines):
         mock_read_lines.side_effect = [[
@@ -134,6 +164,10 @@ class TestCommitters(TestCase):
         mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), [
             'initials1,name1,email1',
         ])
+
+
+@patch('guet.config.committers.read_lines', side_effect=default_read_lines_side_effects)
+class TestCommittersByInitials(TestCase):
 
     def test_by_initials_gets_committer_with_matching_initials(self, mock_read_lines):
         committers = Committers()
