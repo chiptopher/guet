@@ -9,7 +9,6 @@ from guet.committers.local_committer import LocalCommitter
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.committers.committer import Committer
 from guet.config.errors import InvalidInitialsError
-from guet.config.set_author import set_committer_as_author
 from guet.config.set_current_committers import set_current_committers
 from guet.context.set_committer_observer import SetCommitterObserver
 from guet.files.read_lines import read_lines
@@ -111,4 +110,3 @@ class Committers(SetCommitterObserver):
 
     def notify_of_committer_set(self, new_committers: List[Committer]):
         set_current_committers(new_committers, self.project_root)
-        set_committer_as_author(new_committers[0])

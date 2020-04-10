@@ -3,25 +3,7 @@ from e2e import DockerTest
 
 class TestGuetCommitRotatesAuthor(DockerTest):
 
-    def test_commits_swaps_pairs_once(self):
-        self.guet_init()
-        self.guet_add('initials', 'name', 'email@localhost')
-        self.guet_add('initials2', 'name2', 'email2@localhost')
-        self.git_init()
-        self.guet_start()
-        self.guet_set(['initials', 'initials2'])
-        self.add_file('A')
-        self.git_add()
-        self.git_commit('Initial commit')
-        self.save_file_content('.guet/authornames')
-        self.save_file_content('.guet/authoremails')
-
-        self.execute()
-
-        self.assertEqual('name2', self.get_file_text('.guet/authornames')[0])
-        self.assertEqual('email2@localhost', self.get_file_text('.guet/authoremails')[0])
-
-    def test_mob_participants_can_swap_multiple_times(self):
+    def test_committers_are_swapped_as_author_every_commit(self):
         self.guet_init()
         self.guet_add('initials', 'name', 'email@localhost')
         self.guet_add('initials2', 'name2', 'email2@localhost')

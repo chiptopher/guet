@@ -27,16 +27,6 @@ class TestInitialize(unittest.TestCase):
         mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTER_NAMES), 'w')
 
     @patch('builtins.open', new_callable=unittest.mock.mock_open())
-    def test_creates_file_for_current_author_email(self, mock_open, mock_mkdir, mock_write_lines):
-        initialize()
-        mock_open.assert_any_call(join(app_config_directory_path, constants.AUTHOR_EMAIL), 'w')
-
-    @patch('builtins.open', new_callable=unittest.mock.mock_open())
-    def test_creates_file_for_current_author_name(self, mock_open,   mock_mkdir, mock_write_lines):
-        initialize()
-        mock_open.assert_any_call(join(app_config_directory_path, constants.AUTHOR_NAME), 'w')
-
-    @patch('builtins.open', new_callable=unittest.mock.mock_open())
     def test_creates_file_for_commiters_names(self, mock_open, mock_mkdir, mock_write_lines):
         initialize()
         mock_open.assert_any_call(join(app_config_directory_path, constants.COMMITTERS), 'w')
@@ -54,4 +44,5 @@ class TestInitialize(unittest.TestCase):
     @patch('builtins.open', new_callable=unittest.mock.mock_open())
     def test_writes_version_number_to_config_file(self, mock_open, mock_mkdir, mock_write_lines):
         initialize()
-        mock_write_lines.assert_called_with(join(app_config_directory_path, constants.CONFIG), [f'{__version__}\n', '\n'])
+        mock_write_lines.assert_called_with(join(app_config_directory_path, constants.CONFIG),
+                                            [f'{__version__}\n', '\n'])
