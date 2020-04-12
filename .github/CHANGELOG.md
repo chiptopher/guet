@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.1
+### Added Functionality
+* Commands that depend on the project root (`guet add --local`, `guet set`, etc.) can now be ran from nested directories from the project root.
+* Initials in all commands are no longer case-sensitive.
+
 ## 2.4.0
 Adds the `--local` flag to the `guet add` command that creates a `.guet/committers` directory with the committers saved. This committer can now be committed as a part of the repository. This commiter takes precedence over a globally saved committer.
 
