@@ -101,6 +101,7 @@ class TestGuetSet(DockerTest):
     def test_setting_committers_includes_local_committers(self):
         self.guet_init()
         self.git_init()
+        self.guet_start()
         self.guet_add('initials1', 'name1', 'email1', local=True)
         self.guet_add('initials2', 'name2', 'email2')
         self.guet_start()

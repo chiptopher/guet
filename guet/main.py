@@ -1,5 +1,6 @@
 import sys
 
+from guet.commands.decorators.local_decorator import LocalDecorator
 from guet.commands.usercommands.get.get_factory import GetCommandFactory, GET_HELP_MESSAGE
 from guet.commands.decorators.git_required_decorator import GitRequiredDecorator
 from guet.commands.decorators.help_decorator import HelpDecorator
@@ -19,7 +20,12 @@ from guet.commands.usercommands.config.factory import ConfigCommandFactory, CONF
 def _command_builder_map():
     command_builder_map = dict()
     command_builder_map['add'] = VersionDecorator(
-        InitRequiredDecorator(HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE)))
+        InitRequiredDecorator(
+            LocalDecorator(
+                HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE)
+            )
+        )
+    )
 
     command_builder_map['init'] = VersionDecorator(
         HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True))

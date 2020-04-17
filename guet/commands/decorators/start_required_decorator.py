@@ -16,8 +16,7 @@ GUET_NOT_STARTED_ERROR = (
 )
 
 NOT_RAN_IN_ROOT_DIRECTORY_ERROR = (
-    'You are not in a directory with a git folder. Change back'
-    'to your project\'s root directory.'
+    'No git folder, so project root cannot be determined.'
 )
 
 
