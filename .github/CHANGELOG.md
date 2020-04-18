@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 2.4.2
+### Bugs Fixed
+* Adding a committer locally that exactly matches a global committer won't create them locally.
+
 ## 2.4.1
 ### Added Functionality
 * Commands that depend on the project root (`guet add --local`, `guet set`, etc.) can now be ran from nested directories from the project root.
