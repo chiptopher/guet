@@ -2,6 +2,8 @@ from os.path import join
 from unittest import TestCase
 from unittest.mock import patch, call, Mock
 
+from guet.committers.local_committer import LocalCommitter
+
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.committers.committer import Committer
@@ -213,3 +215,16 @@ class TestCommittersWithLocal(TestCase):
         local_committer1 = Committer(initials='initials1', name='othername1', email='otheremail1')
         global_commtter2 = Committer(initials='initials2', name='name2', email='email2')
         self.assertListEqual([local_committer1, global_commtter2], committers.all())
+
+    def test_add_with_replace_flag_removes_committer_with_matching_initials(self, mock_read_lines):
+        default_read_lines_side_effects = [[
+            'initials1,name1,email1\n',
+            'initials2,name2,email2\n'
+        ], FileNotFoundError()]
+        mock_read_lines.side_effect = default_read_lines_side_effects
+        committers = Committers(path_to_project_root=self.path_to_project_root)
+        committer_with_matching_initials = LocalCommitter(name='name1', email='email1', initials='initials1',
+                                                          project_root='path')
+        committer_with_matching_initials.save = Mock()
+        committers.add(committer_with_matching_initials, replace=True)
+        committer_with_matching_initials.save.assert_called()

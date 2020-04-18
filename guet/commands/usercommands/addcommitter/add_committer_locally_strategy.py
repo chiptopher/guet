@@ -18,7 +18,7 @@ class AddCommitterLocallyStrategy(CommandStrategy):
         self._create_local_guet_folder_if_not_exists()
         committer = LocalCommitter(name=self._name, email=self._email, initials=self._initials,
                                    project_root=self._project_root)
-        self._committers.add(committer)
+        self._committers.add(committer, replace=True)
 
     def _create_local_guet_folder_if_not_exists(self) -> None:
         folder_path = join(self._project_root, '.guet')

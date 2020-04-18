@@ -16,7 +16,7 @@ class TestAddLocalCommitterStrategy(TestCase):
         strategy.apply()
 
         expected = LocalCommitter(name='name', email='email', initials='initials', project_root='/path/to/root')
-        committers.add.assert_called_with(expected)
+        committers.add.assert_called_with(expected, replace=True)
 
     def test_apply_creates_a_guet_directory_at_project_root_if_one_does_not_exist_already(self, mock_isdir, mock_mkdir):
         mock_isdir.return_value = False

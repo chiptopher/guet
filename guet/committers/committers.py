@@ -93,8 +93,8 @@ class Committers(SetCommitterObserver):
                 pass
         return final
 
-    def add(self, committer: Committer):
-        if committer not in self.all():
+    def add(self, committer: Committer, *, replace: bool = False):
+        if committer not in self.all() or replace:
             self._committers.append(committer)
             committer.save()
 
