@@ -26,7 +26,6 @@ jobs:
       - name: Unit Tests
         run: |
           python -m unittest discover test
-          unittest-parallel --start-directory e2e -t .
       - name: E2E Tests
         if: matrix.os != 'windows-latest'
         run: |
