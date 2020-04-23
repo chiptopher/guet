@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from guet.git._guet_hooks import GUET_HOOKS
@@ -5,7 +6,8 @@ from guet.git.hook import Hook
 
 
 def _name(hook: Hook) -> str:
-    return hook.path.split('/')[-1]
+    path = Path(hook.path)
+    return path.name
 
 
 def _normal_hooks(hooks: List[Hook]) -> List[Hook]:
