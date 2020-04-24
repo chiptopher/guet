@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 2.4.3
+### Added Functionality
+*  When creating guet hooks on a system that doesn't have `python3`, the hook will use `python` instead
+### Bugs Fixed
+* Paths were not being correctly parsed when checking if guet hooks were present in path, causing guet sets to fail saying guet hasn't started in a given repository even if they have.
+
 ## 2.4.2
 ### Bugs Fixed
 * Adding a committer locally that exactly matches a global committer won't create them locally.
