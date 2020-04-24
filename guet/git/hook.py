@@ -14,13 +14,9 @@ def _shared_hook_lines() -> List[str]:
     ]
 
 
-PYTHON_GUET_HOOK = [
-                       '#! /usr/bin/env python',
-                   ] + _shared_hook_lines()
+PYTHON_GUET_HOOK = ['#! /usr/bin/env python'] + _shared_hook_lines()
 
-PYTHON3_GUET_HOOK = [
-                        '#! /usr/bin/env python3',
-                    ] + _shared_hook_lines()
+PYTHON3_GUET_HOOK = ['#! /usr/bin/env python3'] + _shared_hook_lines()
 
 
 class Hook:
@@ -37,7 +33,7 @@ class Hook:
     @staticmethod
     def _parse_file_content(create, path_to_hook):
         _content = Hook._get_file_content(path_to_hook, create)
-        if _content != PYTHON3_GUET_HOOK and _content != PYTHON_GUET_HOOK:
+        if _content not in (PYTHON3_GUET_HOOK, PYTHON_GUET_HOOK):
             _content = Hook._handle_mismatched_content(_content, create)
         return _content
 
