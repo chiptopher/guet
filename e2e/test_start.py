@@ -10,6 +10,13 @@ class TestStart(DockerTest):
         self.execute()
         self.assert_file_exists('test-env/.git/hooks/commit-msg')
 
+    def test_tells_user_when_guet_has_successfully_started(self):
+        self.guet_init()
+        self.git_init()
+        self.guet_start()
+        self.execute()
+        self.assert_text_in_logs(1, 'guet successfully started in this repository.')
+
     def test_tells_user_that_a_git_folder_does_not_exist(self):
         self.guet_init()
         self.guet_start()

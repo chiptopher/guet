@@ -88,7 +88,7 @@ class TestAddUser(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(1, ('Adding committer with initials "initials" shadows the '
+        self.assert_text_in_logs(2, ('Adding committer with initials "initials" shadows the '
                                      'global committer "initials" - "name1" <email1>'))
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials,name2,email2'], text)

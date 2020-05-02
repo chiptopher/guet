@@ -14,7 +14,7 @@ class TestGuetSet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(1, "No committer exists with initials 'ui'")
+        self.assert_text_in_logs(2, "No committer exists with initials 'ui'")
 
     def test_adds_committer_initials_and_current_millis_to_committersset_file(self):
         start_time = int(round(time.time() * 1000))
@@ -48,9 +48,9 @@ class TestGuetSet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(1, 'Currently set committers')
-        self.assert_text_in_logs(2, 'initials1 - name1 <email1>')
-        self.assert_text_in_logs(3, 'initials2 - name2 <email2>')
+        self.assert_text_in_logs(2, 'Currently set committers')
+        self.assert_text_in_logs(3, 'initials1 - name1 <email1>')
+        self.assert_text_in_logs(4, 'initials2 - name2 <email2>')
 
 
     def test_set_committer_required_init_to_have_ran_before_usage(self):
@@ -64,7 +64,7 @@ class TestGuetSet(DockerTest):
         self.guet_start()
         self.guet_set([])
         self.execute()
-        self.assert_text_in_logs(1, 'usage: guet set <initials> [<initials> ...]')
+        self.assert_text_in_logs(2, 'usage: guet set <initials> [<initials> ...]')
 
     def test_errors_if_guet_set_ran_in_folder_with_no_git(self):
         self.guet_init()
@@ -113,6 +113,6 @@ class TestGuetSet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(1, 'Currently set committers')
-        self.assert_text_in_logs(2, 'initials1 - name1 <email1>')
-        self.assert_text_in_logs(3, 'initials2 - name2 <email2>')
+        self.assert_text_in_logs(3, 'Currently set committers')
+        self.assert_text_in_logs(4, 'initials1 - name1 <email1>')
+        self.assert_text_in_logs(5, 'initials2 - name2 <email2>')
