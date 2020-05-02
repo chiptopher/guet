@@ -4,6 +4,7 @@
 Pair programming is integral part of many software development lifecycles. When pairing, you may want to track each committer's contributions. Using **guet** enables that functionality without changing the normal git workflow.
 
 [![Actions Status](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)
+[![PyPI version](https://badge.fury.io/py/guet.svg)](https://badge.fury.io/py/guet)
 
 ## Installation
 **guet** can be installed from [pypi](https://pypi.org/project/guet/):
