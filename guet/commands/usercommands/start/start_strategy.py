@@ -5,7 +5,7 @@ from guet.commands.usercommands.start.hook_strategy import HookStrategy
 
 
 class PromptUserForHookTypeStrategy(HookStrategy):
-    def apply(self):
+    def _hook_apply(self) -> None:
         print('There is already commit hooks in this project. You can')
         print('  (o) overwrite current hooks. This will delete any matching hooks.')
         print(('  (a) create guet hooks alongside current ones.'
