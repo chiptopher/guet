@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.4
+### Added Functionality
+* When setting committers, a message will print the committers that have been set.
+* When starting a repository, a confirmation message will print that tracking is started on the repository.
+* When attempting to start tracking a repository that already has hooks, a clearer prompt will appear. 
+
 
 ## 2.4.3
 ### Added Functionality
