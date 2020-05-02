@@ -8,4 +8,8 @@ class HookStrategy(CommandStrategy):
         self.git = git
 
     def apply(self):
+        self._hook_apply()
+        print('guet successfully started in this repository.')
+
+    def _hook_apply(self) -> None:
         raise NotImplementedError

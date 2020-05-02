@@ -24,9 +24,9 @@ class TestGuetCommitRotatesAuthor(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(31, 'Author: {} <{}>'.format('name', 'email@localhost'))
-        self.assert_text_in_logs(21, 'Author: {} <{}>'.format('name2', 'email2@localhost'))
-        self.assert_text_in_logs(11, 'Author: {} <{}>'.format('name3', 'email3@localhost'))
+        self.assert_text_in_logs(32, 'Author: {} <{}>'.format('name', 'email@localhost'))
+        self.assert_text_in_logs(22, 'Author: {} <{}>'.format('name2', 'email2@localhost'))
+        self.assert_text_in_logs(12, 'Author: {} <{}>'.format('name3', 'email3@localhost'))
 
     def test_second_commit_uses_second_pair_name_and_email(self):
         self.guet_init()
@@ -45,4 +45,4 @@ class TestGuetCommitRotatesAuthor(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(8, 'Author: {} <{}>'.format('name2', 'email2@localhost'))
+        self.assert_text_in_logs(9, 'Author: {} <{}>'.format('name2', 'email2@localhost'))
