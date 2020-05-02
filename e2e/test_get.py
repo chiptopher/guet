@@ -14,9 +14,9 @@ class TestGet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(2, 'Currently set committers')
-        self.assert_text_in_logs(3, 'initials1 - name1 <email1>')
-        self.assert_text_in_logs(4, 'initials2 - name2 <email2>')
+        self.assert_text_in_logs(5, 'Currently set committers')
+        self.assert_text_in_logs(6, 'initials1 - name1 <email1>')
+        self.assert_text_in_logs(7, 'initials2 - name2 <email2>')
 
     def test_get_committers_prints_all_committers_on_the_system(self):
         self.guet_init()

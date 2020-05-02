@@ -16,8 +16,8 @@ class TestCommit(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(11, '    Co-authored-by: name <email@localhost>')
-        self.assert_text_in_logs(12, '    Co-authored-by: name2 <email2@localhost>')
+        self.assert_text_in_logs(14, '    Co-authored-by: name <email@localhost>')
+        self.assert_text_in_logs(15, '    Co-authored-by: name2 <email2@localhost>')
 
     def test_if_only_one_committer_set_no_co_authored_by_lines_are_added(self):
         self.guet_init()
@@ -31,7 +31,7 @@ class TestCommit(DockerTest):
         self.show_git_log()
 
         self.execute()
-        self.assertEqual(11, len(self.logs))
+        self.assertEqual(13, len(self.logs))
 
     def test_replaces_co_authored_messages_when_editing_commit(self):
         self.guet_init()
@@ -52,8 +52,8 @@ class TestCommit(DockerTest):
         self.show_git_log()
 
         self.execute()
-        self.assert_text_in_logs(17, '    Co-authored-by: name3 <email3@localhost>')
-        self.assert_text_in_logs(18, '    Co-authored-by: name4 <email4@localhost>')
+        self.assert_text_in_logs(23, '    Co-authored-by: name3 <email3@localhost>')
+        self.assert_text_in_logs(24, '    Co-authored-by: name4 <email4@localhost>')
 
     def test_wont_allow_commit_if_guet_set_hasnt_been_done(self):
         self.guet_init()
@@ -88,7 +88,7 @@ class TestCommit(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(4, 'You must set your pairs before you can commit.')
+        self.assert_text_in_logs(7, 'You must set your pairs before you can commit.')
 
     def test_can_make_committs_in_multiple_repos_with_committers_set(self):
         self.guet_init()
@@ -112,8 +112,8 @@ class TestCommit(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(13, '    Co-authored-by: name <email@localhost>')
-        self.assert_text_in_logs(14, '    Co-authored-by: name2 <email2@localhost>')
+        self.assert_text_in_logs(19, '    Co-authored-by: name <email@localhost>')
+        self.assert_text_in_logs(20, '    Co-authored-by: name2 <email2@localhost>')
 
     def test_handles_old_version_of_committersset_string(self):
         self.guet_init()
@@ -130,5 +130,5 @@ class TestCommit(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(11, '    Co-authored-by: name <email@localhost>')
-        self.assert_text_in_logs(12, '    Co-authored-by: name2 <email2@localhost>')
+        self.assert_text_in_logs(14, '    Co-authored-by: name <email@localhost>')
+        self.assert_text_in_logs(15, '    Co-authored-by: name2 <email2@localhost>')

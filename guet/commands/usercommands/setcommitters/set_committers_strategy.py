@@ -1,6 +1,7 @@
 from typing import List
 
 from guet.commands.strategies.strategy import CommandStrategy
+from guet.committers import CommittersPrinter
 from guet.committers.committer import filter_committers_with_initials, Committer
 from guet.context.context import Context
 
@@ -24,6 +25,9 @@ class SetCommittersStrategy(CommandStrategy):
                     print(f"No committer exists with initials '{initials}'")
         else:
             self.context.set_committers(committers_to_set)
+            print('Committers set to:')
+            committers_printer = CommittersPrinter(initials_only=False)
+            committers_printer.print(committers_to_set)
 
     def _committer_with_initials_present(self, committers: List[Committer], initials: str):
         committer_with_initial_present = False
