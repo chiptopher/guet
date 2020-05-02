@@ -30,7 +30,11 @@ class TestStart(DockerTest):
         self.guet_start(overwrite_answer='x')
         self.execute()
         self.assert_text_in_logs(1,
-                                 'There is already commit hooks in this project. Would you like to overwrite (o), create (a) the file and put it in the hooks folder, or cancel (x)?')
+                                 'There is already commit hooks in this project. Would you like to')
+        self.assert_text_in_logs(2, '  (o) Overwrite current hooks. This will delete any matching hooks.')
+        self.assert_text_in_logs(3, ('  (a) Create guet hooks alongside current ones.'
+                                     'This will create them with \'-guet\' appended on the name of the hook file.'))
+        self.assert_text_in_logs(4, '  (x) Cancel the request. This will do nothing.')
 
     def test_passing_dash_a_to_command_creates_alongside_without_prompt(self):
         self.guet_init()
