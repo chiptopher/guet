@@ -32,6 +32,19 @@ class TestContext(TestCase):
 
         observer.notify_of_committer_set.assert_called_with([committer1, committer2])
 
+    def test_set_committers_prints_names_of_committers_on_success(self, mock_git, mock_committers):
+        context = Context(Path('current/working/directory'))
+
+        committer1 = Committer(name='name1', email='email1', initials='initials1')
+        committer2 = Committer(name='name2', email='email2', initials='initials2')
+
+        observer: SetCommitterObserver = Mock()
+        context.add_set_committer_observer(observer)
+
+        context.set_committers([committer1, committer2])
+
+        observer.notify_of_committer_set.assert_called_with([committer1, committer2])
+
     def test_set_committers_raises_exception_when_given_an_empty_list(self, mock_git, mock_committers):
         context = Context(Path('current/working/directory/'))
 
