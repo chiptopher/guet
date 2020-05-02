@@ -8,7 +8,6 @@ from guet.commands.strategies.strategy_command import StrategyCommand
 from guet.commands.usercommands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
 from guet.commands.usercommands.usercommand_factory import UserCommandFactory
 from guet.committers import CommittersPrinter
-from guet.committers.committer import Committer
 from guet.settings.settings import Settings
 
 GET_HELP_MESSAGE = HelpMessageBuilder('guet get <identifier> [-flag, ...]', 'Get currently set information.') \
