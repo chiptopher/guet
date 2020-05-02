@@ -1,4 +1,4 @@
-from os.path import join, isdir
+from pathlib import Path
 from typing import List
 
 from guet.committers.committer import Committer
@@ -23,25 +23,25 @@ def _load_hooks(hook_strategy: HookLoader) -> List[Hook]:
     return hooks
 
 
-def _load_commit_msg(path_to_repository) -> List[str]:
+def _load_commit_msg(path_to_repository: Path) -> List[str]:
     try:
-        return read_lines(join(path_to_repository, 'COMMIT_EDITMSG'))
+        return read_lines(path_to_repository.joinpath('COMMIT_EDITMSG'))
     except FileNotFoundError:
         return []
 
 
 class Git(SetCommitterObserver):
 
-    def __init__(self, repository_path: str):
+    def __init__(self, repository_path: Path):
         super().__init__()
-        if not isdir(repository_path):
+        if not repository_path.is_dir():
             raise NoGitPresentError()
         default = _load_hooks(HookLoader(repository_path, BaseFileNameStrategy(), DontCreateStrategy()))
         alongside = _load_hooks(HookLoader(repository_path, AlongsideFileNameStrategy(), DontCreateStrategy()))
         self.hooks = default + alongside
         self.path_to_repository = repository_path
         self._commit_msg = _load_commit_msg(repository_path)
-        self._config_lines = read_lines(join(repository_path, 'config'))
+        self._config_lines = read_lines(repository_path.joinpath('config'))
         self._author: Author = load_author(self._config_lines)
 
     @property
@@ -56,7 +56,7 @@ class Git(SetCommitterObserver):
             overwrite_current_author(new_lines, new_author)
         else:
             append_new_author(new_lines, new_author)
-        write_lines(join(self.path_to_repository, 'config'), new_lines)
+        write_lines(self.path_to_repository.joinpath('config'), new_lines)
         self._author = new_author
 
     @property
@@ -65,7 +65,7 @@ class Git(SetCommitterObserver):
 
     @commit_msg.setter
     def commit_msg(self, lines: List[str]):
-        write_lines(join(self.path_to_repository, 'COMMIT_EDITMSG'), lines)
+        write_lines(self.path_to_repository.joinpath('COMMIT_EDITMSG'), lines)
         self._commit_msg = lines
 
     def hooks_present(self) -> bool:

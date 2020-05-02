@@ -1,23 +1,24 @@
 from os.path import join
+from pathlib import Path
 from typing import List, Union
 
-from guet.util import current_millis
-
 from guet import constants
+from guet.committers._committers_set import all_committers_set
+from guet.committers._set_current_committers import set_current_committers
+from guet.committers.committer import Committer
 from guet.committers.global_committer import GlobalCommitter
 from guet.committers.local_committer import LocalCommitter
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.committers.committer import Committer
-from guet.errors import InvalidInitialsError
-from guet.committers._set_current_committers import set_current_committers
 from guet.context.set_committer_observer import SetCommitterObserver
+from guet.errors import InvalidInitialsError
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
+from guet.util import current_millis
 
 _TWENTY_FOUR_HOURS_IN_MILLISECONDS = 86400000
 
 
-def _load_global_committers(path: str) -> List[Committer]:
+def _load_global_committers(path: Path) -> List[Committer]:
     lines = read_lines(path)
     committers = []
     for line in lines:
@@ -26,8 +27,9 @@ def _load_global_committers(path: str) -> List[Committer]:
     return committers
 
 
-def _load_local_committers(path: str, path_to_project_root: str) -> List[Committer]:
-    lines = read_lines(path)
+def _load_local_committers(path_to_project_root: Path) -> List[Committer]:
+    committers_path = path_to_project_root.joinpath('.guet').joinpath(constants.COMMITTERS)
+    lines = read_lines(committers_path)
     committers = []
     for line in lines:
         initials, name, email = line.rstrip().split(',')
@@ -36,18 +38,17 @@ def _load_local_committers(path: str, path_to_project_root: str) -> List[Committ
 
 
 def _write_committers(committers: List[Committer]):
-    write_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS), [str(committer) for committer in committers])
+    write_lines(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)), [str(committer) for committer in committers])
 
 
-def _current_initials(project_root: str) -> List[str]:
-    lines = read_lines(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))
+def _current_initials(project_root: Path) -> List[str]:
     try:
-        project_set_line = next(project_line for project_line in lines if project_line.endswith(project_root))
-        *initials, set_time, _ = project_set_line.split(',')
+        current_project_set = next(committers for committers in all_committers_set() if committers.path == project_root)
         current_time = current_millis()
-        if int(set_time) + _TWENTY_FOUR_HOURS_IN_MILLISECONDS < current_time:
+        if int(current_project_set.set_time) + _TWENTY_FOUR_HOURS_IN_MILLISECONDS < current_time:
             return []
-        return initials
+        return current_project_set.initials
+
     except StopIteration:
         return []
 
@@ -65,14 +66,13 @@ def _replace_global_committers_with_local_committers_if_ids_match(global_committ
 
 
 class Committers(SetCommitterObserver):
-    def __init__(self, *, path_to_project_root: Union[str, None] = None):
+    def __init__(self, *, path_to_project_root: Union[Path, None] = None):
         super().__init__()
-        global_committers = _load_global_committers(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
+        global_committers = _load_global_committers(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)))
         local_committers = []
         try:
             if path_to_project_root is not None:
-                local_committers = _load_local_committers(join(path_to_project_root, '.guet', constants.COMMITTERS),
-                                                          path_to_project_root)
+                local_committers = _load_local_committers(path_to_project_root)
         except FileNotFoundError:
             pass
         final = _replace_global_committers_with_local_committers_if_ids_match(global_committers, local_committers)

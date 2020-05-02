@@ -1,5 +1,6 @@
 import unittest
 from os.path import join
+from pathlib import Path
 from unittest.mock import patch
 
 from guet import constants
@@ -25,4 +26,4 @@ class TestSetConfig(unittest.TestCase):
             '\n',
             'pairReset=False\n'
         ]
-        mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.CONFIG), expected_result)
+        mock_write_lines.assert_called_with(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)), expected_result)

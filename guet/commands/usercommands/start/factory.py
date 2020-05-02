@@ -21,13 +21,12 @@ class StartCommandFactory(UserCommandFactory):
 
     def build(self, args: List[str], settings: Settings) -> Command:
         git = self.context.git
-        git_path = git.path_to_repository
         if '-a' in args or '--alongside' in args:
-            strategy = CreateAlongsideHookStrategy(git_path, self.context)
+            strategy = CreateAlongsideHookStrategy(git)
         elif '-o' in args or '--overwrite' in args:
-            strategy = CreateHookStrategy(git_path, self.context)
+            strategy = CreateHookStrategy(git)
         elif git.non_guet_hooks_present():
-            strategy = PromptUserForHookTypeStrategy(git_path, self.context)
+            strategy = PromptUserForHookTypeStrategy(git)
         else:
-            strategy = CreateHookStrategy(git_path, self.context)
+            strategy = CreateHookStrategy(git)
         return StrategyCommand(strategy)

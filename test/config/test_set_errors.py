@@ -1,5 +1,6 @@
 import unittest
 from os.path import join
+from pathlib import Path
 from unittest.mock import patch
 
 from guet import constants
@@ -16,4 +17,4 @@ class TestSetErrors(unittest.TestCase):
             'line2\n'
         ]
         set_errors(lines)
-        mock_write_lines.assert_called_with(join(CONFIGURATION_DIRECTORY, constants.ERRORS), lines)
+        mock_write_lines.assert_called_with(Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS)), lines)

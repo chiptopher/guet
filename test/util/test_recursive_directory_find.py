@@ -1,4 +1,3 @@
-from os.path import join
 from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch, Mock
@@ -13,18 +12,14 @@ class TestRecursiveDirectoryFind(TestCase):
     def test_returns_given_path_if_contains_desired_directory(self, mock_path, mock_is_mount):
         joined_with_git = Mock()
         joined_with_git.is_dir.return_value = True
-        joined_with_git.__str__ = Mock()
-        joined_with_git.__str__.return_value = join('.', '.git')
 
         given_mock_path = Mock()
         given_mock_path.joinpath.return_value = joined_with_git
         given_mock_path.__str__ = Mock()
         given_mock_path.__str__.return_value = '.'
 
-        mock_path.side_effect = [given_mock_path]
-
-        result = recursive_directory_find('.', '.git')
-        self.assertEqual('.', result)
+        result = recursive_directory_find(given_mock_path, '.git')
+        self.assertEqual(given_mock_path, result)
 
     def test_checks_parent_directory_for_desired_directory(self, mock_path, mock_is_mount):
         parent_joined_with_git = Mock()
@@ -32,8 +27,6 @@ class TestRecursiveDirectoryFind(TestCase):
 
         parent = Mock()
         parent.joinpath.return_value = parent_joined_with_git
-        parent.__str__ = Mock()
-        parent.__str__.return_value = '.'
 
         joined_with_git = Mock()
 
@@ -43,10 +36,8 @@ class TestRecursiveDirectoryFind(TestCase):
         given_mock_path.joinpath.return_value = joined_with_git
         given_mock_path.parent = parent
 
-        mock_path.side_effect = [given_mock_path]
-
-        result = recursive_directory_find('./path', '.git')
-        self.assertEqual('.', result)
+        result = recursive_directory_find(given_mock_path, '.git')
+        self.assertEqual(parent, result)
 
     def test_raises_exception_if_mount_is_found(self, mock_path, mock_expanduser):
         parent: Path = Mock()
@@ -61,10 +52,8 @@ class TestRecursiveDirectoryFind(TestCase):
         given_mock_path.joinpath.return_value = joined_with_git
         given_mock_path.parent = parent
 
-        mock_path.side_effect = [given_mock_path]
-
         try:
-            recursive_directory_find('/path', '.git')
+            recursive_directory_find(given_mock_path, '.git')
             self.fail('Should raise exception')
         except FileNotFoundError:
             pass

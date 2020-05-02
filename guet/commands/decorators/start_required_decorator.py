@@ -1,4 +1,4 @@
-from os.path import join
+from pathlib import Path
 from typing import List
 
 from guet.commands.command import Command
@@ -23,7 +23,7 @@ NOT_RAN_IN_ROOT_DIRECTORY_ERROR = (
 class StartRequiredDecorator(CommandFactoryDecorator):
     def build(self, args: List[str], settings: Settings) -> Command:
         try:
-            git = Git(join(project_root(), '.git'))
+            git = Git(Path(project_root()).joinpath('.git'))
         except FileNotFoundError:
             return StrategyCommand(PrintCommandStrategy(NOT_RAN_IN_ROOT_DIRECTORY_ERROR))
         if git.hooks_present():

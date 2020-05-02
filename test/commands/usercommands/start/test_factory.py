@@ -17,7 +17,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_git.return_value.non_guet_hooks_present.return_value = True
         mock_context.instance.return_value.git = mock_git
         command = StartCommandFactory().build(['start'], Settings())
-        mock_prompt_strategy.assert_called_once_with('/path', mock_context.instance.return_value)
+        mock_prompt_strategy.assert_called_once_with(mock_context.instance.return_value.git)
         mock_command.assert_called_once_with(mock_prompt_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
@@ -30,7 +30,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_git.non_guet_hooks_present.return_value = False
         mock_context.instance.return_value.git = mock_git
         command = StartCommandFactory().build(['start'], Settings())
-        mock_create_strategy.assert_called_once_with('/path', mock_context.instance.return_value)
+        mock_create_strategy.assert_called_once_with( mock_context.instance.return_value.git)
         mock_command.assert_called_once_with(mock_create_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
@@ -43,7 +43,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_git.path_to_repository = '/path'
         mock_context.instance.return_value.git = mock_git
         command = StartCommandFactory().build(['start', '-a'], Settings())
-        mock_alongside_strategy.assert_called_once_with('/path', mock_context.instance.return_value)
+        mock_alongside_strategy.assert_called_once_with(mock_context.instance.return_value.git)
         mock_command.assert_called_once_with(mock_alongside_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
@@ -56,7 +56,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_git.path_to_repository = '/path'
         mock_context.instance.return_value.git = mock_git
         command = StartCommandFactory().build(['start', '-o'], Settings())
-        create_hook_strategy.assert_called_once_with('/path', mock_context.instance.return_value)
+        create_hook_strategy.assert_called_once_with(mock_context.instance.return_value.git)
         mock_command.assert_called_once_with(create_hook_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
@@ -69,7 +69,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_git.path_to_repository = '/path'
         mock_context.instance.return_value.git = mock_git
         command = StartCommandFactory().build(['start', '--overwrite'], Settings())
-        create_hook_strategy.assert_called_once_with('/path', mock_context.instance.return_value)
+        create_hook_strategy.assert_called_once_with(mock_context.instance.return_value.git)
         mock_command.assert_called_once_with(create_hook_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
@@ -82,7 +82,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_git.path_to_repository = '/path'
         mock_context.instance.return_value.git = mock_git
         command = StartCommandFactory().build(['start', '--alongside'], Settings())
-        mock_alongside_strategy.assert_called_once_with('/path', mock_context.instance.return_value)
+        mock_alongside_strategy.assert_called_once_with(mock_context.instance.return_value.git)
         mock_command.assert_called_once_with(mock_alongside_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 

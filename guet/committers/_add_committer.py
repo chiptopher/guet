@@ -1,18 +1,23 @@
 from os.path import join
+from pathlib import Path
 from typing import List
+
+from guet.files.read_lines import read_lines
+
+from guet.files.write_lines import write_lines
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
 
 _COMMITTER_NOT_PRESENT = -1
 
-_GLOBAL = join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)
+_GLOBAL = Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))
 
 
-def add_committer(initials: str, name: str, email: str, *, file_path: str = _GLOBAL) -> None:
+def add_committer(initials: str, name: str, email: str, *, file_path: Path = _GLOBAL) -> None:
     all_committers = _read_all_committers_from_file(file_path)
     _add_committer_to_committers(all_committers, initials, name, email)
-    _write_committers_to_file(all_committers, file_path)
+    write_lines(file_path, all_committers)
 
 
 def _add_committer_to_committers(all_committers: List[str], initials: str, name: str, email: str):
@@ -31,17 +36,8 @@ def _position_of_committer_with_initials(all_committers: List[str], initials: st
     return _COMMITTER_NOT_PRESENT
 
 
-def _read_all_committers_from_file(path) -> List[str]:
+def _read_all_committers_from_file(path: Path) -> List[str]:
     try:
-        committers_file = open(path, 'r')
-        all_lines = committers_file.readlines()
-        committers_file.close()
-        return all_lines
+        return read_lines(path)
     except FileNotFoundError:
         return []
-
-
-def _write_committers_to_file(committers: List[str], path: str) -> None:
-    committers_file = open(path, 'w')
-    committers_file.writelines(committers)
-    committers_file.close()

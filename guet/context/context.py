@@ -1,4 +1,4 @@
-from os.path import join
+from pathlib import Path
 from typing import List, Union
 
 from guet.committers.committer import Committer
@@ -32,17 +32,17 @@ class Context(SetCommittersObservable):
     def instance():
         return Context(None)
 
-    def __init__(self, project_root_directory: str):
+    def __init__(self, project_root_directory: Union[Path, None]):
         super().__init__()
         self._committers: Union[Committers, None] = None
         self._git = None
         self._project_root_directory = project_root_directory
 
     @property
-    def project_root_directory(self) -> str:
+    def project_root_directory(self) -> Path:
         if self._project_root_directory is None:
             root = project_root()
-            self._project_root_directory = root
+            self._project_root_directory = root.absolute()
         return self._project_root_directory
 
     @project_root_directory.setter
@@ -67,7 +67,7 @@ class Context(SetCommittersObservable):
     @property
     def git(self):
         if self._git is None:
-            self._git = Git(join(self.project_root_directory, '.git'))
+            self._git = Git(self.project_root_directory.joinpath('.git'))
             self.add_set_committer_observer(self._git)
         return self._git
 

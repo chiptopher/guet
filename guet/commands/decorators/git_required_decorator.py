@@ -1,5 +1,5 @@
 from os import getcwd
-from os.path import join
+from pathlib import Path
 from typing import List
 
 from guet.commands.command import Command
@@ -14,7 +14,7 @@ from guet.settings.settings import Settings
 class GitRequiredDecorator(CommandFactoryDecorator):
     def build(self, args: List[str], settings: Settings) -> Command:
         try:
-            Git(join(getcwd(), '.git'))
+            Git(Path(getcwd()).joinpath('.git'))
             return self.decorated.build(args, settings)
         except NoGitPresentError:
             return StrategyCommand(PrintCommandStrategy('Git not initialized in this directory.'))

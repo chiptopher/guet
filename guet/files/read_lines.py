@@ -1,8 +1,13 @@
 from typing import List
+from pathlib import Path
 
 
-def read_lines(path: str) -> List[str]:
-    file = open(path, 'r')
-    lines = [line.rstrip() for line in file.readlines()]
-    file.close()
-    return lines
+def read_lines(path: Path) -> List[str]:
+    return _read_lines_from_path(path)
+
+
+def _read_lines_from_path(path: Path) -> List[str]:
+    all_lines = path.read_text().split('\n')
+    if all_lines[len(all_lines) - 1] == '':
+        del all_lines[len(all_lines) - 1]
+    return all_lines

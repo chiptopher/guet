@@ -1,11 +1,11 @@
+from guet.git.git import Git
+
 from guet.commands.strategies.strategy import CommandStrategy
-from guet.context.context import Context
 
 
 class HookStrategy(CommandStrategy):
-    def __init__(self, git_path: str, context: Context):
-        self.git_path = git_path
-        self.context = context
+    def __init__(self, git: Git):
+        self.git = git
 
     def apply(self):
         raise NotImplementedError

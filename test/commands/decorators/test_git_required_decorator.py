@@ -1,4 +1,5 @@
 from os.path import join
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -58,4 +59,4 @@ class TestGitRequiredDecorator(TestCase):
 
         decorator.build([], Settings())
 
-        mock_git.assert_called_with(join(cwd_path, '.git'))
+        mock_git.assert_called_with(Path(cwd_path).joinpath('.git'))

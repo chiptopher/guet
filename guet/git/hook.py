@@ -1,4 +1,5 @@
 from os import chmod, stat
+from pathlib import Path
 from shutil import which
 from typing import List
 
@@ -20,7 +21,7 @@ PYTHON3_GUET_HOOK = ['#! /usr/bin/env python3'] + _shared_hook_lines()
 
 
 class Hook:
-    def __init__(self, path_to_hook: str, *, create: bool = False):
+    def __init__(self, path_to_hook: Path, *, create: bool = False):
         self.path = path_to_hook
         self.content = self._parse_file_content(create, path_to_hook)
 
@@ -59,5 +60,5 @@ class Hook:
 
     def save(self):
         write_lines(self.path, self.content)
-        status = stat(self.path)
-        chmod(self.path, status.st_mode | 0o111)
+        status = stat(str(self.path))
+        chmod(str(self.path), status.st_mode | 0o111)

@@ -1,4 +1,4 @@
-from os.path import join
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -15,7 +15,7 @@ class TestAddLocalCommitterStrategy(TestCase):
         strategy = AddCommitterLocallyStrategy('initials', 'name', 'email', '/path/to/root', committers)
         strategy.apply()
 
-        expected = LocalCommitter(name='name', email='email', initials='initials', project_root='/path/to/root')
+        expected = LocalCommitter(name='name', email='email', initials='initials', project_root=Path('/path/to/root'))
         committers.add.assert_called_with(expected, replace=True)
 
     def test_apply_creates_a_guet_directory_at_project_root_if_one_does_not_exist_already(self, mock_isdir, mock_mkdir):
@@ -24,4 +24,4 @@ class TestAddLocalCommitterStrategy(TestCase):
         strategy = AddCommitterLocallyStrategy('initials', 'name', 'email', '/path/to/root', committers)
         strategy.apply()
 
-        mock_mkdir.assert_called_with(join('/path/to/root', '.guet'))
+        mock_mkdir.assert_called_with(Path('/path/to/root').joinpath('.guet'))

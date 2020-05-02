@@ -6,10 +6,9 @@ from guet.commands.usercommands.start.create_alongside_hook_strategy import Crea
 
 class TestCreateAlongsideHookStrategy(TestCase):
 
-    @patch('guet.commands.usercommands.start.create_alongside_hook_strategy.Git')
-    def test_creates_hooks_with_alongside_mode(self, mock_git):
-        hooks_path = '/path/to/.git/hooks'
-        strategy = CreateAlongsideHookStrategy(hooks_path, Mock())
+    def test_creates_hooks_with_alongside_mode(self):
+        context = Mock()
+        context.git = Mock()
+        strategy = CreateAlongsideHookStrategy(context.git)
         strategy.apply()
-        mock_git.assert_called_with('/path/to/.git')
-        mock_git.return_value.create_hooks.assert_called_with(alongside=True)
+        context.git.create_hooks.assert_called_with(alongside=True)
