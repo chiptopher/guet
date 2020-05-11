@@ -1,3 +1,4 @@
+from os import mkdir
 from os.path import join
 from pathlib import Path
 from typing import List, Union
@@ -89,7 +90,7 @@ class Context(SetCommittersObservable):
         return self._file_system.get(path)
 
     def initialize(self):
-
+        mkdir(CONFIGURATION_DIRECTORY)
         self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES)))
         self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)))
         self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET)))

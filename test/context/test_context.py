@@ -94,9 +94,10 @@ class TestContext(TestCase):
         mock_committers.assert_called_with(path_to_project_root=None)
 
 
+@patch('guet.context.context.mkdir')
 class TestContextInitialize(TestCase):
 
-    def test_initialize_creates_appropriate_files(self):
+    def test_initialize_creates_appropriate_files(self, mock_mkdir):
         mock_file_system = Mock()
         context = Context(None, file_system=mock_file_system)
 
@@ -111,7 +112,7 @@ class TestContextInitialize(TestCase):
         ])
         mock_file_system.save_all.assert_called()
 
-    def test_initialize_writes_version_to_config_file(self):
+    def test_initialize_writes_version_to_config_file(self, mock_mkdir):
         mock_file_system = Mock()
         mock_file = Mock()
         mock_file_system.get = Mock(return_value=mock_file)
@@ -121,3 +122,10 @@ class TestContextInitialize(TestCase):
         context.initialize()
 
         mock_file.write.assert_called_with([f'{__version__}\n', '\n'])
+
+    def test_initialize_creates_configuration_directory_before_creating_files(self, mock_mkdir):
+        context = Context(None, file_system=Mock())
+
+        context.initialize()
+
+        mock_mkdir.assert_called_with(CONFIGURATION_DIRECTORY)
