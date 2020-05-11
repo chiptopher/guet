@@ -24,3 +24,17 @@ class TestFileSystem(TestCase):
         file2 = file_system.get(path)
 
         self.assertTrue(file1 == file2)
+
+    @patch('guet.files._file_system.File', side_effect=[Mock(), Mock()])
+    def test_save_all_calls_save_on_all_files(self, mock_file):
+        file1 = Mock()
+        file2 = Mock()
+        mock_file.side_effect = [file1, file2]
+        file_system = FileSystem()
+        file_system.get(Path('/path/to/file1'))
+        file_system.get(Path('/path/to/file2'))
+
+        file_system.save_all()
+
+        file1.save.assert_called()
+        file2.save.assert_called()

@@ -1,9 +1,14 @@
+from os.path import join
 from pathlib import Path
 from typing import List, Union
+
+from guet import constants, __version__
+from guet.config import CONFIGURATION_DIRECTORY
 
 from guet.committers.committer import Committer
 from guet.committers.committers import Committers
 from guet.context.set_committers_observable import SetCommittersObservable
+from guet.files import FileSystem, File
 from guet.git.git import Git
 from guet.context.errors import InvalidCommittersError
 from guet.util import project_root
@@ -30,13 +35,14 @@ def _attempt_to_load_committers(function):
 class Context(SetCommittersObservable):
     @staticmethod
     def instance():
-        return Context(None)
+        return Context(None, file_system=FileSystem())
 
-    def __init__(self, project_root_directory: Union[Path, None]):
+    def __init__(self, project_root_directory: Union[Path, None], *, file_system: FileSystem):
         super().__init__()
         self._committers: Union[Committers, None] = None
         self._git = None
         self._project_root_directory = project_root_directory
+        self._file_system: Union[FileSystem, None] = file_system
 
     @property
     def project_root_directory(self) -> Path:
@@ -78,3 +84,18 @@ class Context(SetCommittersObservable):
             self.notify_set_committer_observers(committers)
         else:
             raise InvalidCommittersError()
+
+    def _create_empty(self, path: Path) -> File:
+        return self._file_system.get(path)
+
+    def initialize(self):
+
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES)))
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)))
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET)))
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS)))
+
+        config = self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)))
+        config.write([f'{__version__}\n', '\n'])
+
+        self._file_system.save_all()

@@ -15,3 +15,8 @@ class FileSystem:
 
     def get(self, path: Path) -> File:
         return self._file_cache[path]
+
+    def save_all(self):
+        for path in self._file_cache:
+            file = self._file_cache[path]
+            file.save()
