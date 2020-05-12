@@ -8,6 +8,7 @@ from guet.config import CONFIGURATION_DIRECTORY
 
 from guet import constants
 from guet.committers.committer import Committer
+from guet.config.errors import AlreadyInitializedError
 from guet.context.set_committer_observer import SetCommitterObserver
 from guet.context.context import Context
 from guet.context.errors import InvalidCommittersError
@@ -129,3 +130,13 @@ class TestContextInitialize(TestCase):
         context.initialize()
 
         mock_mkdir.assert_called_with(CONFIGURATION_DIRECTORY)
+
+    def test_initialize_throws_already_initialized_error_if_configuration_directory_already_exists(self, mock_mkdir):
+        mock_mkdir.side_effect = [None, FileExistsError()]
+        context = Context(None, file_system=Mock())
+        try:
+            context.initialize()
+            context.initialize()
+            self.fail('Should raise error')
+        except AlreadyInitializedError:
+            pass

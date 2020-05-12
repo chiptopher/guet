@@ -8,6 +8,7 @@ from guet.config import CONFIGURATION_DIRECTORY
 
 from guet.committers.committer import Committer
 from guet.committers.committers import Committers
+from guet.config.errors import AlreadyInitializedError
 from guet.context.set_committers_observable import SetCommittersObservable
 from guet.files import FileSystem, File
 from guet.git.git import Git
@@ -90,7 +91,8 @@ class Context(SetCommittersObservable):
         return self._file_system.get(path)
 
     def initialize(self):
-        mkdir(CONFIGURATION_DIRECTORY)
+        self._create_configuration_directory()
+
         self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES)))
         self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)))
         self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET)))
@@ -100,3 +102,9 @@ class Context(SetCommittersObservable):
         config.write([f'{__version__}\n', '\n'])
 
         self._file_system.save_all()
+
+    def _create_configuration_directory(self):
+        try:
+            mkdir(CONFIGURATION_DIRECTORY)
+        except FileExistsError:
+            raise AlreadyInitializedError()
