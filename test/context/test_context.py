@@ -106,9 +106,13 @@ class TestContextInitialize(TestCase):
 
         mock_file_system.get.assert_has_calls([
             call(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES))),
+            call().read(),
             call(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))),
+            call().read(),
             call(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))),
+            call().read(),
             call(Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS))),
+            call().read(),
             call(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG))),
         ])
         mock_file_system.save_all.assert_called()
