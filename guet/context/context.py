@@ -93,10 +93,10 @@ class Context(SetCommittersObservable):
     def initialize(self):
         self._create_configuration_directory()
 
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES)))
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS)))
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET)))
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS)))
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES))).read()
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))).read()
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))).read()
+        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS))).read()
 
         config = self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)))
         config.write([f'{__version__}\n', '\n'])

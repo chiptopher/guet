@@ -1,4 +1,3 @@
-
 from e2e import DockerTest
 
 
@@ -12,8 +11,6 @@ class TestInit(DockerTest):
 
         self.assert_directory_exists('.guet')
         self.assert_file_exists('.guet/committernames')
-        self.assert_file_exists('.guet/authornames')
-        self.assert_file_exists('.guet/authoremails')
         self.assert_file_exists('.guet/committers')
         self.assert_file_exists('.guet/committersset')
         self.assert_file_exists('.guet/config')

@@ -44,6 +44,14 @@ class TestFile(TestCase):
         file.save()
         mock_write_lines.assert_not_called()
 
+    @patch('guet.files._file.write_lines')
+    def test_save_writes_empty_file_if_written_with_no_lines(self, mock_write_lines):
+        path = Path('/absolute/path/to/file')
+        file = File(path)
+        file.write([])
+        file.save()
+        mock_write_lines.assert_called_with(path, [])
+
     @patch('guet.files._file.read_lines')
     def test_overwrite_replaces_content_that_matches_pattern_with_given_line(self, mock_read_lines):
         path = Path('/abolute/path/to/file')

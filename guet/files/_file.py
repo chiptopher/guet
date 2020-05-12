@@ -22,7 +22,7 @@ class File:
         self._content = new_content
 
     def save(self):
-        if self._content:
+        if self._content is not None:
             write_lines(self._absolute_path, self._content)
 
     def overwrite(self, matcher: Callable[[str], bool], new_line: str):
