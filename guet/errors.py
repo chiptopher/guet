@@ -1,6 +1,6 @@
-class InvalidInitialsError(Exception):
+class GuetError(Exception):
     pass
 
 
-class GuetError(Exception):
+class InvalidInitialsError(GuetError):
     pass
