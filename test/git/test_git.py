@@ -132,144 +132,133 @@ class TestGit(TestCase):
         git.author = Author(name='new_name', email='new_email@localhost')
         mock_write_lines.assert_called_with(self.path_to_git.joinpath('config'), new_content)
 
+    @patch('guet.git.git.write_lines')
+    def test_setting_writes_author_when_no_author_currently_present(self, mock_write_lines, _1, _2):
+        content_without_author = list(default_config_response)
+        del content_without_author[-1]
+        del content_without_author[-1]
+        del content_without_author[-1]
 
-@patch('guet.git.git.write_lines')
-def test_setting_writes_author_when_no_author_currently_present(self, mock_write_lines, _1):
-    content_without_author = list(default_config_response)
-    del content_without_author[-1]
-    del content_without_author[-1]
-    del content_without_author[-1]
+        new_content = content_without_author + ['[user]', '\tname = new_name', '\temail = new_email@localhost']
 
-    new_content = content_without_author + ['[user]', '\tname = new_name', '\temail = new_email@localhost']
+        git = Git(self.path_to_git)
+        git._config_lines = content_without_author
+        git.author = Author(name='new_name', email='new_email@localhost')
+        mock_write_lines.assert_called_with(self.path_to_git.joinpath('config'), new_content)
 
-    git = Git(self.path_to_git)
-    git._config_lines = content_without_author
-    git.author = Author(name='new_name', email='new_email@localhost')
-    mock_write_lines.assert_called_with(self.path_to_git.joinpath('config'), new_content)
+    def test_hooks_present_returns_true_when_all_normal_hooks_present(self, _1, _2):
+        git = Git(self.path_to_git)
+        git.hooks = [
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg'))
+        ]
+        self.assertTrue(git.hooks_present())
 
+    def test_hooks_present_returns_false_if_normal_hooks_have_non_guet_content(self, _1, _2):
+        git = Git(self.path_to_git)
+        git.hooks = [
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit'), is_guet_hook=False),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg'))
+        ]
+        self.assertFalse(git.hooks_present())
 
-def test_hooks_present_returns_true_when_all_normal_hooks_present(self, _1, _2):
-    git = Git(self.path_to_git)
-    git.hooks = [
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg'))
-    ]
-    self.assertTrue(git.hooks_present())
+    def test_hooks_present_returns_true_when_normal_hooks_have_non_guet_content_but_dash_hooks_are_present(self, _1,
+                                                                                                           _2):
+        git = Git(self.path_to_git)
+        git.hooks = [
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit'), is_guet_hook=False),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit-guet')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit-guet')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg-guet'))
+        ]
+        self.assertTrue(git.hooks_present())
 
+    def test_hooks_present_when_all_dash_guet_hooks_are_present(self, _1, _2):
+        git = Git(self.path_to_git)
+        git.hooks = [
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit-guet')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit-guet')),
+            _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg-guet'))
+        ]
+        self.assertTrue(git.hooks_present())
 
-def test_hooks_present_returns_false_if_normal_hooks_have_non_guet_content(self, _1, _2):
-    git = Git(self.path_to_git)
-    git.hooks = [
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit'), is_guet_hook=False),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg'))
-    ]
-    self.assertFalse(git.hooks_present())
+    def test_non_guet_hooks_present_returns_true_if_any_hooks_have_non_guet_contnet(self, _1, _2):
+        git = Git(self.path_to_git)
+        non_guet_hook = Mock()
+        non_guet_hook.is_guet_hook.return_value = False
+        guet_hook = Mock()
+        guet_hook.is_guet_hook.return_value = True
+        git.hooks = [non_guet_hook]
+        self.assertTrue(git.non_guet_hooks_present())
 
+    def test_non_guet_hooks_present_returns_false_if_all_hooks_have_guet_content(self, _1, _2):
+        git = Git(self.path_to_git)
+        guet_hook = Mock()
+        guet_hook.is_guet_hook.return_value = True
+        git.hooks = [guet_hook]
+        self.assertFalse(git.non_guet_hooks_present())
 
-def test_hooks_present_returns_true_when_normal_hooks_have_non_guet_content_but_dash_hooks_are_present(self, _1,
-                                                                                                       _2):
-    git = Git(self.path_to_git)
-    git.hooks = [
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit'), is_guet_hook=False),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit-guet')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit-guet')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg-guet'))
-    ]
-    self.assertTrue(git.hooks_present())
+    def test_non_guet_hook_present_returns_false_when_no_hooks_present(self, _1, _2):
+        git = Git(self.path_to_git)
+        git.hooks = []
+        self.assertFalse(git.non_guet_hooks_present())
 
+    def test_create_hooks_adds_new_files(self, mock_hook, _2):
+        git = Git(self.path_to_git)
+        git.hooks = []
 
-def test_hooks_present_when_all_dash_guet_hooks_are_present(self, _1, _2):
-    git = Git(self.path_to_git)
-    git.hooks = [
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'pre-commit-guet')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit-guet')),
-        _mock_hook(join(str(self.path_to_git), 'hooks', 'commit-msg-guet'))
-    ]
-    self.assertTrue(git.hooks_present())
+        mock_hook.reset_mock()
+        pre_commit_hook = Mock()
+        post_commit_hook = Mock()
+        commit_msg_hook = Mock()
+        expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
+        mock_hook.side_effect = expected_hooks
 
+        git.create_hooks()
 
-def test_non_guet_hooks_present_returns_true_if_any_hooks_have_non_guet_contnet(self, _1, _2):
-    git = Git(self.path_to_git)
-    non_guet_hook = Mock()
-    non_guet_hook.is_guet_hook.return_value = False
-    guet_hook = Mock()
-    guet_hook.is_guet_hook.return_value = True
-    git.hooks = [non_guet_hook]
-    self.assertTrue(git.non_guet_hooks_present())
+        self.assertListEqual(expected_hooks, git.hooks)
 
+        mock_hook.assert_has_calls([
+            call(self.path_to_git.joinpath('hooks').joinpath('pre-commit'), create=True),
+            call(self.path_to_git.joinpath('hooks').joinpath('post-commit'), create=True),
+            call(self.path_to_git.joinpath('hooks').joinpath('commit-msg'), create=True),
+        ])
 
-def test_non_guet_hooks_present_returns_false_if_all_hooks_have_guet_content(self, _1, _2):
-    git = Git(self.path_to_git)
-    guet_hook = Mock()
-    guet_hook.is_guet_hook.return_value = True
-    git.hooks = [guet_hook]
-    self.assertFalse(git.non_guet_hooks_present())
+        pre_commit_hook.save.assert_called()
+        post_commit_hook.save.assert_called()
+        commit_msg_hook.save.assert_called()
 
+    def test_create_hooks_adds_new_alongside_hooks(self, mock_hook, _1):
+        git = Git(self.path_to_git)
+        git.hooks = []
 
-def test_non_guet_hook_present_returns_false_when_no_hooks_present(self, _1, _2):
-    git = Git(self.path_to_git)
-    git.hooks = []
-    self.assertFalse(git.non_guet_hooks_present())
+        mock_hook.reset_mock()
+        pre_commit_hook = Mock()
+        post_commit_hook = Mock()
+        commit_msg_hook = Mock()
+        expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
+        mock_hook.side_effect = expected_hooks
 
+        git.create_hooks(alongside=True)
 
-def test_create_hooks_adds_new_files(self, mock_hook, _2):
-    git = Git(self.path_to_git)
-    git.hooks = []
+        self.assertListEqual(expected_hooks, git.hooks)
 
-    mock_hook.reset_mock()
-    pre_commit_hook = Mock()
-    post_commit_hook = Mock()
-    commit_msg_hook = Mock()
-    expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
-    mock_hook.side_effect = expected_hooks
+        mock_hook.assert_has_calls([
+            call(self.path_to_git.joinpath('hooks').joinpath('pre-commit-guet'), create=True),
+            call(self.path_to_git.joinpath('hooks').joinpath('post-commit-guet'), create=True),
+            call(self.path_to_git.joinpath('hooks').joinpath('commit-msg-guet'), create=True),
+        ])
 
-    git.create_hooks()
+        pre_commit_hook.save.assert_called()
+        post_commit_hook.save.assert_called()
+        commit_msg_hook.save.assert_called()
 
-    self.assertListEqual(expected_hooks, git.hooks)
-
-    mock_hook.assert_has_calls([
-        call(self.path_to_git.joinpath('hooks').joinpath('pre-commit'), create=True),
-        call(self.path_to_git.joinpath('hooks').joinpath('post-commit'), create=True),
-        call(self.path_to_git.joinpath('hooks').joinpath('commit-msg'), create=True),
-    ])
-
-    pre_commit_hook.save.assert_called()
-    post_commit_hook.save.assert_called()
-    commit_msg_hook.save.assert_called()
-
-
-def test_create_hooks_adds_new_alongside_hooks(self, mock_hook, _1, _2):
-    git = Git(self.path_to_git)
-    git.hooks = []
-
-    mock_hook.reset_mock()
-    pre_commit_hook = Mock()
-    post_commit_hook = Mock()
-    commit_msg_hook = Mock()
-    expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
-    mock_hook.side_effect = expected_hooks
-
-    git.create_hooks(alongside=True)
-
-    self.assertListEqual(expected_hooks, git.hooks)
-
-    mock_hook.assert_has_calls([
-        call(self.path_to_git.joinpath('hooks').joinpath('pre-commit-guet'), create=True),
-        call(self.path_to_git.joinpath('hooks').joinpath('post-commit-guet'), create=True),
-        call(self.path_to_git.joinpath('hooks').joinpath('commit-msg-guet'), create=True),
-    ])
-
-    pre_commit_hook.save.assert_called()
-    post_commit_hook.save.assert_called()
-    commit_msg_hook.save.assert_called()
-
-
-@patch('guet.git.git.write_lines')
-def test_notify_of_author_sets_the_author_proprty(self, mock_write_lines, _1, _2):
-    git = Git(self.path_to_git)
-    committer = Committer(name='new_name', email='new_email', initials='initials')
-    git.notify_of_committer_set([committer])
-    self.assertEqual('new_name', git.author.name)
-    self.assertEqual('new_email', git.author.email)
+    @patch('guet.git.git.write_lines')
+    def test_notify_of_author_sets_the_author_proprty(self, mock_write_lines, _1, _2):
+        git = Git(self.path_to_git)
+        committer = Committer(name='new_name', email='new_email', initials='initials')
+        git.notify_of_committer_set([committer])
+        self.assertEqual('new_name', git.author.name)
+        self.assertEqual('new_email', git.author.email)
