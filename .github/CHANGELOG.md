@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.5
+### Added Functionality
+* When starting tracking in a repository, if a hooks folder isn't present one is created
+
 ## 2.4.4
 ### Added Functionality
 * When setting committers, a message will print the committers that have been set.
