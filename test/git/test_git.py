@@ -255,6 +255,24 @@ class TestGit(TestCase):
         post_commit_hook.save.assert_called()
         commit_msg_hook.save.assert_called()
 
+    def test_create_hooks_adds_hook_folder_if_it_doesnt_exist(self, mock_hook, _1):
+        hooks_directory = self.path_to_git.joinpath.return_value
+        hooks_directory.is_dir.return_value = False
+        git = Git(self.path_to_git)
+        git.hooks = []
+
+        mock_hook.reset_mock()
+        pre_commit_hook = Mock()
+        post_commit_hook = Mock()
+        commit_msg_hook = Mock()
+        expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
+        mock_hook.side_effect = expected_hooks
+
+        git.create_hooks()
+
+        self.path_to_git.joinpath.assert_called_with('hooks')
+        hooks_directory.mkdir.assert_called()
+
     @patch('guet.git.git.write_lines')
     def test_notify_of_author_sets_the_author_proprty(self, mock_write_lines, _1, _2):
         git = Git(self.path_to_git)

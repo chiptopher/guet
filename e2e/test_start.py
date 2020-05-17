@@ -85,3 +85,12 @@ class TestStart(DockerTest):
         self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/post-commit')[0])
         self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/commit-msg')[0])
         self.assertEqual('#! /usr/bin/env python3', self.get_file_text('test-env/.git/hooks/pre-commit')[0])
+
+    def test_attempting_to_start_in_project_without_hooks_creates_hooks_folder(self):
+        self.guet_init()
+        self.git_init()
+        self.add_command('rm -rf .git/hooks')
+        self.guet_start()
+        self.execute()
+
+        self.assert_text_in_logs(1, 'No hooks directory found, creating one.')
