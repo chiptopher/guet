@@ -1,1 +1,2 @@
+from guet.committers._initials_name_email_printer import InitialsNameEmailPrintFormatter
 from guet.committers._comitters_printer import CommittersPrinter

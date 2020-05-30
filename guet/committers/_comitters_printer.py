@@ -1,5 +1,6 @@
 from typing import List
 
+from guet.committers import InitialsNameEmailPrintFormatter
 from guet.committers.committer import Committer
 
 
@@ -17,5 +18,6 @@ class CommittersPrinter:
         print(', '.join([committer.initials for committer in committers]))
 
     def _pretty_print(self, committers: List[Committer]):
-        for committer in committers:
-            print(committer.pretty())
+        committer_printers = [str(InitialsNameEmailPrintFormatter(committer)) for committer in committers]
+        for printer in committer_printers:
+            print(printer)

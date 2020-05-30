@@ -39,8 +39,8 @@ class TestGetCommand(TestCase):
         command = GetCommandFactory().build(['get', 'committers'], Settings())
         command.execute()
         mock_print.assert_any_call('All committers')
-        mock_print.assert_any_call(committers[0].pretty())
-        mock_print.assert_any_call(committers[1].pretty())
+        mock_print.assert_any_call('initials1 - name1 <email1>')
+        mock_print.assert_any_call('initials2 - name2 <email2>')
 
     def test_create_command_creates_command_with_current_committers_short_strategy_when_given_l_flag(self,
                                                                                                      mock_context,
@@ -74,8 +74,8 @@ class TestGetCommand(TestCase):
         command = GetCommandFactory().build(['get', 'current'], Settings())
         command.execute()
         mock_print.assert_any_call('Currently set committers')
-        mock_print.assert_any_call(committers[0].pretty())
-        mock_print.assert_any_call(committers[1].pretty())
+        mock_print.assert_any_call('initials1 - name1 <email1>')
+        mock_print.assert_any_call('initials2 - name2 <email2>')
 
     def test_create_command_uses_invalid_identifier_strategy_when_given_invalid_identifier(self, mock_context,
                                                                                            mock_print):

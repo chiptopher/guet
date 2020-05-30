@@ -16,9 +16,6 @@ class Committer:
     def __repr__(self):
         return f'<{str(self)}>'
 
-    def pretty(self):
-        return f'{self.initials} - {self.name} <{self.email}>'
-
     def save(self):
         raise NotImplementedError()
 
