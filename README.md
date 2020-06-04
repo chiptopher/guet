@@ -28,7 +28,7 @@ pip3 install guet==1.0.0
 ```
 
 #### Development Version
-The most recent develoment version can be downloaded and installed as well:
+The most recent development version can be downloaded and installed as well:
 
 ```
 git clone https://github.com/chiptopher/guet.git
@@ -44,7 +44,7 @@ For full usage details, using `guet` will print out all commands and a descripti
 `guet init` will initiailze the **guet** config files for the system.
 
 #### Start
-`guet start` will start **guet** for the reposotry at the current directory. 
+`guet start` will start **guet** for the repository at the current directory.
  
 #### Resgister Committers
 `guet add <initials> <"Name"> <email>` will register an available committer with the given initials, name and email.
@@ -56,5 +56,5 @@ following commits.
 ## Contribution
 
 Guidelines for contributions can be found [here](./.github/CONTRIBUTING.md). Feel free to 
-[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** you want to submit a
+[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** and you want to submit a
 feature request.
