@@ -13,3 +13,8 @@ To use guet with husky, you will need to start guet tracking alongside any prese
   }
 ```
 
+### I want to squash my commit, but still save co-authors. What do I do?
+
+As long as your your `Co-authored-by Name <emai>` lines are in the squashed commit, they will show up. In this example, you can remove all the duplicated lines under the "File 2" commit.
+
+![Squash Commit Example](./images/squashed_commit_example.png)
