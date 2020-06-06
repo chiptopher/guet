@@ -53,6 +53,10 @@ For full usage details, using `guet` will print out all commands and a descripti
 `guet set [<initials>, ...]` will register the committers with the given initials to have their names attached to all
 following commits.
 
+## Questions
+
+There is a [Frequently asked questions](.github/FAQ.md) section with some commonly asked questions.
+
 ## Contribution
 
 Guidelines for contributions can be found [here](./.github/CONTRIBUTING.md). Feel free to 
