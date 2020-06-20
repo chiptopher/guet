@@ -2,9 +2,9 @@ from typing import List
 
 from guet.commands.command import Command
 from guet.commands.usercommands.help.help_message_builder import HelpMessageBuilder, FlagBuilder, FlagsBuilder
-from guet.commands.usercommands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
-from guet.commands.usercommands.start.create_hook_strategy import CreateHookStrategy
-from guet.commands.usercommands.start.start_strategy import PromptUserForHookTypeStrategy
+from guet.commands.usercommands.start._create_alongside_hook_strategy import CreateAlongsideHookAction
+from guet.commands.usercommands.start._create_hook_strategy import CreateHookAction
+from guet.commands.usercommands.start._start_strategy import PromptUserForHookTypeAction
 from guet.commands.strategies.strategy_command import StrategyCommand
 from guet.commands.usercommands.usercommand_factory import UserCommandFactory
 from guet.settings.settings import Settings
@@ -22,11 +22,11 @@ class StartCommandFactory(UserCommandFactory):
     def build(self, args: List[str], settings: Settings) -> Command:
         git = self.context.git
         if '-a' in args or '--alongside' in args:
-            strategy = CreateAlongsideHookStrategy(git)
+            hook_action = CreateAlongsideHookAction(git)
         elif '-o' in args or '--overwrite' in args:
-            strategy = CreateHookStrategy(git)
+            hook_action = CreateHookAction(git)
         elif git.non_guet_hooks_present():
-            strategy = PromptUserForHookTypeStrategy(git)
+            hook_action = PromptUserForHookTypeAction(git)
         else:
-            strategy = CreateHookStrategy(git)
-        return StrategyCommand(strategy)
+            hook_action = CreateHookAction(git)
+        return StrategyCommand(hook_action)
