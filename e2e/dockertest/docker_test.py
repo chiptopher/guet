@@ -166,6 +166,10 @@ class DockerTest(unittest.TestCase):
         self.assertEqual(expected_text, self.logs[position_in_logs])
 
     @_not_called_execute
+    def assert_text_not_in_logs(self, position_in_logs: int, unexpected_text: str):
+        self.assertNotEqual(unexpected_text, self.logs[position_in_logs])
+
+    @_not_called_execute
     def assert_file_exists(self, expected_path):
         self._file_or_directory_exists_in_file_system(expected_path)
 

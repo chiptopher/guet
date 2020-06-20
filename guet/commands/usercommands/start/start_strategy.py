@@ -1,4 +1,5 @@
 from guet.commands.strategies.do_nothing_strategy import DoNothingStrategy
+from guet.commands.usercommands.start._cancel_start_strategy import CancelStartStrategy
 from guet.commands.usercommands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.usercommands.start.create_hook_strategy import CreateHookStrategy
 from guet.commands.usercommands.start.hook_strategy import HookStrategy
@@ -17,4 +18,7 @@ class PromptUserForHookTypeStrategy(HookStrategy):
         elif val == 'a':
             CreateAlongsideHookStrategy(self.git).apply()
         else:
-            DoNothingStrategy().apply()
+            CancelStartStrategy(self.git).apply()
+
+    def _after_hook_applied(self):
+        pass

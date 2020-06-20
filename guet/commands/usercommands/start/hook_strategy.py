@@ -9,6 +9,9 @@ class HookStrategy(CommandStrategy):
 
     def apply(self):
         self._hook_apply()
+        self._after_hook_applied()
+
+    def _after_hook_applied(self):
         print('guet successfully started in this repository.')
 
     def _hook_apply(self) -> None:
