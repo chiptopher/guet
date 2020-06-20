@@ -1,4 +1,3 @@
-from guet.commands.strategies.do_nothing_strategy import DoNothingStrategy
 from guet.commands.usercommands.start._cancel_start_strategy import CancelStartStrategy
 from guet.commands.usercommands.start.create_alongside_hook_strategy import CreateAlongsideHookStrategy
 from guet.commands.usercommands.start.create_hook_strategy import CreateHookStrategy
