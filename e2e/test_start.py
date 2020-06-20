@@ -94,3 +94,12 @@ class TestStart(DockerTest):
         self.execute()
 
         self.assert_text_in_logs(1, 'No hooks directory found, creating one.')
+
+    def test_tells_guet_not_started_if_x_is_pressed(self):
+        self.guet_init()
+        self.git_init()
+        self.add_file('.git/hooks/pre-commit')
+        self.guet_start(overwrite_answer='x')
+        self.execute()
+        self.assert_text_in_logs(5, 'guet not started.')
+        self.assert_text_not_in_logs(6, 'guet successfully started in this repository.')
