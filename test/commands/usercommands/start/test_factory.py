@@ -8,7 +8,7 @@ from guet.settings.settings import Settings
 @patch('guet.commands.command_factory.Context')
 class TestStartCommandFactoryMethod(unittest.TestCase):
 
-    @patch('guet.commands.usercommands.start.factory.PromptUserForHookTypeStrategy')
+    @patch('guet.commands.usercommands.start.factory.PromptUserForHookTypeAction')
     @patch('guet.commands.usercommands.start.factory.StrategyCommand')
     def test_returns_prompt_strategy_if_hooks_present(self, mock_command, mock_prompt_strategy,
                                                       mock_context):
@@ -21,7 +21,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_command.assert_called_once_with(mock_prompt_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
-    @patch('guet.commands.usercommands.start.factory.CreateHookStrategy')
+    @patch('guet.commands.usercommands.start.factory.CreateHookAction')
     @patch('guet.commands.usercommands.start.factory.StrategyCommand')
     def test_returns_create_strategy_if_no_hooks_present(self, mock_command, mock_create_strategy,
                                                          mock_context):
@@ -34,7 +34,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_command.assert_called_once_with(mock_create_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
-    @patch('guet.commands.usercommands.start.factory.CreateAlongsideHookStrategy')
+    @patch('guet.commands.usercommands.start.factory.CreateAlongsideHookAction')
     @patch('guet.commands.usercommands.start.factory.StrategyCommand')
     def test_returns_command_with_create_alongside_strategy_if_given_dash_a(self, mock_command,
                                                                             mock_alongside_strategy,
@@ -47,7 +47,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_command.assert_called_once_with(mock_alongside_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
-    @patch('guet.commands.usercommands.start.factory.CreateHookStrategy')
+    @patch('guet.commands.usercommands.start.factory.CreateHookAction')
     @patch('guet.commands.usercommands.start.factory.StrategyCommand')
     def test_returns_command_with_create_new_strategy_if_given_dash_o(self, mock_command,
                                                                       create_hook_strategy,
@@ -60,7 +60,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_command.assert_called_once_with(create_hook_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
-    @patch('guet.commands.usercommands.start.factory.CreateHookStrategy')
+    @patch('guet.commands.usercommands.start.factory.CreateHookAction')
     @patch('guet.commands.usercommands.start.factory.StrategyCommand')
     def test_returns_command_with_create_new_strategy_if_given_dash_dash_overwrite(self, mock_command,
                                                                                    create_hook_strategy,
@@ -73,7 +73,7 @@ class TestStartCommandFactoryMethod(unittest.TestCase):
         mock_command.assert_called_once_with(create_hook_strategy.return_value)
         self.assertEqual(command, mock_command.return_value)
 
-    @patch('guet.commands.usercommands.start.factory.CreateAlongsideHookStrategy')
+    @patch('guet.commands.usercommands.start.factory.CreateAlongsideHookAction')
     @patch('guet.commands.usercommands.start.factory.StrategyCommand')
     def test_returns_command_with_create_alongside_strategy_if_given_dash_dash_alongside(self, mock_command,
                                                                                          mock_alongside_strategy,

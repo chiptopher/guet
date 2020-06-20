@@ -3,7 +3,7 @@ from guet.git.git import Git
 from guet.commands.strategies.strategy import CommandStrategy
 
 
-class HookStrategy(CommandStrategy):
+class HookAction(CommandStrategy):
     def __init__(self, git: Git):
         self.git = git
 
