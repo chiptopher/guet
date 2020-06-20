@@ -8,7 +8,11 @@ Please provide context as to what the current incorrect behavior is.
 Please provide context as to what the expected correct behavior is.
 
 #### Environment:
-Please provide your operating system and python versions.
+Please list the following information:
+
+* Operating System:
+* Python Version:
+* guet Version:
 
 #### Notes
 Optional. Please provide any information you may find helpful.
