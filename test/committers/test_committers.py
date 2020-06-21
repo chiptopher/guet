@@ -44,7 +44,6 @@ class TestCommittersAll(TestCase):
         actual = committers.all()
         self.assertListEqual(expected_committers, actual)
 
-
 @patch('guet.committers.committers.all_committers_set')
 @patch('guet.committers.committers.current_millis', return_value=1000000000)
 @patch('guet.committers.committers.read_lines', side_effect=default_read_lines_side_effects)

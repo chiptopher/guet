@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.6
+### Bugs Fixed
+* When cancelling a guet start, a message saying that the repository was successfully started will no longer appear.
+
 ## 2.4.5
 ### Added Functionality
 * When starting tracking in a repository, if a hooks folder isn't present one is created
