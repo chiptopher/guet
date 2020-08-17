@@ -61,7 +61,7 @@ For full usage details, using `guet` will print out all commands and a descripti
 ```
 $ guet add cb "Chiptopher" chiptopher@chiptopher.com
 $ guet add jh "Jim Halpert" jimothy@dm.com
-$ guet add ds "Dwigt Schrute" dwight@dm.com
+$ guet add ds "Dwight Schrute" dwight@dm.com
 ```
 
 #### Set Committers
@@ -73,7 +73,7 @@ following commits.
 $ guet set cb ds
 Committers set to
 cb - Chiptopher <chiptopher@chiptopher.com>
-ds - Dwigt Schrute <dwight@dm.com>
+ds - Dwight Schrute <dwight@dm.com>
 ```
 
 ## Questions
