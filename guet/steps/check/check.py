@@ -13,6 +13,7 @@ class Check(Step):
             self._next.play()
         else:
             print(self._stop_message)
+            exit(1)
 
     def should_stop():
         raise NotImplementedError()

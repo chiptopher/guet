@@ -16,8 +16,9 @@ class TestCheck(unittest.TestCase):
 
         next_step.play.assert_called_once()
 
+    @patch('builtins.exit')
     @patch('builtins.print')
-    def test_play_does_not_call_next_play_if_should_stop_returns_true(self, mock_print):
+    def test_do_play_calls_exit_if_should_top_is_true(self, mock_print, mock_exit):
         next_step: Step = Mock()
 
         check = Check("stop")
@@ -26,10 +27,11 @@ class TestCheck(unittest.TestCase):
 
         check.do_play([])
 
-        next_step.play.assert_not_called()
+        mock_exit.assert_called_with(1)
 
+    @patch('builtins.exit')
     @patch('builtins.print')
-    def test_play_prints_error_message_when_not_calling_next_play(self, mock_print):
+    def test_play_prints_error_message_when_not_calling_next_play(self, mock_print, mock_exit):
         next_step: Step = Mock()
 
         stop_message = "stop"
