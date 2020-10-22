@@ -1,3 +1,5 @@
+from typing import List
+
 from guet.steps.step import Step
 
 
@@ -6,7 +8,7 @@ class Check(Step):
         super().__init__()
         self._stop_message = stop_message
 
-    def do_play(self):
+    def do_play(self, args: List[str]):
         if not self.should_stop():
             self._next.play()
         else:

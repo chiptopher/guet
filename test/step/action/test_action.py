@@ -7,6 +7,6 @@ class TestAction(unittest.TestCase):
     def test_play_calls_action(self):
         action = Action()
         action.execute = Mock()
-        action.do_play()
+        action.do_play([])
 
         action.execute.assert_called_once()

@@ -1,12 +1,15 @@
+from typing import List
+
+
 class Step:
 
     def __init__(self):
         self._next = None
 
-    def do_play(self):
+    def do_play(self, args: List[str]):
         raise NotImplementedError()
-    
-    def play(self):
+
+    def play(self, args: List[str]):
         self.do_play()
         if self._next is not None:
             self._next.play()

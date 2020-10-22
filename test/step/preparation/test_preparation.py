@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, call, Mock
+from unittest.mock import Mock
 from guet.steps.step import Step
 from guet.steps.preparation.preapration import Preparation
 
@@ -13,6 +13,6 @@ class TestPreparation(unittest.TestCase):
         prep.next(next_step)
         prep.prepare = Mock()
 
-        prep.do_play()
+        prep.do_play([])
 
         prep.prepare.assert_called_once()

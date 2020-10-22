@@ -12,7 +12,7 @@ class TestCheck(unittest.TestCase):
         check.next(next_step)
         check.should_stop = lambda: False
 
-        check.do_play()
+        check.do_play([])
 
         next_step.play.assert_called_once()
 
@@ -24,7 +24,7 @@ class TestCheck(unittest.TestCase):
         check.next(next_step)
         check.should_stop = lambda: True
 
-        check.do_play()
+        check.do_play([])
 
         next_step.play.assert_not_called()
 
@@ -37,6 +37,6 @@ class TestCheck(unittest.TestCase):
         check.next(next_step)
         check.should_stop = lambda: True
 
-        check.do_play()
+        check.do_play([])
 
         mock_print.assert_called_with(stop_message)

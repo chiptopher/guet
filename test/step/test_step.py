@@ -38,18 +38,18 @@ class TestStep(unittest.TestCase):
         second = Mock()
         first.next(second)
 
-        first.play()
+        first.play([])
         second.play.assert_called_once()
 
     def test_play_doesnt_call_next_play_if_no_next_present(self):
         first = Step()
         first.do_play = Mock()
-        first.play()
+        first.play([])
 
     def test_play_calls_self_do_play(self):
         first = Step()
         first.do_play = Mock()
 
-        first.play()
+        first.play([])
 
         first.do_play.assert_called_once()
