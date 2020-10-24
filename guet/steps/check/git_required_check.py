@@ -5,7 +5,7 @@ from guet.git.errors import NoGitPresentError
 
 class GitRequiredCheck(Check):
 
-    def __init__(self, git_directory):
+    def __init__(self, git_directory: str):
         super().__init__("Git not installed in this directory.")
         self._git_directory = git_directory
 
