@@ -10,9 +10,9 @@ class Step:
         raise NotImplementedError()
 
     def play(self, args: List[str]):
-        self.do_play()
+        self.do_play(args)
         if self._next is not None:
-            self._next.play()
+            self._next.play(args)
 
     def next(self, next_step: "Step") -> "Step":
         if self._next is None:

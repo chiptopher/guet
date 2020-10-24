@@ -9,7 +9,7 @@ class GitRequiredCheck(Check):
         super().__init__("Git not installed in this directory.")
         self._git_directory = git_directory
 
-    def should_stop(self):
+    def should_stop(self, args):
         try:
             Git(self._git_directory)
             return False

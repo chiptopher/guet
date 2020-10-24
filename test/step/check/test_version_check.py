@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch, call, Mock
 from guet.steps.check.version_check import VersionCheck
 
 

@@ -12,6 +12,6 @@ class TestGitRequiredCheck(unittest.TestCase):
         path_to_git_directory = Path()
         check = GitRequiredCheck(path_to_git_directory)
 
-        result = check.should_stop()
+        result = check.should_stop([])
 
         self.assertTrue(result)

@@ -10,7 +10,7 @@ class TestCheck(unittest.TestCase):
 
         check = Check("stop")
         check.next(next_step)
-        check.should_stop = lambda: False
+        check.should_stop = lambda args: False
 
         check.do_play([])
 
@@ -23,7 +23,7 @@ class TestCheck(unittest.TestCase):
 
         check = Check("stop")
         check.next(next_step)
-        check.should_stop = lambda: True
+        check.should_stop = lambda args: True
 
         check.do_play([])
 
@@ -37,7 +37,7 @@ class TestCheck(unittest.TestCase):
         stop_message = "stop"
         check = Check(stop_message)
         check.next(next_step)
-        check.should_stop = lambda: True
+        check.should_stop = lambda args: True
 
         check.do_play([])
 
