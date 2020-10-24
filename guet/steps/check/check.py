@@ -15,5 +15,5 @@ class Check(Step):
             print(self._stop_message)
             exit(1)
 
-    def should_stop():
+    def should_stop(self, args: List[str]) -> bool:
         raise NotImplementedError()
