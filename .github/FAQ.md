@@ -18,3 +18,7 @@ To use guet with husky, you will need to start guet tracking alongside any prese
 As long as your your `Co-authored-by Name <emai>` lines are in the squashed commit, they will show up. In this example, you can remove all the duplicated lines under the "File 2" commit.
 
 ![Squash Commit Example](./images/squashed_commit_example.png)
+
+### What do I need to do to uninstall guet?
+
+`pip3 uninstall guet` is the command you need to run to remove guet. If you're sure that you'll never want to use guet again, you can also remove `~/.guet/`. Additionally, you will need to remove guet from any repositories that you've run `guet start` in. You can do this by removing `pre-commit`, `post-commit`, and `commit-msg` in that repository's `.git/hooks/` folder.
