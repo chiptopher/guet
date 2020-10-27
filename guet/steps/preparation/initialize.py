@@ -9,6 +9,7 @@ from guet import constants
 
 class InitializePreparation(Preparation):
     def __init__(self, file_system: FileSystem):
+        super().__init__()
         self._file_system = file_system
 
     def prepare(self, args: List[str]):
