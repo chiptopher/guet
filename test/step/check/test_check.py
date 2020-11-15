@@ -12,13 +12,13 @@ class TestCheck(unittest.TestCase):
         check.next(next_step)
         check.should_stop = lambda args: False
 
-        check.do_play([])
+        check.play([])
 
         next_step.play.assert_called_once()
 
     @patch('builtins.exit')
     @patch('builtins.print')
-    def test_do_play_calls_exit_if_should_top_is_true(self, mock_print, mock_exit):
+    def test_do_play_calls_exit_if_should_stop_is_true(self, mock_print, mock_exit):
         next_step: Step = Mock()
 
         check = Check("stop")

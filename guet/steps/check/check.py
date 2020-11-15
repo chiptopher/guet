@@ -9,9 +9,7 @@ class Check(Step):
         self._stop_message = stop_message
 
     def do_play(self, args: List[str]):
-        if not self.should_stop(args):
-            self._next.play(args)
-        else:
+        if self.should_stop(args):
             print(self._stop_message)
             exit(1)
 

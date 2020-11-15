@@ -1,5 +1,5 @@
 from e2e import DockerTest
-
+from guet.steps.check.git_required_check import GIT_REQUIRED_MESSAGE
 
 class TestStart(DockerTest):
 
@@ -21,7 +21,7 @@ class TestStart(DockerTest):
         self.guet_init()
         self.guet_start()
         self.execute()
-        self.assert_text_in_logs(0, 'Git not initialized in this directory.')
+        self.assert_text_in_logs(0, GIT_REQUIRED_MESSAGE)
 
     def test_tells_user_when_there_is_already_a_pre_commit_hook_and_gives_options_and_can_choose_to_cancel(self):
         self.guet_init()

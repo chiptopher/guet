@@ -53,3 +53,16 @@ class TestStep(unittest.TestCase):
         first.play([])
 
         first.do_play.assert_called_once()
+
+    def test_play_only_called_once_per_link(self):
+        first = Step()
+        first.do_play = Mock()
+        second = Step()
+        second.do_play = Mock()
+        third = Step()
+        third.do_play = Mock()
+        first.next(second).next(third)
+
+        first.play([])
+        second.do_play.assert_called_once()
+        third.do_play.assert_called_once()

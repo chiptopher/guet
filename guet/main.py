@@ -33,7 +33,6 @@ start_steps = VersionCheck() \
     .next(GitRequiredCheck(Path(getcwd()).joinpath('.git'))) \
     .next(StartAction(StartCommandFactory()))
 
-
 def _command_builder_map():
     command_builder_map = dict()
     command_builder_map['add'] = VersionDecorator(
