@@ -43,6 +43,7 @@ setup(name='guet',
           'guet.steps',
           'guet.steps.action',
           'guet.steps.action.add',
+          'guet.steps.action.start',
           'guet.steps.check',
           'guet.steps.preparation',
           'guet.util'
