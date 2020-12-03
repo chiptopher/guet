@@ -1,5 +1,11 @@
 #!/bin/sh
 
+set -e
+
+source ./venv/bin/activate
+
+python3 -m unittest discover test
+
 rm -rf guet.egg-info/
 rm -rf build/
 rm -rf dist/
