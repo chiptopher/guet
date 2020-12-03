@@ -9,5 +9,8 @@ class CommandFactoryMethod:
     def __init__(self):
         self.context = Context.instance()
 
+    def short_help_message(self) -> str:
+        raise NotImplementedError
+
     def build(self, args: List[str], settings: Settings) -> Command:
         raise NotImplementedError

@@ -1,5 +1,4 @@
 from guet.steps.action.action import Action
-from guet.commands.usercommands.start.factory import StartCommandFactory
 from guet.settings.settings import Settings
 
 class StartAction(Action):

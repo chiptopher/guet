@@ -1,7 +1,7 @@
 from typing import List
-from pathlib import Path
 from guet.steps.check.check import Check
 from guet.git.git import Git
+from guet.util import project_root
 
 GUET_NOT_STARTED_ERROR = (
     'guet not initialized in this repository. '
@@ -11,10 +11,9 @@ GUET_NOT_STARTED_ERROR = (
 
 
 class StartRequiredCheck(Check):
-    def __init__(self, path_to_project_root: Path):
+    def __init__(self):
         super().__init__(GUET_NOT_STARTED_ERROR)
-        self.path_to_project_root = path_to_project_root
 
     def should_stop(self, args: List[str]) -> bool:
-        git = Git(self.path_to_project_root.joinpath('.git'))
+        git = Git(project_root().joinpath('.git'))
         return not git.hooks_present()
