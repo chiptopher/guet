@@ -1,5 +1,8 @@
 # Frequently Asked Questions
 
+### I'm getting an error that says "ModuleNotFoundError: No module named 'guet'"
+Usually this means when you installed guet, you used `pip install guet` instead of `pip3 install guet`. This means that guet is only installed to work with python2. However, python3 is required for guet to work. Running `pip uninstall guet` and then `pip3 install guet` should fix the problem.
+
 ### How do I use guet with [husky](https://github.com/typicode/husky)?
 
 To use guet with husky, you will need to start guet tracking alongside any present git hooks. To accomplish this, use the commmand `guet start -a`. guet uses the pre-commit, post-commit, and commit-msg hooks, so you'll need to update them in husky to look something like this:
