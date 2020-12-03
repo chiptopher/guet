@@ -90,6 +90,8 @@ class Context(SetCommittersObservable):
     def _create_empty(self, path: Path) -> File:
         return self._file_system.get(path)
 
+    # TODO duplicated in InitializePreparation. Refactor so that both use the
+    #      same soultion.
     def initialize(self):
         self._create_configuration_directory()
 

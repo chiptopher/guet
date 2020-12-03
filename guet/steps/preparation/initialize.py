@@ -6,6 +6,7 @@ from guet.steps.preparation.preapration import Preparation
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.files import FileSystem, File
 from guet import constants
+from guet import __version__
 
 
 class InitializePreparation(Preparation):
@@ -25,10 +26,15 @@ class InitializePreparation(Preparation):
             self._create_empty_file(configuration_dir.joinpath(constants.COMMITTERS_SET))
             self._create_empty_file(configuration_dir.joinpath(constants.ERRORS))
 
+            config = self._create_empty_file(Path(configuration_dir.joinpath(constants.CONFIG)))
+            config.write([f'{__version__}\n', '\n'])
+
             self._file_system.save_all()
 
     def _create_empty_file(self, path: Path) -> None:
-        self._file_system.get(path).read()
+        file = self._file_system.get(path)
+        file.read()
+        return file
 
     def _create_configuration_folder(self) -> None:
         mkdir(CONFIGURATION_DIRECTORY)
