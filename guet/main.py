@@ -9,6 +9,7 @@ from guet.settings.settings import Settings
 from guet.commands.decorators.help_decorator import HelpDecorator
 from guet.commands.decorators.init_required_decorator import InitRequiredDecorator
 from guet.commands.usercommands.init.factory import InitCommandFactory, INIT_HELP_MESSAGE
+from guet.commands.decorators.command_factory_decorator import CommandFactoryDecorator
 from guet.commands.usercommands.remove.factory import REMOVE_HELP_MESSAGE, RemoveCommandFactory
 from guet.commands.usercommands.setcommitters.factory import SetCommittersCommandFactory, SET_HELP_MESSAGE
 from guet.commands.usercommands.start.factory import StartCommandFactory, START_HELP_MESSAGE
@@ -25,6 +26,7 @@ from guet.steps.check.help_check import HelpCheck
 from guet.steps.check.version_check import VersionCheck
 from guet.steps.preparation.initialize import InitializePreparation
 from guet.steps.action.start.start import StartAction
+from guet.steps.preparation.preapration import Preparation
 from guet.files import FileSystem
 from guet.steps.check.start_required_check import StartRequiredCheck
 from guet.util import project_root
@@ -53,9 +55,15 @@ init_steps = VersionCheck() \
     .next(FactoryAction(InitCommandFactory()))
 
 set_steps = VersionCheck() \
-    .next(HelpCheck(SET_HELP_MESSAGE)) \
+    .next(HelpCheck(SET_HELP_MESSAGE, stop_on_no_args=True)) \
+    .next(InitializePreparation(file_system)) \
     .next(StartRequiredCheck()) \
     .next(FactoryAction(SetCommittersCommandFactory()))
+
+config_steps = VersionCheck() \
+    .next(HelpCheck(CONFIG_HELP_MESSAGE)) \
+    .next(InitializePreparation(file_system)) \
+    .next(FactoryAction(ConfigCommandFactory()))
 
 
 def _command_builder_map():
@@ -71,12 +79,11 @@ def _command_builder_map():
 
     command_builder_map['init'] = StepsFactory(init_steps)
 
-    command_builder_map['set'] = StepsFactory(set_steps)
+    command_builder_map['set'] = RemoveFirstArgDeorcator(StepsFactory(set_steps))
 
     command_builder_map['start'] = StepsFactory(start_steps)
 
-    command_builder_map['config'] = VersionDecorator(
-        InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE)))
+    command_builder_map['config'] = StepsFactory(config_steps)
 
     command_builder_map['get'] = VersionDecorator(
         InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE)))
@@ -106,6 +113,9 @@ class StepsFactory(CommandFactoryMethod):
     def build(self, args, settings):
         return StepsCommand(args, self._steps)
 
+class RemoveFirstArgDeorcator(CommandFactoryDecorator):
+    def build(self, args, settings) -> Command:
+        return self.decorated.build(args[1:], settings)
 
 @log_on_error
 def main():

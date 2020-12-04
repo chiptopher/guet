@@ -13,8 +13,3 @@ class TestConfig(DockerTest):
         self.execute()
 
         self.assertEqual('debug=True', self.get_file_text('.guet/config')[2])
-
-    def test_config_requires_init_to_run(self):
-        self.guet_config(['--debug=True'])
-        self.execute()
-        self.assert_text_in_logs(0, INIT_REQUIRED_ERROR_MESSAGE)

@@ -52,11 +52,6 @@ class TestGuetSet(DockerTest):
         self.assert_text_in_logs(6, 'initials1 - name1 <email1>')
         self.assert_text_in_logs(7, 'initials2 - name2 <email2>')
 
-    def test_set_committer_required_init_to_have_ran_before_usage(self):
-        self.guet_set(['initials1'])
-        self.execute()
-        self.assert_text_in_logs(0, INIT_REQUIRED_ERROR_MESSAGE)
-
     def test_set_committers_displays_help_message_when_no_initials_given(self):
         self.guet_init()
         self.git_init()

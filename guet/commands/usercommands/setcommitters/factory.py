@@ -11,7 +11,7 @@ SET_HELP_MESSAGE = HelpMessageBuilder('guet set <initials> [<initials> ...]', 'G
 
 class SetCommittersCommandFactory(UserCommandFactory):
     def build(self, args: List[str], settings: Settings):
-        return StrategyCommand(SetCommittersStrategy(args[1:], self.context))
+        return StrategyCommand(SetCommittersStrategy(args, self.context))
 
     def short_help_message(self):
         return 'Set the current committers'
