@@ -9,7 +9,7 @@ class TestCommandMap(TestCase):
         command_map = CommandMap()
         command = Mock()
         description = "short description"
-        command_map.add_command('init', command, 'short_description')
+        command_map.add_command('init', command, description)
 
         self.assertEqual(command_map.get_command('init'), command)
         self.assertEqual(command_map.get_description('init'), description)
