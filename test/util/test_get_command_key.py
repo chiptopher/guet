@@ -12,3 +12,6 @@ class TestGetCommandKey(TestCase):
 
     def test_returns_help_if_no_args_given(self):
         self.assertEqual('help', get_command_key([]))
+
+    def test_ignores_flags(self):
+        self.assertEqual('help', get_command_key(['-flag']))
