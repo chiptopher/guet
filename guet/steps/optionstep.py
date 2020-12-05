@@ -8,6 +8,7 @@ from .step import Step
 class OptionStep(Step):
 
     def __init__(self, choices: List[Step], choice: Callable[[List[str]], int]):
+        super().__init__()
         self.choices = choices
         self.choice = choice
 

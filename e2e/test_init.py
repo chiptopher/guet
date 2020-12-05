@@ -16,9 +16,3 @@ class TestInit(DockerTest):
         self.assert_file_exists('.guet/config')
 
         self.assertEqual('', self.get_file_text('.guet/config')[1])
-
-    def test_multiple_calls_to_init_tells_user_config_folder_already_exists(self):
-        self.guet_init()
-        self.guet_init()
-        self.execute()
-        self.assert_text_in_logs(0, 'Config folder already exists.')
