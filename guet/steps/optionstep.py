@@ -15,7 +15,7 @@ class OptionStep(Step):
     def do_play(self, args: List[str]):
         desired_choice = self.choice(args)
         if self._has_desired_choice(desired_choice):
-            return self.choices[desired_choice]
+            self.choices[desired_choice].play(args)
         else:
             raise UnexpectedError(
                 f'Attempting to choose {desired_choice} from {args}')

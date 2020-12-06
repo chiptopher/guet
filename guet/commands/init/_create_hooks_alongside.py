@@ -6,6 +6,7 @@ from guet.steps.action import Action
 
 class CreateHooksAlongside(Action):
     def __init__(self, git: Git):
+        super().__init__()
         self.git = git
 
     def execute(self, args: List[str]):

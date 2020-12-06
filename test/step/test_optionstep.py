@@ -16,8 +16,9 @@ class TestOptionStep(TestCase):
         choices = [first]
 
         step = OptionStep(choices, choice)
+        step.do_play([])
 
-        self.assertEqual(first, step.do_play([]))
+        first.play.assert_called_with([])
 
     def test_raises_exception_if_arg_not_in_list(self):
         choice = Mock()

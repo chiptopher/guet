@@ -69,14 +69,6 @@ class DockerTest(unittest.TestCase):
         self.add_command('cd ~/test-env')
 
     @_called_execute
-    def guet_init(self, arguments: List[str] = None):
-        self.init_called = True
-        command = 'guet init'
-        if arguments:
-            command = command + ' ' + ' '.join(arguments)
-        self.add_command(command)
-
-    @_called_execute
     def guet_config(self, flags: List[str] = []):
         command = f'guet config {" ".join(flags)}'
         self.add_command(command)
@@ -110,8 +102,8 @@ class DockerTest(unittest.TestCase):
         self.commands.append(command)
 
     @_called_execute
-    def guet_start(self, overwrite_answer: str = None, args: List[str] = []):
-        command = 'guet start'
+    def guet_init(self, overwrite_answer: str = None, args: List[str] = []):
+        command = 'guet init'
         command = f'{command} {" ".join(args)}'
         if overwrite_answer:
             command = f'printf {overwrite_answer} | {command}'
