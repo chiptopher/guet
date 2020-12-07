@@ -12,3 +12,9 @@ class TestAddUser(DockerTest):
 
         committers_file = self.get_file_text('.guet/committers')
         self.assertEqual('initials,name,email', committers_file[0])
+
+    def test_add_committer_not_enough_args_prints_the_error_message_and_help_for_command(self):
+        self.add_command('guet add initials name')
+        self.save_file_content('.guet/errors')
+        self.execute()
+        self.assert_text_in_logs(0, 'Not enough arguments.')

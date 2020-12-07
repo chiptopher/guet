@@ -9,13 +9,6 @@ class TestAddUser(DockerTest):
         self.execute()
         self.assert_text_in_logs(0, 'Too many arguments.')
 
-    def test_add_committer_not_enough_args_prints_the_error_message_and_help_for_command(self):
-        self.guet_init()
-        self.add_command('guet add initials name')
-        self.save_file_content('.guet/errors')
-        self.execute()
-        self.assert_text_in_logs(0, 'Not enough arguments.')
-
     def test_add_commiter_requires_that_you_guet_init_first(self):
         self.guet_add('initials', 'name', 'email')
         self.execute()

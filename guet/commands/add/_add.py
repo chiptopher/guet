@@ -5,6 +5,7 @@ from guet.steps.check import VersionCheck, HelpCheck
 from guet.steps.preparation import InitializePreparation
 
 from ._global_add import AddCommittersGlobally
+from ._args import ArgumentCheck
 
 
 class AddCommandFactory(CommandFactory):
@@ -16,4 +17,5 @@ class AddCommandFactory(CommandFactory):
         return VersionCheck() \
             .next(HelpCheck('temp')) \
             .next(InitializePreparation(self.file_system)) \
+            .next(ArgumentCheck()) \
             .next(AddCommittersGlobally(self.committers))

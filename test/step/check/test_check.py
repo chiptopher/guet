@@ -42,3 +42,18 @@ class TestCheck(unittest.TestCase):
         check.do_play([])
 
         mock_print.assert_called_with(stop_message)
+
+    @patch('builtins.exit')
+    @patch('builtins.print')
+    def test_calls_subclass_message_hook_if_one_not_prodivded_by_constructor(self, mock_print, mock_exit):
+        next_step: Step = Mock()
+
+        stop_message = "stop"
+        check = Check()
+        check.next(next_step)
+        check.should_stop = lambda args: True
+        check.load_message = lambda: stop_message
+
+        check.do_play([])
+
+        mock_print.assert_called_with(stop_message)
