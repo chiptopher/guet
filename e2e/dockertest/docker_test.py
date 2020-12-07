@@ -88,7 +88,7 @@ class DockerTest(unittest.TestCase):
 
     @_called_execute
     def guet_get_committers(self, help=False):
-        command = f'guet get committers'
+        command = f'guet get all'
         if help:
             command += ' --help'
         self.add_command(command)
