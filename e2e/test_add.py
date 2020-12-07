@@ -18,3 +18,8 @@ class TestAddUser(DockerTest):
         self.save_file_content('.guet/errors')
         self.execute()
         self.assert_text_in_logs(0, 'Not enough arguments.')
+
+    def test_add_committer_too_many_arguments_prints_error_message(self):
+        self.add_command('guet add initials name email extra')
+        self.execute()
+        self.assert_text_in_logs(0, 'Too many arguments.')

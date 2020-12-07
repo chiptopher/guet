@@ -52,7 +52,7 @@ class TestCheck(unittest.TestCase):
         check = Check()
         check.next(next_step)
         check.should_stop = lambda args: True
-        check.load_message = lambda: stop_message
+        check.load_message = lambda args: stop_message
 
         check.do_play([])
 
