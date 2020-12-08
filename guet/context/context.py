@@ -39,10 +39,10 @@ class Context(SetCommittersObservable):
     def instance():
         return Context(None, file_system=FileSystem())
 
-    def __init__(self, project_root_directory: Union[Path, None], *, file_system: FileSystem):
+    def __init__(self, project_root_directory: Union[Path, None], *, file_system: FileSystem, committers=None, git=None):
         super().__init__()
-        self._committers: Union[Committers, None] = None
-        self._git = None
+        self._committers = committers
+        self._git = git
         self._project_root_directory = project_root_directory
         self._file_system: Union[FileSystem, None] = file_system
 
@@ -71,6 +71,7 @@ class Context(SetCommittersObservable):
     @committers.setter
     def committers(self, new_committers):
         self._committers = new_committers
+        self.add_set_committer_observer(new_committers)
 
     @property
     def git(self):
@@ -78,6 +79,11 @@ class Context(SetCommittersObservable):
             self._git = Git(self.project_root_directory.joinpath('.git'))
             self.add_set_committer_observer(self._git)
         return self._git
+
+    @git.setter
+    def git(self, new_git):
+        self._git = new_git
+        self.add_set_committer_observer(new_git)
 
     @_attempt_to_load_committers
     @_attempt_to_load_git
@@ -95,12 +101,17 @@ class Context(SetCommittersObservable):
     def initialize(self):
         self._create_configuration_directory()
 
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES))).read()
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))).read()
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))).read()
-        self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS))).read()
+        self._create_empty(
+            Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTER_NAMES))).read()
+        self._create_empty(
+            Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS))).read()
+        self._create_empty(
+            Path(join(CONFIGURATION_DIRECTORY, constants.COMMITTERS_SET))).read()
+        self._create_empty(
+            Path(join(CONFIGURATION_DIRECTORY, constants.ERRORS))).read()
 
-        config = self._create_empty(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)))
+        config = self._create_empty(
+            Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)))
         config.write([f'{__version__}\n', '\n'])
 
         self._file_system.save_all()
