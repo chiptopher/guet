@@ -5,7 +5,7 @@ class Committer:
     def __init__(self, name: str, email: str, initials: str):
         self.name = name
         self.email = email
-        self.initials = initials
+        self.initials = initials.lower()
 
     def __eq__(self, o):
         return self.name == o.name and self.email == o.email and self.initials == o.initials

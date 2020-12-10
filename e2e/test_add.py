@@ -37,3 +37,8 @@ class TestAddUser(DockerTest):
         self.assert_text_in_logs(2, 'initials - name2 <email2>')
         self.assert_text_in_logs(6, 'initials - name2 <email2>')
 
+    def test_initials_are_lower_case_when_saved(self):
+        self.guet_add('INITIALS', 'name1', 'email1')
+        self.guet_get_committers()
+        self.execute()
+        self.assert_text_in_logs(1, 'initials - name1 <email1>')
