@@ -3,13 +3,6 @@ from e2e import DockerTest
 
 class TestAddUser(DockerTest):
 
-    def test_initials_are_lower_case_when_saved(self):
-        self.guet_init()
-        self.guet_add('INITIALS', 'name1', 'email1')
-        self.guet_get_committers()
-        self.execute()
-        self.assert_text_in_logs(1, 'initials - name1 <email1>')
-
     def test_including_local_flag_adds_committer_to_the_repository(self):
         self.guet_init()
         self.git_init()
