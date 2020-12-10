@@ -33,7 +33,7 @@ class TestAddUser(DockerTest):
         self.execute()
         self.assert_text_in_logs(0, ('Matching initials "initials". Adding "name2" <email2> '
                                      'will overwrite "name1" <email1>. Would you '
-                                     'like to continue (y) or cancel (x)?'))
+                                     'like to continue(y) or cancel(x)?'))
         self.assert_text_in_logs(2, 'initials - name2 <email2>')
-        self.assert_text_in_logs(5, 'initials - name2 <email2>')
+        self.assert_text_in_logs(6, 'initials - name2 <email2>')
 
