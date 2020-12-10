@@ -21,8 +21,22 @@ def _not_called_execute(f):
 def _called_execute(f):
     def wrapper(*args, **kwargs):
         if args[0].execute_called:
-            args[0].fail('You cannot change the run parameters after execute already called.')
+            args[0].fail(
+                'You cannot change the run parameters after execute already called.')
         return f(*args, **kwargs)
+
+    return wrapper
+
+
+def _print_logs_when_test_fails(f):
+    def wrapper(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except AssertionError as e:
+            print('========= Start Message log =========')
+            [print(log) for log in args[0].logs]
+            print('=========  End Message log  =========')
+            raise e
 
     return wrapper
 
@@ -32,7 +46,8 @@ class DockerTest(unittest.TestCase):
     def setUpClass(cls):
         docker_client = docker.from_env()
         project_root_directory = abspath(join(abspath(__file__), '../../..'))
-        docker_client.images.build(path=project_root_directory, tag='guettest:0.1.0')
+        docker_client.images.build(
+            path=project_root_directory, tag='guettest:0.1.0')
         docker_client.close()
 
     def __init__(self, *args, **kwargs):
@@ -149,18 +164,22 @@ class DockerTest(unittest.TestCase):
         file = self.file_system.get_file_from_root(file_path)
         return file.lines
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_directory_exists(self, path: str):
         self._file_or_directory_exists_in_file_system(path)
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_text_in_logs(self, position_in_logs: int, expected_text: str):
         self.assertEqual(expected_text, self.logs[position_in_logs])
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_text_not_in_logs(self, position_in_logs: int, unexpected_text: str):
         self.assertNotEqual(unexpected_text, self.logs[position_in_logs])
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_file_exists(self, expected_path):
         self._file_or_directory_exists_in_file_system(expected_path)
