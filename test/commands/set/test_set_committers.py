@@ -47,3 +47,16 @@ class TestSetCommittersAction(TestCase):
             call('Committers set to:'),
             call('first - name <email>')
         ])
+
+    def test_execute_ignores_case_when_finding_committers(self):
+        context = Mock()
+        committers = Mock()
+        action = SetCommittersAction(committers, context)
+
+        first = Committer('name', 'email', 'first')
+        second = Committer('name', 'email', 'second')
+        committers.all.return_value = [first, second]
+
+        action.execute(['first', 'SECOND'])
+
+        context.set_committers.assert_called_with([first, second])

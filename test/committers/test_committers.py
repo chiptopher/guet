@@ -180,6 +180,11 @@ class TestCommittersByInitials(TestCase):
         except InvalidInitialsError:
             pass
 
+    def test_by_initials_ignores_case_when_finding_committer(self, mock_read_lines):
+        committers = Committers()
+        found = committers.by_initials('INITIALS2')
+        self.assertEqual(Committer(name='name2', email='email2', initials='initials2'), found)
+
 
 local_committers_with_match = [[
     'initials1,name1,email1\n',

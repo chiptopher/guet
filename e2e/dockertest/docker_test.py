@@ -172,6 +172,7 @@ class DockerTest(unittest.TestCase):
     @_print_logs_when_test_fails
     @_not_called_execute
     def assert_text_in_logs(self, position_in_logs: int, expected_text: str):
+        self.assertTrue(position_in_logs < len(self.logs))
         self.assertEqual(expected_text, self.logs[position_in_logs])
 
     @_print_logs_when_test_fails

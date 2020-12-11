@@ -100,7 +100,7 @@ class Committers(SetCommitterObserver):
 
     def by_initials(self, initials: str):
         try:
-            return next((committer for committer in self._committers if committer.initials == initials))
+            return next((committer for committer in self._committers if committer.initials == initials.lower()))
         except StopIteration:
             raise InvalidInitialsError()
 

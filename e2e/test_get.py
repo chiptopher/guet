@@ -13,7 +13,7 @@ class TestGet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(5, 'Currently set committers')
+        self.assert_text_in_logs(5, 'Current committers')
         self.assert_text_in_logs(6, 'initials1 - name1 <email1>')
         self.assert_text_in_logs(7, 'initials2 - name2 <email2>')
 

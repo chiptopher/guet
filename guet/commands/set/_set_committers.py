@@ -13,7 +13,8 @@ class SetCommittersAction(Action):
         self.context = context
 
     def execute(self, args: List[str]):
-        found = [c for c in self.committers.all() if c.initials in args]
+        lowercase_args = [arg.lower() for arg in args]
+        found = [c for c in self.committers.all() if c.initials in lowercase_args]
         self.context.set_committers(found)
 
         printer = CommittersPrinter(initials_only=False)
