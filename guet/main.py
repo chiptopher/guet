@@ -8,6 +8,7 @@ from guet.commands.add import AddCommandFactory
 from guet.commands.get import GetCommandFactory
 from guet.commands.help import HelpCommandFactory
 from guet.commands.init import InitCommandFactory
+from guet.commands.remove import RemoveCommandFactory
 from guet.commands.set import SetCommittersCommand
 from guet.committers import CommittersProxy
 from guet.files import FileSystem
@@ -31,6 +32,7 @@ def main():
     command_map.add_command('add', AddCommandFactory(file_system, committers), 'Add committer for tracking')
     command_map.add_command('get', GetCommandFactory(file_system, committers), 'List information about committers')
     command_map.add_command('set', SetCommittersCommand(file_system, committers, context, git), 'Set committers for current repository')
+    command_map.add_command('remove', RemoveCommandFactory(file_system, committers), 'Remove committer')
 
     command = command_map.get_command(get_command_key(sys.argv[1:])).build()
     command.play(sys.argv[2:])

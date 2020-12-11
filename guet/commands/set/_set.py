@@ -1,10 +1,9 @@
 from guet.commands import CommandFactory
 from guet.steps import Step
-from guet.steps.check import VersionCheck, HelpCheck, GitRequiredCheck
+from guet.steps.check import VersionCheck, HelpCheck, GitRequiredCheck, CommittersExistCheck
 from guet.steps.preparation import InitializePreparation
 from guet.util import HelpMessageBuilder
 
-from ._committers_exist import CommittersExistCheck
 from ._set_committers import SetCommittersAction
 
 
