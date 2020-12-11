@@ -6,6 +6,7 @@ Pair programming is integral part of many software development lifecycles. When 
 
 [![Actions Status](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)](https://github.com/chiptopher/guet/workflows/guetci/badge.svg)
 [![PyPI version](https://badge.fury.io/py/guet.svg)](https://badge.fury.io/py/guet)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/guet)
 
 ## Installation
 
