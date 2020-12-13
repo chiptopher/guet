@@ -1,7 +1,7 @@
 import { Step } from '../step';
 import { Args } from '../../args';
 
-class MockStep extends Step {
+export class MockStep extends Step {
     doPlayCalled: boolean;
 
     constructor() {

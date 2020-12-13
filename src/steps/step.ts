@@ -9,7 +9,7 @@ export abstract class Step {
         return this;
     }
 
-    protected abstract doPlay(args: Args): void;
+    public abstract doPlay(args: Args): void;
 
     public play(args: Args) {
         this.doPlay(args);
