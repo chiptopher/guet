@@ -3,3 +3,5 @@ export class UnexpectedError extends Error {
         super(`An error has occurred for the following reason: ${reason}`);
     }
 }
+
+export class NoProjectRootError extends Error {}
