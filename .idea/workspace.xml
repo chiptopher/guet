@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2e48301f-2c86-4cc5-89a6-36e5f16d203c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/guet/steps/check/help_check.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/guet/steps/check/check.py" beforeDir="false" afterPath="$PROJECT_DIR$/guet/steps/check/check.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ZUHTSMwkyAmDBqBwoI1MsdlZNw" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/guet" />
+      <recent name="$PROJECT_DIR$/test/committers" />
+      <recent name="$PROJECT_DIR$/guet/committers" />
+      <recent name="$PROJECT_DIR$/guet/util" />
+      <recent name="$PROJECT_DIR$/test/settings" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python tests.Unittests for test_help_check.TestHelpCheck.test_should_stop_returns_true_if_help_flag_in_arguments">
+    <configuration name="Unittests for test_help_check.TestHelpCheck.test_should_stop_returns_true_if_help_flag_in_arguments" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="guet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/step/check" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_help_check.TestHelpCheck.test_should_stop_returns_true_if_help_flag_in_arguments&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_pre_commit_command.TestPreCommitCommand" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="guet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/commands/scriptcommands/precommit" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_pre_commit_command.TestPreCommitCommand&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_pre_commit_command.TestPreCommitCommand.test_checks_for_matching_committers" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="guet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/commands/scriptcommands/precommit" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_pre_commit_command.TestPreCommitCommand.test_checks_for_matching_committers&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in test" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="guet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in test_pre_commit_command.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="guet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/commands/scriptcommands/precommit" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/commands/scriptcommands/precommit/test_pre_commit_command.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests for test_help_check.TestHelpCheck.test_should_stop_returns_true_if_help_flag_in_arguments" />
+        <item itemvalue="Python tests.Unittests for test_pre_commit_command.TestPreCommitCommand.test_checks_for_matching_committers" />
+        <item itemvalue="Python tests.Unittests in test_pre_commit_command.py" />
+        <item itemvalue="Python tests.Unittests for test_pre_commit_command.TestPreCommitCommand" />
+        <item itemvalue="Python tests.Unittests in test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e48301f-2c86-4cc5-89a6-36e5f16d203c" name="Default Changelist" comment="" />
+      <created>1584886759379</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584886759379</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2780" y="311" key="#xdebugger.evaluate" timestamp="1603370015580">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state x="2780" y="311" key="#xdebugger.evaluate/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370015580" />
+    <state width="1771" height="381" key="GridCell.Tab.0.bottom" timestamp="1603370028315">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.0.bottom/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028315" />
+    <state width="1771" height="381" key="GridCell.Tab.0.center" timestamp="1603370028315">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.0.center/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028315" />
+    <state width="1771" height="381" key="GridCell.Tab.0.left" timestamp="1603370028314">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.0.left/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028314" />
+    <state width="1771" height="381" key="GridCell.Tab.0.right" timestamp="1603370028315">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.0.right/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028315" />
+    <state width="1771" height="381" key="GridCell.Tab.1.bottom" timestamp="1603370028317">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.1.bottom/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028317" />
+    <state width="1771" height="381" key="GridCell.Tab.1.center" timestamp="1603370028316">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.1.center/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028316" />
+    <state width="1771" height="381" key="GridCell.Tab.1.left" timestamp="1603370028316">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.1.left/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028316" />
+    <state width="1771" height="381" key="GridCell.Tab.1.right" timestamp="1603370028317">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state width="1771" height="381" key="GridCell.Tab.1.right/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603370028317" />
+    <state x="2682" y="297" width="670" height="676" key="search.everywhere.popup" timestamp="1603369994038">
+      <screen x="1792" y="-137" width="2560" height="1417" />
+    </state>
+    <state x="2682" y="297" width="670" height="676" key="search.everywhere.popup/4352.-1681.2160.3817/1792.-137.2560.1417/0.23.1792.1097@1792.-137.2560.1417" timestamp="1603369994038" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_commit.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_commit.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_init.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/commands/scriptcommands/precommit/precommit_factory.py</url>
+          <line>14</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_addcommitter.py</url>
+          <line>42</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/git/_all_valid_hooks.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/commands/decorators/test_git_required_decorator.py</url>
+          <line>39</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/git/test_hook.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/git/hook.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_commit_changes_current_author.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/committers/committers.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/committers/committers.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="72" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/committers/_set_current_committers.py</url>
+          <line>32</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_start.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/e2e/test_commit.py</url>
+          <line>54</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/guet/git/_hook_loader.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
