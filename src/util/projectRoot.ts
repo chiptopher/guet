@@ -9,5 +9,9 @@ export function projectRoot() {
         }
         current = filesystem.path(current, '..');
     }
-    throw new NoProjectRootError();
+    if (current !== filesystem.homedir()) {
+        throw new NoProjectRootError();
+    } else {
+        return current;
+    }
 }
