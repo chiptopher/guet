@@ -6,7 +6,7 @@ from guet.context.context import Context
 from guet.commands import CommandMap
 from guet.commands.add import AddCommandFactory
 from guet.commands.get import GetCommandFactory
-from guet.commands.help import HelpCommandFactory
+from guet.commands.help import HelpCommandFactory, UnknownCommandFactory
 from guet.commands.init import InitCommandFactory
 from guet.commands.remove import RemoveCommandFactory
 from guet.commands.set import SetCommittersCommand
@@ -39,6 +39,8 @@ def main():
         file_system, committers, context, git), 'Set committers for current repository')
     command_map.add_command('remove', RemoveCommandFactory(
         file_system, committers), 'Remove committer')
+
+    command_map.set_default(UnknownCommandFactory(command_map))
 
     args = add_command_help_if_invalid_command_given(sys.argv[1:])
 
