@@ -45,4 +45,4 @@ def main():
     args = add_command_help_if_invalid_command_given(sys.argv[1:])
 
     command = command_map.get_command(args[0]).build()
-    command.play(sys.argv[1:])
+    command.play(args[1:])
