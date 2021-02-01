@@ -7,7 +7,6 @@ class TestGuetSet(DockerTest):
     def test_set_gracefully_displays_error_message_when_setting_committer_with_unknown_initials(self):
         self.git_init()
         self.guet_init()
-        self.guet_start()
         self.guet_set(['ui'])
 
         self.execute()

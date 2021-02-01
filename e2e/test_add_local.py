@@ -58,7 +58,6 @@ class TestAddUser(DockerTest):
         self.assertListEqual(['initials1,name1,email1'], text)
 
     def test_adding_local_committers_when_not_started_error_message(self):
-        self.guet_init()
         self.git_init()
         self.guet_add('initials1', 'name1', 'email1', local=True)
 
