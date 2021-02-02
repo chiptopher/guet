@@ -8,3 +8,8 @@ class TestAddCommandHelpIfInvalidCommandGiven(TestCase):
         args = ['--version']
         result = add_command_help_if_invalid_command_given(args)
         self.assertEqual(['help', '--version'], result)
+
+    def test_adds_help_if_no_args_given(self):
+        args = []
+        result = add_command_help_if_invalid_command_given(args)
+        self.assertEqual(['help'], result)
