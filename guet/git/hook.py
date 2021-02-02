@@ -9,9 +9,9 @@ from guet.files.write_lines import write_lines
 
 def _shared_hook_lines() -> List[str]:
     return [
-        'from guet.hooks import manage',
+        'from guet.hooks import run',
         'import sys',
-        'manage(sys.argv[0])',
+        'run(sys.argv[0])',
     ]
 
 
