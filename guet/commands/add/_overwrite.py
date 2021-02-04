@@ -12,7 +12,7 @@ class OverwritingCommitterCheck(Check):
         self.committers = committers
 
     def should_stop(self, args: List[str]) -> bool:
-        initials, name, email = args
+        initials, name, email, *other = args
 
         try:
             found = self.committers.by_initials(args[0])

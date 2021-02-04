@@ -5,7 +5,8 @@ from guet.git import Git
 from guet.steps import Step
 from guet.util import project_root
 
-from._commit_msg import CommitMsg
+from ._commit_msg import CommitMsg
+from ._pre_commit import PreCommit
 
 
 def run(hook: str):
@@ -18,7 +19,7 @@ def _choose_command(hook: str) -> Step:
     committers = CommittersProxy()
     git = Git(project_root().joinpath('.git'))
     if hook.endswith('pre-commit'):
-        pass
+        return PreCommit(committers)
     elif hook.endswith('post-commit'):
         pass
     elif hook.endswith('commit-msg'):

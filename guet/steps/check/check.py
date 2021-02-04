@@ -19,5 +19,5 @@ class Check(Step):
     def should_stop(self, args: List[str]) -> bool:
         raise NotImplementedError()
 
-    def load_message(self, args: List[str]) -> str:
-        raise NotImplementedError()
+    def load_message(self, _: List[str]) -> str:
+        return ""

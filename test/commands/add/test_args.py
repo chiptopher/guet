@@ -23,3 +23,8 @@ class TestArgumentCheck(TestCase):
         args = ['np', 'Name Person', 'np@example.com', 'extra']
         check = ArgumentCheck()
         self.assertEqual('Too many arguments.', check.load_message(args))
+
+    def test_should_not_stop_if_correct_arg_count_and_local_flag_given(self):
+        args = ['np', 'Name Person', 'np@example.com', '--local']
+        check = ArgumentCheck()
+        self.assertFalse(check.should_stop(args))

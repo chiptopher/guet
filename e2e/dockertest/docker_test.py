@@ -34,7 +34,8 @@ def _print_logs_when_test_fails(f):
             return f(*args, **kwargs)
         except AssertionError as e:
             print('========= Start Message log =========')
-            [print(log) for log in args[0].logs]
+            for count, value in enumerate(args[0].logs):
+                print(f'{count}\t: {value}')
             print('=========  End Message log  =========')
             raise e
 

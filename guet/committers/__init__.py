@@ -4,4 +4,5 @@ from guet.committers._committer_print_formatter import CommitterPrintFormatter
 from guet.committers._comitters_printer import CommittersPrinter
 
 from .global_committer import GlobalCommitter
+from .local_committer import LocalCommitter
 from ._committers_proxy import CommittersProxy

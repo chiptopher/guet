@@ -1,6 +1,7 @@
 from typing import List
 
 from guet.steps.check import Check
+from guet.util import Args
 
 
 class ArgumentCheck(Check):
@@ -18,7 +19,7 @@ class ArgumentCheck(Check):
             return 'Too many arguments.'
 
     def not_enough_args(self, args: List[str]) -> bool:
-        return len(args) < 3
-    
+        return len(Args(args).without_flags) < 3
+
     def too_many_args(self, args: List[str]) -> bool:
-        return len(args) > 3
+        return len(Args(args).without_flags) > 3
