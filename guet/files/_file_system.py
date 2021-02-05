@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.files import File
 
 
@@ -20,3 +21,7 @@ class FileSystem:
         for path in self._file_cache:
             file = self._file_cache[path]
             file.save()
+
+    @staticmethod
+    def config_directory() -> Path:
+        return Path(CONFIGURATION_DIRECTORY)
