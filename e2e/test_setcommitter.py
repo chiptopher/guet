@@ -31,7 +31,8 @@ class TestGuetSet(DockerTest):
         set_text_split = set_text.split(',')
         self.assertEqual('initials1', set_text_split[0])
         self.assertEqual('initials2', set_text_split[1])
-        self.assertTrue(start_time + 10000 > int(set_text_split[2]) > start_time)
+        self.assertTrue(start_time + 10000 >
+                        int(set_text_split[2]) > start_time)
 
     def test_set_committers_ignores_case_of_initials(self):
         self.git_init()
@@ -50,7 +51,8 @@ class TestGuetSet(DockerTest):
     def test_set_committers_displays_help_message_when_no_initials_given(self):
         self.guet_set([])
         self.execute()
-        self.assert_text_in_logs(0, 'usage: guet set <initials> [<initials> ...]')
+        self.assert_text_in_logs(
+            0, 'usage: guet set <initials> [<initials> ...]')
 
     def test_errors_if_guet_set_ran_in_folder_with_no_git(self):
         self.guet_add('initials1', 'name1', 'email1')
@@ -95,6 +97,6 @@ class TestGuetSet(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(6, 'Currently set committers')
-        self.assert_text_in_logs(7, 'initials1 - name1 <email1>')
-        self.assert_text_in_logs(8, 'initials2 - name2 <email2>')
+        self.assert_text_in_logs(5, 'Current committers')
+        self.assert_text_in_logs(6, 'initials1 - name1 <email1>')
+        self.assert_text_in_logs(7, 'initials2 - name2 <email2>')

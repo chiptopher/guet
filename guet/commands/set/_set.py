@@ -19,6 +19,7 @@ class SetCommittersCommand(CommandFactory):
         self.git = git
 
     def build(self) -> Step:
+        self.committers.to_local()
         return VersionCheck() \
             .next(HelpCheck(SET_HELP_MESSAGE, stop_on_no_args=True)) \
             .next(InitializePreparation(self.file_system)) \

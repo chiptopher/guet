@@ -19,7 +19,11 @@ class Committers:
         self.current_state = self.global_state
 
     def all(self):
-        return self.current_state.all()
+        def sort_key(committer: Committer):
+            return committer.initials
+        found = self.current_state.all()
+        found.sort(key=sort_key)
+        return found
 
     def by_initials(self, initials: str):
         return self.current_state.by_initials(initials.lower())
