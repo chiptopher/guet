@@ -22,8 +22,6 @@ class CommittersExistCheck(Check):
     def _get_missing_committer_initials(self, args: List[str]) -> List[str]:
         missing = []
         for initial in args:
-            try:
-                self.committers.by_initials(initial)
-            except InvalidInitialsError:
+            if not self.committers.by_initials(initial):
                 missing.append(initial)
         return missing

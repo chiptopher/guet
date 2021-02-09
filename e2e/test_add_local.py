@@ -35,8 +35,8 @@ class TestAddUser(DockerTest):
 
         self.execute()
 
-        self.assert_text_in_logs(2, ('Adding committer with initials "initials" shadows the '
-                                     'global committer "initials" - "name1" <email1>'))
+        self.assert_text_in_logs(
+            2, ('Adding committer with initials "initials" will overshadow global committer with same initials.'))
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials,name2,email2'], text)
 
@@ -53,11 +53,8 @@ class TestAddUser(DockerTest):
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials1,name1,email1'], text)
 
-    def test_adding_local_committers_when_not_started_error_message(self):
-        self.git_init()
+    def test_add_local_requires_git_initialized_before_committing(self):
         self.guet_add('initials1', 'name1', 'email1', local=True)
 
         self.execute()
-
-        self.assert_text_in_logs(1,
-                                 'guet not initialized in this repository. Please use guet start to initialize repository for use with guet.')
+        self.assert_text_in_logs(0, ("Git not installed in this directory."))

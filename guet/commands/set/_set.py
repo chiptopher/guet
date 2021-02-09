@@ -12,10 +12,10 @@ SET_HELP_MESSAGE = HelpMessageBuilder(
 
 
 class SetCommittersCommand(CommandFactory):
-    def __init__(self, file_system, committers, context, git):
-        self.file_system = file_system
+    def __init__(self, file_system, committers, current, git):
         self.committers = committers
-        self.context = context
+        self.current = current
+        self.file_system = file_system
         self.git = git
 
     def build(self) -> Step:
@@ -24,4 +24,4 @@ class SetCommittersCommand(CommandFactory):
             .next(InitializePreparation(self.file_system)) \
             .next(GitRequiredCheck(self.git)) \
             .next(CommittersExistCheck(self.committers)) \
-            .next(SetCommittersAction(self.committers, self.context))
+            .next(SetCommittersAction(self.committers, self.current))

@@ -8,7 +8,7 @@ GIT_REQUIRED_MESSAGE = "Git not installed in this directory."
 class GitRequiredCheck(Check):
 
     def __init__(self, git: Git):
-        super().__init__("Git not installed in this directory.")
+        super().__init__(GIT_REQUIRED_MESSAGE)
         self.git = git
 
     def should_stop(self, args):

@@ -77,7 +77,7 @@ class TestOverwritingCommitterCheck(TestCase):
         committer = Committer(initials='initials',
                               name='name1', email='email1')
 
-        committers.by_initials.side_effect = InvalidInitialsError()
+        committers.by_initials.return_value = None
 
         self.assertFalse(preparation.should_stop(
             ['initials', 'name2', 'email2']))

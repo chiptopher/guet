@@ -1,12 +1,12 @@
 from typing import List
 
-from guet.committers import LocalCommitter
-from guet.committers.committers import Committers
+from guet.committers import Committers2 as Committers
+from guet.committers.committer import Committer
 from guet.steps.action import Action
-from guet.util import Args, project_root
+from guet.util import Args
 
 
-class AddCommittersLocally(Action):
+class AddCommitter(Action):
 
     def __init__(self, committers: Committers):
         super().__init__()
@@ -14,4 +14,4 @@ class AddCommittersLocally(Action):
 
     def execute(self, args: List[str]):
         initials, name, email = Args(args).without_flags
-        self.committers.add(LocalCommitter(name, email, initials, project_root=project_root()))
+        self.committers.add(Committer(name, email, initials))

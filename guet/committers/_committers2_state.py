@@ -8,7 +8,10 @@ class Committers2State:
         raise NotImplementedError
 
     def by_initials(self, initials: str) -> Committer:
-        raise NotImplementedError
+        try:
+            return next(c for c in self.all() if c.initials == initials)
+        except StopIteration:
+            return None
 
     def add(self, committer: Committer):
         raise NotImplementedError

@@ -19,8 +19,8 @@ class TestInitializePreparation(unittest.TestCase):
         config_dir = Path(mock_project_root()).joinpath('.guet')
 
         mock_filesystem: FileSystem = Mock()
-        preparation_step = LocalFilesInitialization(mock_filesystem)
-        preparation_step.prepare([])
+        preparation_step = LocalFilesInitialization(mock_filesystem, Mock())
+        preparation_step.prepare(['--local'])
 
         mock_filesystem.get.assert_has_calls([
             call(Path(config_dir.joinpath('committers'))),
@@ -34,8 +34,8 @@ class TestInitializePreparation(unittest.TestCase):
         config_dir = Path(mock_project_root()).joinpath('.guet')
 
         mock_filesystem: FileSystem = Mock()
-        preparation_step = LocalFilesInitialization(mock_filesystem)
-        preparation_step.prepare([])
+        preparation_step = LocalFilesInitialization(mock_filesystem, Mock())
+        preparation_step.prepare(['--local'])
 
         mock_mkdir.assert_called_with(config_dir)
 
@@ -43,7 +43,17 @@ class TestInitializePreparation(unittest.TestCase):
         mock_isdir.return_value = True
 
         mock_filesystem: FileSystem = Mock()
-        preparation_step = LocalFilesInitialization(mock_filesystem)
-        preparation_step.prepare([])
+        preparation_step = LocalFilesInitialization(mock_filesystem, Mock())
+        preparation_step.prepare(['--local'])
 
         mock_mkdir.assert_not_called()
+
+    def test_prepare_swaps_committers_to_local(self, mock_isdir, mock_mkdir, mock_project_root):
+        mock_isdir.return_value = True
+
+        mock_filesystem: FileSystem = Mock()
+        mock_committers = Mock()
+        preparation_step = LocalFilesInitialization(mock_filesystem, mock_committers)
+        preparation_step.prepare(['--local'])
+
+        mock_committers.to_local.assert_called()

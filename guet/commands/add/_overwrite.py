@@ -13,21 +13,19 @@ class OverwritingCommitterCheck(Check):
 
     def should_stop(self, args: List[str]) -> bool:
         initials, name, email, *other = args
-
-        try:
-            found = self.committers.by_initials(args[0])
-        except InvalidInitialsError:
+        found = self.committers.by_initials(args[0])
+        if not found:
             return False
-
-        print((f'Matching initials "{initials}". Adding '
-               f'"{name}" <{email}> will overwrite '
-               f'"{found.name}" <{found.email}>. Would you '
-               'like to continue(y) or cancel(x)?'))
-
-        choice = input()
-
-        if choice == 'x':
-            return True
         else:
-            self.committers.remove(found)
-            return False
+            print((f'Matching initials "{initials}". Adding '
+                   f'"{name}" <{email}> will overwrite '
+                   f'"{found.name}" <{found.email}>. Would you '
+                   'like to continue(y) or cancel(x)?'))
+
+            choice = input()
+
+            if choice == 'x':
+                return True
+            else:
+                self.committers.remove(found)
+                return False

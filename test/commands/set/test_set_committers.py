@@ -7,21 +7,21 @@ from guet.committers.committer import Committer
 
 class TestSetCommittersAction(TestCase):
     def test_execute_sets_committers(self):
-        context = Mock()
+        current_committers = Mock()
         committers = Mock()
-        action = SetCommittersAction(committers, context)
+        action = SetCommittersAction(committers, current_committers)
 
         committer = Committer('name', 'email', 'first')
         committers.all.return_value = [committer]
 
         action.execute(['first'])
 
-        context.set_committers.assert_called_with([committer])
+        current_committers.set.assert_called_with([committer])
 
     def test_execute_ignores_committers_not_in_args(self):
-        context = Mock()
+        current_committers = Mock()
         committers = Mock()
-        action = SetCommittersAction(committers, context)
+        action = SetCommittersAction(committers, current_committers)
 
         first = Committer('name', 'email', 'first')
         second = Committer('name', 'email', 'second')
@@ -29,13 +29,13 @@ class TestSetCommittersAction(TestCase):
 
         action.execute(['first'])
 
-        context.set_committers.assert_called_with([first])
+        current_committers.set.assert_called_with([first])
 
     @patch('builtins.print')
     def test_execute_prints_set_committers(self, mock_print):
-        context = Mock()
+        current_committers = Mock()
         committers = Mock()
-        action = SetCommittersAction(committers, context)
+        action = SetCommittersAction(committers, current_committers)
 
         first = Committer('name', 'email', 'first')
         second = Committer('name', 'email', 'second')
@@ -49,9 +49,9 @@ class TestSetCommittersAction(TestCase):
         ])
 
     def test_execute_ignores_case_when_finding_committers(self):
-        context = Mock()
+        current_committers = Mock()
         committers = Mock()
-        action = SetCommittersAction(committers, context)
+        action = SetCommittersAction(committers, current_committers)
 
         first = Committer('name', 'email', 'first')
         second = Committer('name', 'email', 'second')
@@ -59,4 +59,4 @@ class TestSetCommittersAction(TestCase):
 
         action.execute(['first', 'SECOND'])
 
-        context.set_committers.assert_called_with([first, second])
+        current_committers.set.assert_called_with([first, second])

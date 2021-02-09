@@ -15,12 +15,6 @@ class GlobalCommittersState(Committers2State):
     def all(self) -> List[Committer]:
         return [self._map_line_to_committer(c) for c in self._get_committers_file().read()]
 
-    def by_initials(self, initials: str) -> Committer:
-        try:
-            return next(c for c in self.all() if c.initials == initials)
-        except StopIteration:
-            return None
-
     def add(self, committer: Committer):
         if self.by_initials(committer.initials):
             self.remove(committer.initials)
