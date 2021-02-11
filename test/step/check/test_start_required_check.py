@@ -1,8 +1,9 @@
 import unittest
-from unittest.mock import patch
 from pathlib import Path
-from guet.steps.check.start_required_check import StartRequiredCheck
+from unittest.mock import patch
+
 from guet.git.git import Git
+from guet.steps.check.start_required_check import StartRequiredCheck
 
 
 class TestStartRequiredCheck(unittest.TestCase):

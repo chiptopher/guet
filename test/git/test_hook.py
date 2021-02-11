@@ -1,9 +1,9 @@
 from pathlib import Path
 from unittest import TestCase
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 from guet.git.errors import NotGuetHookError
-from guet.git.hook import Hook, PYTHON3_GUET_HOOK, PYTHON_GUET_HOOK
+from guet.git.hook import PYTHON3_GUET_HOOK, PYTHON_GUET_HOOK, Hook
 
 
 @patch('guet.git.hook.which', return_value='/path/to/python3')

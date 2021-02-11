@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from guet.util import get_command_key
 
 

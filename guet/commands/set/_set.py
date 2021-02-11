@@ -1,11 +1,11 @@
 from guet.commands import CommandFactory
 from guet.steps import Step
-from guet.steps.check import VersionCheck, HelpCheck, GitRequiredCheck, CommittersExistCheck
+from guet.steps.check import (CommittersExistCheck, GitRequiredCheck,
+                              HelpCheck, VersionCheck)
 from guet.steps.preparation import InitializePreparation
 from guet.util import HelpMessageBuilder
 
 from ._set_committers import SetCommittersAction
-
 
 SET_HELP_MESSAGE = HelpMessageBuilder(
     'guet set <initials> [<initials> ...]', 'Get current committers.').build()

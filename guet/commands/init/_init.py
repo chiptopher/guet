@@ -5,9 +5,9 @@ from guet.files import FileSystem
 from guet.git import Git
 from guet.steps import OptionStep, Step
 from guet.steps.action import PrintAction
-from guet.steps.check import VersionCheck, HelpCheck, GitRequiredCheck
+from guet.steps.check import GitRequiredCheck, HelpCheck, VersionCheck
 from guet.steps.preparation import InitializePreparation
-from guet.util import HelpMessageBuilder, FlagBuilder, FlagsBuilder
+from guet.util import FlagBuilder, FlagsBuilder, HelpMessageBuilder
 
 from ._cancel_create_hook import CancelCreateHooks
 from ._create_hooks_alongside import CreateHooksAlongside

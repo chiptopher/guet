@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 from guet.util.errors import log_on_error
 

@@ -3,16 +3,15 @@ from os.path import join
 from pathlib import Path
 from typing import List, Union
 
-from guet import constants, __version__
-from guet.config import CONFIGURATION_DIRECTORY
-
+from guet import __version__, constants
 from guet.committers.committer import Committer
 from guet.committers.committers import Committers
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.errors import AlreadyInitializedError
-from guet.context.set_committers_observable import SetCommittersObservable
-from guet.files import FileSystem, File
-from guet.git.git import Git
 from guet.context.errors import InvalidCommittersError
+from guet.context.set_committers_observable import SetCommittersObservable
+from guet.files import File, FileSystem
+from guet.git.git import Git
 from guet.util import project_root
 
 

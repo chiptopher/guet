@@ -1,9 +1,10 @@
 import unittest
 from pathlib import Path
 from unittest.mock import Mock
+
 from guet.committers.committers import Committers
-from guet.steps.action.add.global_add_committer import GlobalAddCommitter
 from guet.committers.global_committer import GlobalCommitter
+from guet.steps.action.add.global_add_committer import GlobalAddCommitter
 
 
 class TestGlobalAddCommitter(unittest.TestCase):

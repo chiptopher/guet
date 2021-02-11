@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, call, patch
 
 from guet.commands.set._set_committers import SetCommittersAction
 from guet.committers.committer import Committer

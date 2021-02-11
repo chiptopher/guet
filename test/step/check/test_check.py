@@ -1,5 +1,6 @@
 import unittest
-from unittest.mock import patch, call, Mock
+from unittest.mock import Mock, call, patch
+
 from guet.steps.check.check import Check
 from guet.steps.step import Step
 

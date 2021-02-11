@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from guet.committers.committer import Committer
-from guet.committers._local_committers_state import LocalCommittersState
 from guet.committers._global_committer_state import GlobalCommittersState
+from guet.committers._local_committers_state import LocalCommittersState
+from guet.committers.committer import Committer
 
 
 class TestLocalCommittersState(TestCase):

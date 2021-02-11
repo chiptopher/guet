@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from guet.hooks._post_commit import PostCommit
 from guet.committers.committer import Committer
+from guet.hooks._post_commit import PostCommit
 
 
 class TestPostCommit(TestCase):

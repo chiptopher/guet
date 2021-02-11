@@ -2,9 +2,9 @@ from guet.commands import CommandFactory
 from guet.committers.committers import Committers
 from guet.files import FileSystem
 from guet.steps import Step
-from guet.steps.check import VersionCheck, HelpCheck
+from guet.steps.check import HelpCheck, VersionCheck
 from guet.steps.preparation import InitializePreparation
-from guet.util import HelpMessageBuilder, FlagBuilder, FlagsBuilder
+from guet.util import FlagBuilder, FlagsBuilder, HelpMessageBuilder
 
 from ._action import GetCommittersAction
 

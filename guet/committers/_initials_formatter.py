@@ -1,4 +1,5 @@
-from guet.committers._committer_print_formatter import MultipleCommitterPrintFormatter
+from guet.committers._committer_print_formatter import \
+    MultipleCommitterPrintFormatter
 
 
 class InitialsFormatter(MultipleCommitterPrintFormatter):

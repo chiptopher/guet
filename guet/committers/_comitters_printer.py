@@ -1,6 +1,6 @@
 from typing import List
 
-from guet.committers import InitialsNameEmailPrintFormatter, InitialsFormatter
+from guet.committers import InitialsFormatter, InitialsNameEmailPrintFormatter
 from guet.committers.committer import Committer
 
 

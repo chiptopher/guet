@@ -1,11 +1,11 @@
 import unittest
-from unittest.mock import Mock, call, patch
 from pathlib import Path
+from unittest.mock import Mock, call, patch
 
-from guet.config import CONFIGURATION_DIRECTORY
-from guet.steps.preparation.initialize import InitializePreparation
-from guet.files import FileSystem
 from guet import constants
+from guet.config import CONFIGURATION_DIRECTORY
+from guet.files import FileSystem
+from guet.steps.preparation.initialize import InitializePreparation
 
 
 @patch('guet.steps.preparation.initialize.mkdir')

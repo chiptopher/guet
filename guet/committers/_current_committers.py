@@ -5,8 +5,8 @@ from guet.committers.committer import Committer
 from guet.files import FileSystem
 from guet.util import project_root
 
-from ._set_current_committers import set_current_committers
 from ._initials_for_project import initials_for_project
+from ._set_current_committers import set_current_committers
 
 
 class CurrentCommittersObserver:

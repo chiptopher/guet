@@ -1,6 +1,7 @@
 from typing import List
-from guet.steps.check.check import Check
+
 from guet.git.git import Git
+from guet.steps.check.check import Check
 from guet.util import project_root
 
 GUET_NOT_STARTED_ERROR = (

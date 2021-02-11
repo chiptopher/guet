@@ -5,7 +5,7 @@ from typing import List
 
 import docker
 
-from e2e.dockertest.file_system import process_file_system, FileSystem
+from e2e.dockertest.file_system import FileSystem, process_file_system
 from e2e.dockertest.logs import process_logs
 
 

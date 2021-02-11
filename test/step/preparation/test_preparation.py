@@ -1,7 +1,8 @@
 import unittest
 from unittest.mock import Mock
-from guet.steps.step import Step
+
 from guet.steps.preparation.preapration import Preparation
+from guet.steps.step import Step
 
 
 class TestPreparation(unittest.TestCase):

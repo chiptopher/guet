@@ -1,12 +1,12 @@
-from pathlib import Path
 from os import mkdir
 from os.path import isdir
+from pathlib import Path
 from typing import List
-from guet.steps.preparation.preapration import Preparation
+
+from guet import __version__, constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.files import FileSystem, File
-from guet import constants
-from guet import __version__
+from guet.files import File, FileSystem
+from guet.steps.preparation.preapration import Preparation
 
 
 class InitializePreparation(Preparation):

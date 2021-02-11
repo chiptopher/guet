@@ -1,9 +1,10 @@
 import unittest
-from unittest.mock import Mock, call, patch
 from pathlib import Path
+from unittest.mock import Mock, call, patch
 
 from guet import constants
-from guet.commands.add._local_file_initialization import LocalFilesInitialization
+from guet.commands.add._local_file_initialization import \
+    LocalFilesInitialization
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.files import FileSystem
 

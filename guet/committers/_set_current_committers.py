@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import List, Union
 
 from guet import constants
-from guet.committers._committers_set import all_committers_set, CommittersSet
-from guet.config import CONFIGURATION_DIRECTORY
+from guet.committers._committers_set import CommittersSet, all_committers_set
 from guet.committers.committer import Committer
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.files.write_lines import write_lines
 
 

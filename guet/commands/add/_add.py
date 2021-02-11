@@ -4,12 +4,12 @@ from guet.commands import CommandFactory
 from guet.committers import Committers2
 from guet.files import FileSystem
 from guet.git import Git
-from guet.steps import Step, IfStep
-from guet.steps.check import VersionCheck, HelpCheck, GitRequiredCheck
+from guet.steps import IfStep, Step
+from guet.steps.check import GitRequiredCheck, HelpCheck, VersionCheck
 from guet.steps.preparation import InitializePreparation
 
-from ._args import ArgumentCheck
 from ._add_committer import AddCommitter
+from ._args import ArgumentCheck
 from ._local_file_initialization import LocalFilesInitialization
 from ._overwrite import OverwritingCommitterCheck
 

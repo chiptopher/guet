@@ -1,4 +1,5 @@
-from typing import List, Callable
+from typing import Callable, List
+
 from guet.steps.step import Step
 
 

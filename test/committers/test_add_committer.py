@@ -1,12 +1,11 @@
 import unittest
 from os.path import join
 from pathlib import Path
-from unittest.mock import patch, Mock, ANY
-
-from guet.config import CONFIGURATION_DIRECTORY
+from unittest.mock import ANY, Mock, patch
 
 from guet import constants
 from guet.committers._add_committer import add_committer
+from guet.config import CONFIGURATION_DIRECTORY
 
 
 @patch('guet.committers._add_committer.write_lines')

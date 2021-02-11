@@ -1,10 +1,9 @@
 from os.path import join
 from pathlib import Path
-from typing import NamedTuple, List
+from typing import List, NamedTuple
 
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
-
 from guet.files.read_lines import read_lines
 
 CommittersSet = NamedTuple('CommittersSet', [('initials', List[str]), ('set_time', int), ('path', Path)])

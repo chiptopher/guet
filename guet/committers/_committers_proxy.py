@@ -1,5 +1,4 @@
-from guet.util import Proxy
-from guet.util import project_root
+from guet.util import Proxy, project_root
 
 from .committers import Committers
 

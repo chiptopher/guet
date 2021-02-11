@@ -1,6 +1,7 @@
 from typing import List
-from guet.steps.check.check import Check
+
 from guet import __version__ as version
+from guet.steps.check.check import Check
 
 
 class VersionCheck(Check):

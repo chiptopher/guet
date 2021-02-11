@@ -2,8 +2,8 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 from guet.committers.committer import Committer
-from guet.context.set_committers_observable import SetCommittersObservable
 from guet.context.set_committer_observer import SetCommitterObserver
+from guet.context.set_committers_observable import SetCommittersObservable
 
 
 class TestAuthorObservable(TestCase):

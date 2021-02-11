@@ -1,6 +1,6 @@
 import unittest
 from pathlib import Path
-from unittest.mock import patch, mock_open, Mock
+from unittest.mock import Mock, mock_open, patch
 
 from guet.files.read_lines import read_lines
 

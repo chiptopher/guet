@@ -1,12 +1,12 @@
 from typing import List
 
 from guet.constants import COMMITTERS
-from guet.files import FileSystem, File
+from guet.files import File, FileSystem
 from guet.util import project_root
 
-from .committer import Committer
 from ._committers2_state import Committers2State
 from ._global_committer_state import GlobalCommittersState
+from .committer import Committer
 
 
 class LocalCommittersState(Committers2State):

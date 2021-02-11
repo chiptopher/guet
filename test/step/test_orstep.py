@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import Mock
+
 from guet.steps.orstep import OrStep
 from guet.steps.step import Step
 

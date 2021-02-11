@@ -1,7 +1,7 @@
 from os.path import join
 from pathlib import Path
 from unittest import TestCase
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, call, patch
 
 from guet.committers.committer import Committer
 from guet.git.author import Author

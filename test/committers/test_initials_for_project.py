@@ -1,9 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from guet.committers._initials_for_project import initials_for_project
-
 from guet.committers._committers_set import CommittersSet
+from guet.committers._initials_for_project import initials_for_project
 
 
 @patch('guet.committers._initials_for_project.all_committers_set')

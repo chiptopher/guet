@@ -1,15 +1,14 @@
 from os.path import join
 from pathlib import Path
 from unittest import TestCase
-from unittest.mock import patch, call, Mock
-
-from guet.committers._committers_set import CommittersSet
-from guet.committers.local_committer import LocalCommitter
+from unittest.mock import Mock, call, patch
 
 from guet import constants
-from guet.config import CONFIGURATION_DIRECTORY
+from guet.committers._committers_set import CommittersSet
 from guet.committers.committer import Committer
 from guet.committers.committers import Committers
+from guet.committers.local_committer import LocalCommitter
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.errors import InvalidInitialsError
 
 default_read_lines_side_effects = [[

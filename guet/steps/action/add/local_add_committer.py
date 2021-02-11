@@ -1,8 +1,9 @@
 from pathlib import Path
 from typing import List
-from guet.steps.action.action import Action
+
 from guet.committers.committers import Committers
 from guet.committers.local_committer import LocalCommitter
+from guet.steps.action.action import Action
 
 
 class LocalAddCommitter(Action):

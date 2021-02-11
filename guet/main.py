@@ -1,8 +1,5 @@
 import sys
 
-from guet.util.errors import log_on_error
-from guet.util import add_command_help_if_invalid_command_given
-from guet.context.context import Context
 from guet.commands import CommandMap
 from guet.commands.add import AddCommandFactory
 from guet.commands.get import GetCommandFactory
@@ -10,9 +7,12 @@ from guet.commands.help import HelpCommandFactory, UnknownCommandFactory
 from guet.commands.init import InitCommandFactory
 from guet.commands.remove import RemoveCommandFactory
 from guet.commands.set import SetCommittersCommand
-from guet.committers import CommittersProxy, Committers2, CurrentCommitters
+from guet.committers import Committers2, CommittersProxy, CurrentCommitters
+from guet.context.context import Context
 from guet.files import FileSystem
 from guet.git import GitProxy
+from guet.util import add_command_help_if_invalid_command_given
+from guet.util.errors import log_on_error
 
 file_system = FileSystem()
 committers = CommittersProxy()

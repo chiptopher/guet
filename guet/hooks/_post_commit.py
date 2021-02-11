@@ -1,9 +1,8 @@
 from typing import List
 
-from guet.steps.action import Action
-
 from guet.committers import CurrentCommitters
 from guet.committers.committers import Committers
+from guet.steps.action import Action
 
 
 class PostCommit(Action):

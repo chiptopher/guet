@@ -1,17 +1,15 @@
 from os.path import join
 from pathlib import Path
 from unittest import TestCase
-from unittest.mock import Mock, patch, call
-from guet import __version__
+from unittest.mock import Mock, call, patch
 
-from guet.config import CONFIGURATION_DIRECTORY
-
-from guet import constants
+from guet import __version__, constants
 from guet.committers.committer import Committer
+from guet.config import CONFIGURATION_DIRECTORY
 from guet.config.errors import AlreadyInitializedError
-from guet.context.set_committer_observer import SetCommitterObserver
 from guet.context.context import Context
 from guet.context.errors import InvalidCommittersError
+from guet.context.set_committer_observer import SetCommitterObserver
 from guet.git.errors import NoGitPresentError
 
 

@@ -1,6 +1,5 @@
 from typing import List
 
-
 from guet.committers.committers import Committers
 from guet.errors import InvalidInitialsError
 from guet.steps.check import Check

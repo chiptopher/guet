@@ -1,3 +1,3 @@
-from os.path import join, expanduser
+from os.path import expanduser, join
 
 CONFIGURATION_DIRECTORY = join(expanduser('~'), '.guet')

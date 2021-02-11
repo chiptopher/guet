@@ -1,6 +1,7 @@
 import sys
 
-from guet.committers import CommittersProxy, Committers2 as Committers, CurrentCommitters
+from guet.committers import Committers2 as Committers
+from guet.committers import CommittersProxy, CurrentCommitters
 from guet.files import FileSystem
 from guet.git import Git
 from guet.steps import Step

@@ -5,7 +5,6 @@ from guet.util import current_millis
 
 from ._committers_set import all_committers_set
 
-
 _TWENTY_FOUR_HOURS_IN_MILLISECONDS = 86400000
 
 

@@ -1,5 +1,6 @@
-from guet.steps.action.action import Action
 from guet.settings.settings import Settings
+from guet.steps.action.action import Action
+
 
 class StartAction(Action):
     def __init__(self, factory):

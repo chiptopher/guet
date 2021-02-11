@@ -1,10 +1,9 @@
 from typing import List
 
-from guet.steps.action import Action
-
-from guet.committers.committer import Committer
 from guet.committers import CurrentCommitters
+from guet.committers.committer import Committer
 from guet.git import Git
+from guet.steps.action import Action
 
 
 class CommitMsg(Action):

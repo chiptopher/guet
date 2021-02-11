@@ -1,10 +1,10 @@
 from typing import List
 
 from guet.constants import COMMITTERS
-from guet.files import FileSystem, File
+from guet.files import File, FileSystem
 
-from .committer import Committer
 from ._committers2_state import Committers2State
+from .committer import Committer
 
 
 class GlobalCommittersState(Committers2State):

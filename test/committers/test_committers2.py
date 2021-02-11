@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from guet.committers.committer import Committer
 from guet.committers._committers2 import Committers
+from guet.committers.committer import Committer
 
 
 class TestCommitters(TestCase):

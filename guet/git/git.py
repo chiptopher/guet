@@ -1,14 +1,16 @@
 from pathlib import Path
 from typing import List
 
+from guet.committers import CurrentCommittersObserver
 from guet.committers.committer import Committer
 from guet.files.read_lines import read_lines
-from guet.committers import CurrentCommittersObserver
 from guet.files.write_lines import write_lines
 from guet.git._all_valid_hooks import all_valid_hooks
-from guet.git._author_manage import load_author, overwrite_current_author, get_author_lines, append_new_author
+from guet.git._author_manage import (append_new_author, get_author_lines,
+                                     load_author, overwrite_current_author)
 from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
-from guet.git._file_name_strategy import BaseFileNameStrategy, AlongsideFileNameStrategy
+from guet.git._file_name_strategy import (AlongsideFileNameStrategy,
+                                          BaseFileNameStrategy)
 from guet.git._guet_hooks import GUET_HOOKS
 from guet.git._hook_loader import HookLoader
 from guet.git.author import Author

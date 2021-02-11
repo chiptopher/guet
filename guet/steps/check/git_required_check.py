@@ -1,6 +1,6 @@
-from guet.steps.check.check import Check
-from guet.git.git import Git
 from guet.git.errors import NoGitPresentError
+from guet.git.git import Git
+from guet.steps.check.check import Check
 
 GIT_REQUIRED_MESSAGE = "Git not installed in this directory."
 
