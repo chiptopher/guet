@@ -53,7 +53,7 @@ class TestOverwritingCommitterCheck(TestCase):
 
         preparation.should_stop(['initials', 'name2', 'email2'])
 
-        committers.remove.assert_called_with(committer)
+        committers.remove.assert_called_with(committer.initials)
 
     @patch('builtins.input', side_effect=['y'])
     def test_overwriting_should_not_stop(self, mock_input, mock_print):

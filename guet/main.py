@@ -20,6 +20,7 @@ committers2 = Committers2(file_system)
 git = GitProxy()
 context = Context(None, file_system=file_system)
 current_committers = CurrentCommitters(file_system, committers)
+current_committers.register_observer(git)
 
 context.git = git
 context.committers = committers
@@ -40,7 +41,7 @@ def main():
     command_map.add_command('set', SetCommittersCommand(
         file_system, committers2, current_committers, git), 'Set committers for current repository')
     command_map.add_command('remove', RemoveCommandFactory(
-        file_system, committers), 'Remove committer')
+        file_system, committers2), 'Remove committer')
 
     command_map.set_default(UnknownCommandFactory(command_map))
 

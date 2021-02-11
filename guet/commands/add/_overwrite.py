@@ -27,5 +27,5 @@ class OverwritingCommitterCheck(Check):
             if choice == 'x':
                 return True
             else:
-                self.committers.remove(found)
+                self.committers.remove(found.initials)
                 return False

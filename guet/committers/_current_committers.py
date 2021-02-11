@@ -6,6 +6,7 @@ from guet.files import FileSystem
 from guet.util import project_root
 
 from ._set_current_committers import set_current_committers
+from ._initials_for_project import initials_for_project
 
 
 class CurrentCommittersObserver:
@@ -20,7 +21,11 @@ class CurrentCommitters:
         self.observers = []
 
     def get(self) -> List[Committer]:
-        pass
+        project_initials = initials_for_project(project_root())
+        committers = []
+        for initials in project_initials:
+            committers.append(self.committers.by_initials(initials))
+        return committers
 
     def set(self, committers: List[Committer]):
         set_current_committers(committers, project_root())

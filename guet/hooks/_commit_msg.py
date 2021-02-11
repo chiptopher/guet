@@ -3,18 +3,19 @@ from typing import List
 from guet.steps.action import Action
 
 from guet.committers.committer import Committer
-from guet.committers.committers import Committers
+from guet.committers import CurrentCommitters
 from guet.git import Git
 
 
 class CommitMsg(Action):
-    def __init__(self, committers: Committers, git: Git):
+    def __init__(self, current_committers: CurrentCommitters, git: Git):
         super().__init__()
-        self.committers = committers
+        self.current_committers = current_committers
         self.git = git
 
     def execute(self, _):
-        self.git.commit_msg = self._co_autor_lines(self.committers.current())
+        lines = self._co_autor_lines(self.current_committers.get())
+        self.git.commit_msg = lines
 
     def _co_autor_lines(self, committers: List[Committer]) -> List[str]:
         return [f'Co-authored-by: {committer.name} <{committer.email}>' for committer in committers]

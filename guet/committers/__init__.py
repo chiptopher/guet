@@ -7,4 +7,4 @@ from .global_committer import GlobalCommitter
 from .local_committer import LocalCommitter
 from ._committers_proxy import CommittersProxy
 from ._committers2 import Committers as Committers2
-from ._current_committers import CurrentCommitters
+from ._current_committers import CurrentCommitters, CurrentCommittersObserver
