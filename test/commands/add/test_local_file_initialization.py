@@ -9,7 +9,7 @@ from guet.config import CONFIGURATION_DIRECTORY
 from guet.files import FileSystem
 
 
-@patch('guet.commands.add._local_file_initialization.project_root')
+@patch('guet.commands.add._local_file_initialization.project_root', return_value='path/to/project/root')
 @patch('guet.commands.add._local_file_initialization.mkdir')
 @patch('guet.commands.add._local_file_initialization.isdir')
 class TestInitializePreparation(unittest.TestCase):
