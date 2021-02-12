@@ -3,12 +3,12 @@ from setuptools import setup
 import guet
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+    LONG_DESCRIPTION = fh.read()
 
 setup(name='guet',
       version=guet.__version__,
       description='Enable contribution tracking when pair programming',
-      long_description=long_description,
+      long_description=LONG_DESCRIPTION,
       long_description_content_type="text/markdown",
       url='https://github.com/chiptopher/guet',
       keywords='pair programming',
@@ -22,6 +22,7 @@ setup(name='guet',
           'guet.commands.init',
           'guet.commands.remove',
           'guet.commands.set',
+          'guet.commands.yeet',
           'guet.committers',
           'guet.config',
           'guet.files',

@@ -30,7 +30,7 @@ class TestGet(DockerTest):
         self.assert_text_in_logs(2, 'initials2 - name2 <email2>')
 
     def test_prints_help_message(self):
-        self.guet_get_committers(help=True)
+        self.guet_get_committers(include_help=True)
         self.execute()
         self.assert_text_in_logs(0, 'usage: guet get <identifier> [-flag, ...]')
         self.assert_text_in_logs(2, 'Get currently set information.')

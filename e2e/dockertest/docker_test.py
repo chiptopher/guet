@@ -1,43 +1,45 @@
+#pylint: disable=too-many-public-methods
+
 import time
 import unittest
 from os.path import abspath, join
 from typing import List
 
-import docker
+import docker  # pylint: disable=import-error
 
 from e2e.dockertest.file_system import FileSystem, process_file_system
 from e2e.dockertest.logs import process_logs
 
 
-def _not_called_execute(f):
+def _not_called_execute(func):
     def wrapper(*args, **kwargs):
         if not args[0].execute_called:
             args[0].fail('You must call execute before making assertions.')
-        return f(*args, **kwargs)
+        return func(*args, **kwargs)
 
     return wrapper
 
 
-def _called_execute(f):
+def _called_execute(func):
     def wrapper(*args, **kwargs):
         if args[0].execute_called:
             args[0].fail(
                 'You cannot change the run parameters after execute already called.')
-        return f(*args, **kwargs)
+        return func(*args, **kwargs)
 
     return wrapper
 
 
-def _print_logs_when_test_fails(f):
+def _print_logs_when_test_fails(func):
     def wrapper(*args, **kwargs):
         try:
-            return f(*args, **kwargs)
-        except AssertionError as e:
+            return func(*args, **kwargs)
+        except AssertionError as exception:
             print('========= Start Message log =========')
             for count, value in enumerate(args[0].logs):
                 print(f'{count}\t: {value}')
             print('=========  End Message log  =========')
-            raise e
+            raise exception
 
     return wrapper
 
@@ -85,7 +87,7 @@ class DockerTest(unittest.TestCase):
         self.add_command('cd ~/test-env')
 
     @_called_execute
-    def guet_config(self, flags: List[str] = []):
+    def guet_config(self, flags: List[str] = list()): # pylint: disable=dangerous-default-value
         command = f'guet config {" ".join(flags)}'
         self.add_command(command)
 
@@ -103,9 +105,9 @@ class DockerTest(unittest.TestCase):
         self.add_command(f'guet remove {initials}')
 
     @_called_execute
-    def guet_get_committers(self, help=False):
+    def guet_get_committers(self, include_help=False):
         command = f'guet get all'
-        if help:
+        if include_help:
             command += ' --help'
         self.add_command(command)
 
@@ -118,15 +120,21 @@ class DockerTest(unittest.TestCase):
         self.commands.append(command)
 
     @_called_execute
-    def guet_init(self, overwrite_answer: str = None, args: List[str] = []):
+    def guet_init(self, overwrite_answer: str = None, args: List[str] = []): # pylint: disable=dangerous-default-value
         command = 'guet init'
         command = f'{command} {" ".join(args)}'
         if overwrite_answer:
             command = f'printf {overwrite_answer} | {command}'
         self.add_command(command)
 
+    def guet_set(self, initials: List[str]):
+        self.add_command(f'guet set {" ".join(initials)}')
+
+    def guet_yeet(self):
+        self.add_command('guet yeet')
+
     @_called_execute
-    def git_init(self, from_path: str = None, *, with_author_config: bool = False):
+    def git_init(self, _: str = None, *, with_author_config: bool = False):
         self.add_command('git init')
         if with_author_config:
             self.add_command('git config --global user.name name')
@@ -156,9 +164,6 @@ class DockerTest(unittest.TestCase):
         if text:
             command = f'echo "{text}" >> {file_path}'
         self.add_command(command)
-
-    def guet_set(self, initials: List[str]):
-        self.add_command(f'guet set {" ".join(initials)}')
 
     @_not_called_execute
     def get_file_text(self, file_path: str) -> List[str]:
