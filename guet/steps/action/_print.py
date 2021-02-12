@@ -1,4 +1,4 @@
-from guet.steps.action import Action
+from .action import Action
 
 
 class PrintAction(Action):

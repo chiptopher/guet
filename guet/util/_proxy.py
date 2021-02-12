@@ -3,9 +3,7 @@ class Proxy:
         self.proxy_object = proxy_object
 
     def __getattribute__(self, name):
-        # TODO handle @attribute.setter correctly. Right now if you try and do
-        # a GitProxy.commit_msg = 'something' it won't actually load the real
-        # Git object
+        # This won't load self.proxy_object if it's a propery that's accessed.
 
         if name == 'proxy_object':
             return object.__getattribute__(self, 'proxy_object')

@@ -1,5 +1,6 @@
-from guet.git import Git
 from guet.util import Proxy, project_root
+
+from .git import Git
 
 
 class GitProxy(Proxy):

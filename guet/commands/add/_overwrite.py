@@ -1,7 +1,6 @@
 from typing import List
 
-from guet.committers.committers import Committers
-from guet.errors import InvalidInitialsError
+from guet.committers import Committers2 as Committers
 from guet.steps.check import Check
 
 
@@ -12,7 +11,7 @@ class OverwritingCommitterCheck(Check):
         self.committers = committers
 
     def should_stop(self, args: List[str]) -> bool:
-        initials, name, email, *other = args
+        initials, name, email, *_ = args
         found = self.committers.by_initials(args[0])
         if not found:
             return False

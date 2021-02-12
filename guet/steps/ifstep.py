@@ -1,7 +1,6 @@
 from typing import Callable, List
 
 from guet.steps import Step
-from guet.steps.check import Check
 
 
 class IfStep(Step):

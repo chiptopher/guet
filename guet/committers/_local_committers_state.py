@@ -24,8 +24,8 @@ class LocalCommittersState(Committers2State):
 
     def add(self, committer: Committer):
         if self.global_state.by_initials(committer.initials):
-            print(
-                f'Adding committer with initials "{committer.initials}" will overshadow global committer with same initials.')
+            print(f'Adding committer with initials "{committer.initials}" '
+                  'will overshadow global committer with same initials.')
         if self._local_committer_present(committer.initials):
             self.remove(committer.initials)
         all_committers = self._all_local_committers()

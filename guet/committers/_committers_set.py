@@ -6,7 +6,8 @@ from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
 from guet.files.read_lines import read_lines
 
-CommittersSet = NamedTuple('CommittersSet', [('initials', List[str]), ('set_time', int), ('path', Path)])
+CommittersSet = NamedTuple('CommittersSet',
+                           [('initials', List[str]), ('set_time', int), ('path', Path)])
 
 
 def all_committers_set() -> List[CommittersSet]:

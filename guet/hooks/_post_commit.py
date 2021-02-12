@@ -1,7 +1,6 @@
 from typing import List
 
 from guet.committers import CurrentCommitters
-from guet.committers.committers import Committers
 from guet.steps.action import Action
 
 

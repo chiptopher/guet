@@ -83,7 +83,6 @@ class TestGuetSet(DockerTest):
         self.assertEqual('initials1', set_text_split[0])
         self.assertEqual('initials2', set_text_split[1])
 
-    # FIXME when guet add --local works
     def test_setting_committers_includes_local_committers(self):
         self.git_init()
         self.guet_init()

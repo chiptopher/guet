@@ -1,6 +1,4 @@
-
 from guet.commands import CommandFactory, CommandMap
-from guet.files import FileSystem
 from guet.steps import Step
 from guet.steps.action import PrintAction
 

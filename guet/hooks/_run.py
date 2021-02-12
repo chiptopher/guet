@@ -1,7 +1,7 @@
-import sys
+from typing import Union
 
 from guet.committers import Committers2 as Committers
-from guet.committers import CommittersProxy, CurrentCommitters
+from guet.committers import CurrentCommitters
 from guet.files import FileSystem
 from guet.git import Git
 from guet.steps import Step
@@ -11,12 +11,11 @@ from ._commit_msg import CommitMsg
 from ._post_commit import PostCommit
 from ._pre_commit import PreCommit
 
-file_system = FileSystem()
-committers = CommittersProxy()
-committers2 = Committers(file_system)
-git = Git(project_root().joinpath('.git'))
-current_committers = CurrentCommitters(file_system, committers)
-current_committers.register_observer(git)
+FILE_SYSTEM = FileSystem()
+COMMITTERS = Committers(FILE_SYSTEM)
+GIT = Git(project_root().joinpath('.git'))
+CURRENT_COMMITTERS = CurrentCommitters(FILE_SYSTEM, COMMITTERS)
+CURRENT_COMMITTERS.register_observer(GIT)
 
 
 def run(hook: str):
@@ -25,10 +24,11 @@ def run(hook: str):
         command.play([])
 
 
-def _choose_command(hook: str) -> Step:
+def _choose_command(hook: str) -> Union[Step, None]:
     if hook.endswith('pre-commit'):
-        return PreCommit(committers)
+        return PreCommit(CURRENT_COMMITTERS)
     elif hook.endswith('post-commit'):
-        return PostCommit(current_committers)
+        return PostCommit(CURRENT_COMMITTERS)
     elif hook.endswith('commit-msg'):
-        return CommitMsg(current_committers, git)
+        return CommitMsg(CURRENT_COMMITTERS, GIT)
+    return None

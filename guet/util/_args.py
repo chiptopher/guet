@@ -1,6 +1,3 @@
-from typing import List
-
-
 class Args(list):
 
     def __init__(self, raw_args):

@@ -1,12 +1,14 @@
 from typing import List
 
+from guet.committers import Committers2 as Committers
 from guet.committers import CommittersPrinter, CurrentCommitters
-from guet.committers.committers import Committers
 from guet.steps.action import Action
 
 
 class SetCommittersAction(Action):
-    def __init__(self, committers: Committers, current_committers: CurrentCommitters):
+    def __init__(self,
+                 committers: Committers,
+                 current_committers: CurrentCommitters):
         super().__init__()
         self.committers = committers
         self.current_committers = current_committers

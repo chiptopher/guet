@@ -1,7 +1,7 @@
 import time
 from os.path import join
 from pathlib import Path
-from typing import List, Union
+from typing import List
 
 from guet import constants
 from guet.committers._committers_set import CommittersSet, all_committers_set
@@ -10,7 +10,8 @@ from guet.config import CONFIGURATION_DIRECTORY
 from guet.files.write_lines import write_lines
 
 
-def _format_committers_to_committers_set_format(committers: List[Committer], project_path: Path) -> CommittersSet:
+def _format_committers_to_committers_set_format(committers: List[Committer],
+                                                project_path: Path) -> CommittersSet:
     git_path = project_path
     current_time_in_millis = int(round(time.time() * 1000))
     committer_initials = [committer.initials for committer in committers]
@@ -18,20 +19,20 @@ def _format_committers_to_committers_set_format(committers: List[Committer], pro
 
 
 def _index_with_matching_path(current_set: List[CommittersSet],
-                              formatted_set_committers_information: CommittersSet) -> Union[CommittersSet, None]:
+                              formatted_set_committers_information: CommittersSet):
     for index, current in enumerate(current_set):
         if current.path == formatted_set_committers_information.path:
             return index
     return -1
 
 
-def _add_to_current_set_lines(current_committers_set: List[CommittersSet],
-                              new_committers_set: CommittersSet):
-    index = _index_with_matching_path(current_committers_set, new_committers_set)
+def _add_to_current_set_lines(current_set: List[CommittersSet],
+                              new_set: CommittersSet):
+    index = _index_with_matching_path(current_set, new_set)
     if index != -1:
-        _replace_committers_set_with_matching_initials(current_committers_set, new_committers_set, index)
+        _replace_committers_set_with_matching_initials(current_set, new_set, index)
     else:
-        current_committers_set.append(new_committers_set)
+        current_set.append(new_set)
 
 
 def _replace_committers_set_with_matching_initials(current_committers_set: List[CommittersSet],

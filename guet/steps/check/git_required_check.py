@@ -1,4 +1,3 @@
-from guet.git.errors import NoGitPresentError
 from guet.git.git import Git
 from guet.steps.check.check import Check
 
@@ -13,11 +12,7 @@ class GitRequiredCheck(Check):
 
     def should_stop(self, args):
         try:
-            # TODO because the times this is called, a GitProxy is going
-            #      to be used, we can hack it a bit. The initialization
-            #      sequence in the GitProxy will raise a FileNotFoundError
-            #      if it can't find the git folder. This should be removed
-            #      as a part of the Git refactor.
+            # This depends on GitProxy loading it's Git internally, causing the FileNotFoundError.
             self.git.hooks_present()
             return False
         except FileNotFoundError:

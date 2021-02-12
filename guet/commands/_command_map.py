@@ -2,7 +2,6 @@ from collections import namedtuple
 from typing import List
 
 from guet.commands import CommandFactory
-from guet.steps import Step
 
 _MappedCommand = namedtuple('MappedCommand', ['command', 'description'])
 

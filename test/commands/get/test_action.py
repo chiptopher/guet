@@ -10,7 +10,7 @@ class TestGetCommittersAction(TestCase):
 
     def test_prints_list_of_committers(self, mock_print):
         committers = Mock()
-        action = GetCommittersAction(committers)
+        action = GetCommittersAction(committers, Mock())
 
         committers.all = Mock(return_value=[
             Committer('name1', 'email1', 'initials1'),
@@ -26,10 +26,10 @@ class TestGetCommittersAction(TestCase):
         ])
 
     def test_prints_list_of_currently_set_committers(self, mock_print):
-        committers = Mock()
-        action = GetCommittersAction(committers)
+        current = Mock()
+        action = GetCommittersAction(Mock(), current)
 
-        committers.current = Mock(return_value=[
+        current.get = Mock(return_value=[
             Committer('name1', 'email1', 'initials1'),
             Committer('name2', 'email2', 'initials2'),
         ])

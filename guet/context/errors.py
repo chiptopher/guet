@@ -1,2 +1,0 @@
-class InvalidCommittersError(Exception):
-    pass

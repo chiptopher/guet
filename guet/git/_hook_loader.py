@@ -8,7 +8,10 @@ from guet.git.hook import Hook
 
 
 class HookLoader:
-    def __init__(self, path_to_repository: Path, file_name: FileNameStrategy, create: CreateStrategy):
+    def __init__(self,
+                 path_to_repository: Path,
+                 file_name: FileNameStrategy,
+                 create: CreateStrategy):
         self.create = create
         self.file_name = file_name
         self._hooks_directory: Path = path_to_repository.joinpath('hooks')

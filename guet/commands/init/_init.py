@@ -13,9 +13,10 @@ from ._cancel_create_hook import CancelCreateHooks
 from ._create_hooks_alongside import CreateHooksAlongside
 from ._create_hooks_normally import CreateHooksNormally
 
-START_HELP_MESSAGE = HelpMessageBuilder('guet start',
-                                        'Initialize current .git project to use guet.') \
-    .flags(FlagsBuilder([FlagBuilder('-a/--alongside', 'Create hooks alongside current hooks with "-guet" on the end'),
+ALONGSIDE_FLAG_EXPLANATION = 'Create hooks alongside current hooks with "-guet" on the end'
+SHORT_EXPLANATION = 'Initialize current .git project to use guet.'
+START_HELP_MESSAGE = HelpMessageBuilder('guet start', SHORT_EXPLANATION) \
+    .flags(FlagsBuilder([FlagBuilder('-a/--alongside', ALONGSIDE_FLAG_EXPLANATION),
                          FlagBuilder('-o/--overwrite', 'Overwrite current hooks')])).build()
 
 
@@ -41,23 +42,26 @@ class InitCommandFactory(CommandFactory):
         elif '-o' in args or '--overwrite' in args:
             res = 0
         elif self.git.non_guet_hooks_present():
-            print('There is already commit hooks in this project. You can')
-            print('  (o) overwrite current hooks. This will delete any'
-                  ' matching hooks.')
-            print(('  (a) create guet hooks alongside current ones.'
-                   'This will create them with \'-guet\' appended on'
-                   ' the name of the hook file.'))
-            print('  (x) cancel the request. This will do nothing.')
-            val = input()
-            if val == 'o':
-                res = 0
-            elif val == 'a':
-                res = 1
-            else:
-                res = 2
+            res = self._capture_overwrite()
         else:
             res = 0
         return res
+
+    def _capture_overwrite(self):
+        print('There is already commit hooks in this project. You can')
+        print('  (o) overwrite current hooks. This will delete any'
+              ' matching hooks.')
+        print(('  (a) create guet hooks alongside current ones.'
+               'This will create them with \'-guet\' appended on'
+               ' the name of the hook file.'))
+        print('  (x) cancel the request. This will do nothing.')
+        val = input()
+        if val == 'o':
+            return 0
+        elif val == 'a':
+            return 1
+        else:
+            return 2
 
     def build(self) -> Step:
         return VersionCheck() \

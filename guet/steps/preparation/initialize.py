@@ -5,7 +5,7 @@ from typing import List
 
 from guet import __version__, constants
 from guet.config import CONFIGURATION_DIRECTORY
-from guet.files import File, FileSystem
+from guet.files import FileSystem
 from guet.steps.preparation.preapration import Preparation
 
 

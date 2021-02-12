@@ -1,8 +1,8 @@
 from typing import List
 
-from guet.committers.committers import Committers
-from guet.errors import InvalidInitialsError
-from guet.steps.check import Check
+from guet.committers import Committers2 as Committers
+
+from .check import Check
 
 
 class CommittersExistCheck(Check):
