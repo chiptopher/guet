@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from guet.committers._initials_name_email_printer import InitialsNameEmailPrintFormatter
+from guet.committers._initials_name_email_printer import \
+    InitialsNameEmailPrintFormatter
 from guet.committers.committer import Committer
 
 

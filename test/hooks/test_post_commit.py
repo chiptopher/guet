@@ -1,17 +1,32 @@
-import unittest
-from unittest.mock import patch
+from unittest import TestCase
+from unittest.mock import Mock
 
-from guet.hooks.post_commit import post_commit
+from guet.committers.committer import Committer
+from guet.hooks._post_commit import PostCommit
 
 
-@patch('guet.hooks.post_commit.get_settings')
-@patch('guet.hooks.post_commit.PostCommitFactory')
-class TestPostCommit(unittest.TestCase):
+class TestPostCommit(TestCase):
+    def test_roates_first_committer_to_last(self):
+        current_committers = Mock()
 
-    def test_sets_committers_to_the_context(self,
-                                            mock_post_commit_factory,
-                                            mock_get_settings):
-        post_commit()
-        mock_post_commit_factory.return_value.build.assert_called_with([], mock_get_settings.return_value)
-        mock_command = mock_post_commit_factory.return_value.build.return_value
-        mock_command.execute()
+        first = Committer('name1', 'email1', 'initials1')
+        second = Committer('name2', 'email2', 'initials2')
+
+        current_committers.get.return_value = [first, second]
+
+        hook = PostCommit(current_committers)
+        hook.play([])
+
+        current_committers.set.assert_called_with([second, first])
+
+    def test_handles_only_one_committer(self):
+        current_committers = Mock()
+
+        first = Committer('name1', 'email1', 'initials1')
+
+        current_committers.get.return_value = [first]
+
+        hook = PostCommit(current_committers)
+        hook.play([])
+
+        current_committers.set.assert_not_called()

@@ -1,17 +1,28 @@
-import unittest
-from unittest.mock import patch
+from unittest import TestCase
+from unittest.mock import Mock, patch
 
-from guet.hooks.pre_commit import pre_commit
+from guet.hooks._pre_commit import PreCommit
 
 
-@patch('guet.hooks.pre_commit.get_settings')
-@patch('guet.hooks.pre_commit.PreCommitFactory')
-class TestPostCommit(unittest.TestCase):
+@patch('builtins.print')
+@patch('builtins.exit')
+class TestPreCommit(TestCase):
 
-    def test_sets_committers_to_the_context(self,
-                                            mock_pre_commit_factory,
-                                            mock_get_settings):
-        pre_commit()
-        mock_pre_commit_factory.return_value.build.assert_called_with([], mock_get_settings.return_value)
-        mock_command = mock_pre_commit_factory.return_value.build.return_value
-        mock_command.execute.assert_called()
+    def test_execute_exits_if_no_committers_are_set(self, mock_exit, _):
+        current = Mock()
+        current.get = Mock(return_value=[])
+
+        action = PreCommit(current)
+        action.execute([])
+
+        mock_exit.assert_called_with(1)
+
+    def test_execute_prints_error_message(self, _, mock_print):
+        current = Mock()
+        current.get = Mock(return_value=[])
+
+        action = PreCommit(current)
+        action.execute([])
+
+        mock_print.assert_called_with(
+            'You must set your pairs before you can commit.')

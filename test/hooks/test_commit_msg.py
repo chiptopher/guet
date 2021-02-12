@@ -1,17 +1,24 @@
-import unittest
-from unittest.mock import patch
+from unittest import TestCase
+from unittest.mock import Mock, patch
 
-from guet.hooks.commit_msg import commit_msg
+from guet.committers.committer import Committer
+from guet.hooks._commit_msg import CommitMsg
 
 
-@patch('guet.hooks.commit_msg.get_settings')
-@patch('guet.hooks.commit_msg.CommitMsgFactory')
-class TestPostCommit(unittest.TestCase):
+class TestCommitMsg(TestCase):
+    def test_execute_sets_commit_message_to_current_committers(self):
+        current_committers = Mock()
+        current_committers.get = Mock(return_value=[
+            Committer('name1', 'email1', 'initials1'),
+            Committer('name2', 'email2', 'initials2'),
+        ])
 
-    def test_sets_committers_to_the_context(self,
-                                            mock_commit_msg_factory,
-                                            mock_get_settings):
-        commit_msg()
-        mock_commit_msg_factory.return_value.build.assert_called_with([], mock_get_settings.return_value)
-        mock_command = mock_commit_msg_factory.return_value.build.return_value
-        mock_command.execute.assert_called()
+        git = Mock()
+
+        action = CommitMsg(current_committers, git)
+        action.execute([])
+
+        self.assertEqual(git.commit_msg, [
+            'Co-authored-by: name1 <email1>',
+            'Co-authored-by: name2 <email2>',
+        ])

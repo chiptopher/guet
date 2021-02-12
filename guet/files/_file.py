@@ -1,8 +1,7 @@
 from pathlib import Path
-from typing import List, Callable
+from typing import Callable, List
 
 from guet.files.read_lines import read_lines
-
 from guet.files.write_lines import write_lines
 
 

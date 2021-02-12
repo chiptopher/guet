@@ -1,5 +1,5 @@
-from pathlib import Path
 from os.path import expanduser
+from pathlib import Path
 
 
 def recursive_directory_find(starting_path: Path, directory_name: str) -> Path:

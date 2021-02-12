@@ -1,7 +1,7 @@
 from os.path import join
 from pathlib import Path
 from unittest import TestCase
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, call, patch
 
 from guet.committers.committer import Committer
 from guet.git.author import Author
@@ -272,11 +272,3 @@ class TestGit(TestCase):
 
         self.path_to_git.joinpath.assert_called_with('hooks')
         hooks_directory.mkdir.assert_called()
-
-    @patch('guet.git.git.write_lines')
-    def test_notify_of_author_sets_the_author_proprty(self, mock_write_lines, _1, _2):
-        git = Git(self.path_to_git)
-        committer = Committer(name='new_name', email='new_email', initials='initials')
-        git.notify_of_committer_set([committer])
-        self.assertEqual('new_name', git.author.name)
-        self.assertEqual('new_email', git.author.email)

@@ -2,12 +2,10 @@ from os.path import join
 from pathlib import Path
 from typing import List
 
-from guet.files.read_lines import read_lines
-
-from guet.files.write_lines import write_lines
-
 from guet import constants
 from guet.config import CONFIGURATION_DIRECTORY
+from guet.files.read_lines import read_lines
+from guet.files.write_lines import write_lines
 
 _COMMITTER_NOT_PRESENT = -1
 

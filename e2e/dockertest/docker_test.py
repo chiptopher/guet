@@ -5,7 +5,7 @@ from typing import List
 
 import docker
 
-from e2e.dockertest.file_system import process_file_system, FileSystem
+from e2e.dockertest.file_system import FileSystem, process_file_system
 from e2e.dockertest.logs import process_logs
 
 
@@ -21,8 +21,23 @@ def _not_called_execute(f):
 def _called_execute(f):
     def wrapper(*args, **kwargs):
         if args[0].execute_called:
-            args[0].fail('You cannot change the run parameters after execute already called.')
+            args[0].fail(
+                'You cannot change the run parameters after execute already called.')
         return f(*args, **kwargs)
+
+    return wrapper
+
+
+def _print_logs_when_test_fails(f):
+    def wrapper(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except AssertionError as e:
+            print('========= Start Message log =========')
+            for count, value in enumerate(args[0].logs):
+                print(f'{count}\t: {value}')
+            print('=========  End Message log  =========')
+            raise e
 
     return wrapper
 
@@ -32,7 +47,8 @@ class DockerTest(unittest.TestCase):
     def setUpClass(cls):
         docker_client = docker.from_env()
         project_root_directory = abspath(join(abspath(__file__), '../../..'))
-        docker_client.images.build(path=project_root_directory, tag='guettest:0.1.0')
+        docker_client.images.build(
+            path=project_root_directory, tag='guettest:0.1.0')
         docker_client.close()
 
     def __init__(self, *args, **kwargs):
@@ -69,14 +85,6 @@ class DockerTest(unittest.TestCase):
         self.add_command('cd ~/test-env')
 
     @_called_execute
-    def guet_init(self, arguments: List[str] = None):
-        self.init_called = True
-        command = 'guet init'
-        if arguments:
-            command = command + ' ' + ' '.join(arguments)
-        self.add_command(command)
-
-    @_called_execute
     def guet_config(self, flags: List[str] = []):
         command = f'guet config {" ".join(flags)}'
         self.add_command(command)
@@ -96,7 +104,7 @@ class DockerTest(unittest.TestCase):
 
     @_called_execute
     def guet_get_committers(self, help=False):
-        command = f'guet get committers'
+        command = f'guet get all'
         if help:
             command += ' --help'
         self.add_command(command)
@@ -110,8 +118,8 @@ class DockerTest(unittest.TestCase):
         self.commands.append(command)
 
     @_called_execute
-    def guet_start(self, overwrite_answer: str = None, args: List[str] = []):
-        command = 'guet start'
+    def guet_init(self, overwrite_answer: str = None, args: List[str] = []):
+        command = 'guet init'
         command = f'{command} {" ".join(args)}'
         if overwrite_answer:
             command = f'printf {overwrite_answer} | {command}'
@@ -157,18 +165,23 @@ class DockerTest(unittest.TestCase):
         file = self.file_system.get_file_from_root(file_path)
         return file.lines
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_directory_exists(self, path: str):
         self._file_or_directory_exists_in_file_system(path)
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_text_in_logs(self, position_in_logs: int, expected_text: str):
+        self.assertTrue(position_in_logs < len(self.logs))
         self.assertEqual(expected_text, self.logs[position_in_logs])
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_text_not_in_logs(self, position_in_logs: int, unexpected_text: str):
         self.assertNotEqual(unexpected_text, self.logs[position_in_logs])
 
+    @_print_logs_when_test_fails
     @_not_called_execute
     def assert_file_exists(self, expected_path):
         self._file_or_directory_exists_in_file_system(expected_path)

@@ -1,14 +1,16 @@
 from pathlib import Path
 from typing import List
 
+from guet.committers import CurrentCommittersObserver
 from guet.committers.committer import Committer
-from guet.context.set_committer_observer import SetCommitterObserver
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 from guet.git._all_valid_hooks import all_valid_hooks
-from guet.git._author_manage import load_author, overwrite_current_author, get_author_lines, append_new_author
+from guet.git._author_manage import (append_new_author, get_author_lines,
+                                     load_author, overwrite_current_author)
 from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
-from guet.git._file_name_strategy import BaseFileNameStrategy, AlongsideFileNameStrategy
+from guet.git._file_name_strategy import (AlongsideFileNameStrategy,
+                                          BaseFileNameStrategy)
 from guet.git._guet_hooks import GUET_HOOKS
 from guet.git._hook_loader import HookLoader
 from guet.git.author import Author
@@ -30,14 +32,16 @@ def _load_commit_msg(path_to_repository: Path) -> List[str]:
         return []
 
 
-class Git(SetCommitterObserver):
+class Git(CurrentCommittersObserver):
 
     def __init__(self, repository_path: Path):
         super().__init__()
         if not repository_path.is_dir():
             raise NoGitPresentError()
-        default = _load_hooks(HookLoader(repository_path, BaseFileNameStrategy(), DontCreateStrategy()))
-        alongside = _load_hooks(HookLoader(repository_path, AlongsideFileNameStrategy(), DontCreateStrategy()))
+        default = _load_hooks(HookLoader(
+            repository_path, BaseFileNameStrategy(), DontCreateStrategy()))
+        alongside = _load_hooks(HookLoader(
+            repository_path, AlongsideFileNameStrategy(), DontCreateStrategy()))
         self.hooks = default + alongside
         self.path_to_repository = repository_path
         self._commit_msg = _load_commit_msg(repository_path)
@@ -80,13 +84,16 @@ class Git(SetCommitterObserver):
 
     def create_hooks(self, alongside: bool = False) -> None:
         if alongside:
-            hook_loader = HookLoader(self.path_to_repository, AlongsideFileNameStrategy(), DoCreateStrategy())
+            hook_loader = HookLoader(
+                self.path_to_repository, AlongsideFileNameStrategy(), DoCreateStrategy())
         else:
-            hook_loader = HookLoader(self.path_to_repository, BaseFileNameStrategy(), DoCreateStrategy())
+            hook_loader = HookLoader(
+                self.path_to_repository, BaseFileNameStrategy(), DoCreateStrategy())
         self.hooks = _load_hooks(hook_loader)
         for hook in self.hooks:
             hook.save()
 
-    def notify_of_committer_set(self, new_committers: List[Committer]):
-        author_committer = new_committers[0]
-        self.author = Author(name=author_committer.name, email=author_committer.email)
+    def on_new_committers(self, committers: List[Committer]):
+        author_committer = committers[0]
+        self.author = Author(name=author_committer.name,
+                             email=author_committer.email)

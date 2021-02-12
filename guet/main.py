@@ -1,57 +1,44 @@
 import sys
 
-from guet.commands.decorators.local_decorator import LocalDecorator
-from guet.commands.usercommands.get.get_factory import GetCommandFactory, GET_HELP_MESSAGE
-from guet.commands.decorators.git_required_decorator import GitRequiredDecorator
-from guet.commands.decorators.help_decorator import HelpDecorator
-from guet.commands.decorators.init_required_decorator import InitRequiredDecorator
-from guet.commands.usercommands.init.factory import InitCommandFactory, INIT_HELP_MESSAGE
-from guet.commands.usercommands.remove.factory import REMOVE_HELP_MESSAGE, RemoveCommandFactory
-from guet.commands.usercommands.setcommitters.factory import SetCommittersCommandFactory, SET_HELP_MESSAGE
-from guet.commands.usercommands.start.factory import StartCommandFactory, START_HELP_MESSAGE
-from guet.commands.decorators.start_required_decorator import StartRequiredDecorator
-from guet.commands.decorators.version_decorator import VersionDecorator
-from guet.executor import Executor
+from guet.commands import CommandMap
+from guet.commands.add import AddCommandFactory
+from guet.commands.get import GetCommandFactory
+from guet.commands.help import HelpCommandFactory, UnknownCommandFactory
+from guet.commands.init import InitCommandFactory
+from guet.commands.remove import RemoveCommandFactory
+from guet.commands.set import SetCommittersCommand
+from guet.committers import Committers2, CurrentCommitters
+from guet.files import FileSystem
+from guet.git import GitProxy
+from guet.util import add_command_help_if_invalid_command_given
 from guet.util.errors import log_on_error
-from guet.commands.usercommands.addcommitter.factory import AddCommitterFactory, ADD_COMMITTER_HELP_MESSAGE
-from guet.commands.usercommands.config.factory import ConfigCommandFactory, CONFIG_HELP_MESSAGE
-
-
-def _command_builder_map():
-    command_builder_map = dict()
-    command_builder_map['add'] = VersionDecorator(
-        InitRequiredDecorator(
-            LocalDecorator(
-                HelpDecorator(AddCommitterFactory(), ADD_COMMITTER_HELP_MESSAGE)
-            )
-        )
-    )
-
-    command_builder_map['init'] = VersionDecorator(
-        HelpDecorator(InitCommandFactory(), INIT_HELP_MESSAGE, no_args_valid=True))
-
-    command_builder_map['set'] = VersionDecorator(InitRequiredDecorator(
-        StartRequiredDecorator(HelpDecorator(SetCommittersCommandFactory(), SET_HELP_MESSAGE))))
-
-    command_builder_map['start'] = VersionDecorator(InitRequiredDecorator(
-        HelpDecorator(
-            GitRequiredDecorator(StartCommandFactory()), START_HELP_MESSAGE, no_args_valid=True
-        )
-    ))
-    command_builder_map['config'] = VersionDecorator(
-        InitRequiredDecorator(HelpDecorator(ConfigCommandFactory(), CONFIG_HELP_MESSAGE)))
-
-    command_builder_map['get'] = VersionDecorator(
-        InitRequiredDecorator(HelpDecorator(GetCommandFactory(), GET_HELP_MESSAGE)))
-
-    command_builder_map['remove'] = VersionDecorator(
-        InitRequiredDecorator(HelpDecorator(RemoveCommandFactory(), REMOVE_HELP_MESSAGE)))
-
-    return command_builder_map
 
 
 @log_on_error
 def main():
-    command_factory = Executor(_command_builder_map())
-    command = command_factory.create(sys.argv[1:])
-    command.execute()
+    file_system = FileSystem()
+    committers = Committers2(file_system)
+    git = GitProxy()
+    current_committers = CurrentCommitters(file_system, committers)
+    current_committers.register_observer(git)
+
+    command_map = CommandMap()
+    command_map.add_command('help', HelpCommandFactory(
+        command_map, file_system), 'Display guet usage')
+    command_map.add_command('init', InitCommandFactory(
+        GitProxy(), file_system), 'Start guet tracking in the current repository')
+    command_map.add_command('add', AddCommandFactory(
+        file_system, committers, git), 'Add committer for tracking')
+    command_map.add_command('get', GetCommandFactory(
+        file_system, committers, current_committers), 'List information about committers')
+    command_map.add_command('set', SetCommittersCommand(
+        file_system, committers, current_committers, git), 'Set committers for current repository')
+    command_map.add_command('remove', RemoveCommandFactory(
+        file_system, committers), 'Remove committer')
+
+    command_map.set_default(UnknownCommandFactory(command_map))
+
+    args = add_command_help_if_invalid_command_given(sys.argv[1:])
+
+    command = command_map.get_command(args[0]).build()
+    command.play(args[1:])

@@ -1,4 +1,5 @@
-from guet.committers._committer_print_formatter import SingleCommitterPrintFormatter
+from guet.committers._committer_print_formatter import \
+    SingleCommitterPrintFormatter
 
 
 class InitialsNameEmailPrintFormatter(SingleCommitterPrintFormatter):

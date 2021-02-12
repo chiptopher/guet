@@ -5,9 +5,9 @@ from unittest.mock import patch
 
 from guet import constants
 from guet.committers._committers_set import CommittersSet
-from guet.config import CONFIGURATION_DIRECTORY
-from guet.committers.committer import Committer
 from guet.committers._set_current_committers import set_current_committers
+from guet.committers.committer import Committer
+from guet.config import CONFIGURATION_DIRECTORY
 
 
 class TestSetCurrentCommitters(unittest.TestCase):
