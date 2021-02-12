@@ -1,14 +1,15 @@
+#pylint: disable=too-many-public-methods,protected-access
+
 from os.path import join
 from pathlib import Path
 from unittest import TestCase
 from unittest.mock import Mock, call, patch
 
-from guet.committers.committer import Committer
 from guet.git.author import Author
 from guet.git.errors import NoGitPresentError
 from guet.git.git import Git
 
-default_config_response = ['[core]',
+DEFAULT_CONFIG_RESPONSE = ['[core]',
                            '\trepositoryformatversion = 0',
                            '\tfilemode = true',
                            '\tbare = false',
@@ -34,10 +35,13 @@ def _mock_repository_path(*, is_dir=True) -> Path:
     return mock
 
 
-_mock_read_lines = [['First line of commit message', 'Second line of commit message'], default_config_response]
+_MOCK_READ_LINES = [
+        ['First line of commit message', 'Second line of commit message'],
+        DEFAULT_CONFIG_RESPONSE
+]
 
 
-@patch('guet.git.git.read_lines', side_effect=_mock_read_lines)
+@patch('guet.git.git.read_lines', side_effect=_MOCK_READ_LINES)
 @patch('guet.git._hook_loader.Hook')
 class TestGit(TestCase):
     def setUp(self) -> None:
@@ -51,8 +55,14 @@ class TestGit(TestCase):
         post_commit_alongside_content = Mock()
         commit_msg_alongside_content = Mock()
 
-        expected_hooks = [pre_commit_content, post_commit_content, commit_msg_content,
-                          pre_commit_alongside_content, post_commit_alongside_content, commit_msg_alongside_content]
+        expected_hooks = [
+            pre_commit_content,
+            post_commit_content,
+            commit_msg_content,
+            pre_commit_alongside_content,
+            post_commit_alongside_content,
+            commit_msg_alongside_content
+        ]
 
         mock_hook.side_effect = expected_hooks
 
@@ -69,8 +79,8 @@ class TestGit(TestCase):
         self.assertListEqual(expected_hooks, git.hooks)
 
     def test_init_swallows_file_not_found_error(self, mock_hook, _1):
-        mock_hook.side_effect = [FileNotFoundError(), FileNotFoundError(), FileNotFoundError(), FileNotFoundError(),
-                                 FileNotFoundError(), FileNotFoundError()]
+        mock_hook.side_effect = [FileNotFoundError(), FileNotFoundError(), FileNotFoundError(),
+                                 FileNotFoundError(), FileNotFoundError(), FileNotFoundError()]
 
         git = Git(self.path_to_git)
 
@@ -82,10 +92,12 @@ class TestGit(TestCase):
         git = Git(self.path_to_git)
         self.assertListEqual(expected_commit_msg, git.commit_msg)
 
-    def test_init_handles_there_not_being_a_commit_msg_file_becuase_of_no_commits(self, _1, mock_read_lines):
+    def test_init_handles_there_not_being_a_commit_msg_file_becuase_of_no_commits(self,
+                                                                                  _1,
+                                                                                  mock_read_lines):
         mock_read_lines.side_effect = [
             FileNotFoundError(),
-            default_config_response
+            DEFAULT_CONFIG_RESPONSE
         ]
         git = Git(self.path_to_git)
         self.assertListEqual([], git.commit_msg)
@@ -104,7 +116,7 @@ class TestGit(TestCase):
         self.assertEqual('name@localhost', git.author.email)
 
     def test_init_loads_none_when_there_is_no_author_set_in_config(self, _1, mock_read_lines):
-        without_author = list(default_config_response)
+        without_author = list(DEFAULT_CONFIG_RESPONSE)
         del without_author[-1]
         del without_author[-2]
         del without_author[-3]
@@ -120,11 +132,12 @@ class TestGit(TestCase):
         new_content = ['New line 1', 'New line 2']
         git = Git(self.path_to_git)
         git.commit_msg = new_content
-        mock_write_lines.assert_called_with(self.path_to_git.joinpath('COMMIT_EDITMSG'), new_content)
+        mock_write_lines.assert_called_with(self.path_to_git.joinpath('COMMIT_EDITMSG'),
+                                            new_content)
 
     @patch('guet.git.git.write_lines')
     def test_setting_author_writes_it_to_file(self, mock_write_lines, _1, _2):
-        new_content = list(default_config_response)
+        new_content = list(DEFAULT_CONFIG_RESPONSE)
         new_content[-1] = '\temail = new_email@localhost'
         new_content[-2] = '\tname = new_name'
 
@@ -134,12 +147,16 @@ class TestGit(TestCase):
 
     @patch('guet.git.git.write_lines')
     def test_setting_writes_author_when_no_author_currently_present(self, mock_write_lines, _1, _2):
-        content_without_author = list(default_config_response)
+        content_without_author = list(DEFAULT_CONFIG_RESPONSE)
         del content_without_author[-1]
         del content_without_author[-1]
         del content_without_author[-1]
 
-        new_content = content_without_author + ['[user]', '\tname = new_name', '\temail = new_email@localhost']
+        new_content = content_without_author + [
+            '[user]',
+            '\tname = new_name',
+            '\temail = new_email@localhost'
+        ]
 
         git = Git(self.path_to_git)
         git._config_lines = content_without_author
@@ -164,8 +181,7 @@ class TestGit(TestCase):
         ]
         self.assertFalse(git.hooks_present())
 
-    def test_hooks_present_returns_true_when_normal_hooks_have_non_guet_content_but_dash_hooks_are_present(self, _1,
-                                                                                                           _2):
+    def test_hooks_present_handles_dash_hooks(self, _1, _2):
         git = Git(self.path_to_git)
         git.hooks = [
             _mock_hook(join(str(self.path_to_git), 'hooks', 'post-commit'), is_guet_hook=False),

@@ -2,7 +2,6 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 from guet.commands import CommandMap
-from guet.steps import Step
 
 
 class TestCommandMap(TestCase):

@@ -26,4 +26,5 @@ class TestSetConfig(unittest.TestCase):
             '\n',
             'pairReset=False\n'
         ]
-        mock_write_lines.assert_called_with(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)), expected_result)
+        mock_write_lines.assert_called_with(Path(join(CONFIGURATION_DIRECTORY, constants.CONFIG)),
+                                            expected_result)
