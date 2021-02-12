@@ -7,6 +7,7 @@ from guet.steps import Step
 from guet.steps.check import GitRequiredCheck, HelpCheck, VersionCheck
 from guet.steps.preparation import InitializePreparation
 
+from ._remove_global import RemoveGlobal
 from ._remove_local import RemoveLocal
 
 
@@ -23,4 +24,5 @@ class YeetCommandFactory(CommandFactory):
             .next(HelpCheck('temp')) \
             .next(InitializePreparation(self.file_system)) \
             .next(GitRequiredCheck(self.git)) \
-            .next(RemoveLocal())
+            .next(RemoveLocal()) \
+            .next(RemoveGlobal())
