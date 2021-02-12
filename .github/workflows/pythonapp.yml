@@ -26,6 +26,7 @@ jobs:
           isort ./test/**/*.py --check-only
           isort ./e2e/**/*.py --check-only
           pylint --load-plugins=pylint.extensions.mccabe guet
+          pylint --load-plugins=pylint.extensions.mccabe test
       - name: Unit Tests
         run: |
           python -m unittest discover test

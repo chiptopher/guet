@@ -1,7 +1,6 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from guet.errors import InvalidInitialsError
 from guet.steps.check._committers_exist import CommittersExistCheck
 
 

@@ -1,3 +1,5 @@
+# pylint: disable=protected-access
+
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -9,7 +11,7 @@ from guet.committers.committer import Committer
 class TestLocalCommittersState(TestCase):
 
     @patch('guet.committers._local_committers_state.project_root')
-    def test_all_includes_all_local_committers_and_global_committers(self, mock_project_root):
+    def test_all_includes_all_local_committers_and_global_committers(self, _):
         committers_file = Mock()
         committers_file.read.return_value = [
             'initials2,name2,email2'
@@ -18,22 +20,22 @@ class TestLocalCommittersState(TestCase):
         file_system.get.return_value = committers_file
 
         global_state: GlobalCommittersState = Mock()
-        g = Committer('name1', 'email1', 'initial1')
-        global_state.all = Mock(return_value=[g])
+        global_committer = Committer('name1', 'email1', 'initial1')
+        global_state.all = Mock(return_value=[global_committer])
 
         state = LocalCommittersState(file_system, global_state)
 
         result = state.all()
 
         local = Committer('name2', 'email2', 'initials2')
-        self.assertEqual([g, local], result)
+        self.assertEqual([global_committer, local], result)
 
     def test_all_gives_local_committers_precedence(self):
         file_system = Mock()
 
         global_state: GlobalCommittersState = Mock()
-        g = Committer('name1', 'email1', 'initials')
-        global_state.all = Mock(return_value=[g])
+        committer = Committer('name1', 'email1', 'initials')
+        global_state.all = Mock(return_value=[committer])
 
         local = Committer('name2', 'email2', 'initials')
         state = LocalCommittersState(file_system, global_state)
@@ -94,7 +96,8 @@ class TestLocalCommittersState(TestCase):
 
         state.add(Committer('name2', 'email2', 'initials1'))
 
-        mock_print.assert_called_with('Adding committer with initials "initials1" will overshadow global committer with same initials.')
+        mock_print.assert_called_with(('Adding committer with initials "initials1" will '
+                                       'overshadow global committer with same initials.'))
 
     def test_remove_removes_committer(self):
         file_system = Mock()
