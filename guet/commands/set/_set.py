@@ -2,7 +2,7 @@ from guet.commands import CommandFactory
 from guet.steps import Step
 from guet.steps.check import (CommittersExistCheck, GitRequiredCheck,
                               HelpCheck, VersionCheck)
-from guet.steps.preparation import InitializePreparation
+from guet.steps.preparation import InitializePreparation, SwapToLocal
 from guet.util import HelpMessageBuilder
 
 from ._set_committers import SetCommittersAction
@@ -19,10 +19,10 @@ class SetCommittersCommand(CommandFactory):
         self.git = git
 
     def build(self) -> Step:
-        self.committers.to_local()
         return VersionCheck() \
             .next(HelpCheck(SET_HELP_MESSAGE, stop_on_no_args=True)) \
             .next(InitializePreparation(self.file_system)) \
             .next(GitRequiredCheck(self.git)) \
+            .next(SwapToLocal(self.committers)) \
             .next(CommittersExistCheck(self.committers)) \
             .next(SetCommittersAction(self.committers, self.current))

@@ -4,7 +4,7 @@ from guet.committers import CurrentCommitters
 from guet.files import FileSystem
 from guet.steps import Step
 from guet.steps.check import HelpCheck, VersionCheck
-from guet.steps.preparation import InitializePreparation
+from guet.steps.preparation import InitializePreparation, SwapToLocal
 from guet.util import HelpMessageBuilder
 
 from ._action import GetCommittersAction
@@ -25,10 +25,10 @@ class GetCommandFactory(CommandFactory):
         self.file_system = file_system
         self.committers = committers
         self.current = current_committers
-        self.committers.to_local()
 
     def build(self) -> Step:
         return VersionCheck() \
             .next(HelpCheck(GET_HELP_MESSAGE)) \
             .next(InitializePreparation(self.file_system)) \
+            .next(SwapToLocal(self.committers)) \
             .next(GetCommittersAction(self.committers, self.current))
