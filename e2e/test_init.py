@@ -1,3 +1,5 @@
+# pylint: disable=line-too-long
+
 from e2e import DockerTest
 from guet.steps.check.git_required_check import GIT_REQUIRED_MESSAGE
 

@@ -1,3 +1,5 @@
+# pylint: disable=line-too-long
+
 from e2e import DockerTest
 
 

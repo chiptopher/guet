@@ -18,6 +18,7 @@ class FileSystem:
         for file in self.files:
             if file.path == path:
                 return file
+        return None
 
     def get_file_from_root(self, path: str) -> DockerFile:
         return self.get_file(f'/root/{path}')
