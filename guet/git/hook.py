@@ -7,7 +7,7 @@ from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
 
 
-def _shared_hook_lines() -> List[str]:
+def shared_hook_lines() -> List[str]:
     return [
         'from guet.hooks import run',
         'import sys',
@@ -15,12 +15,13 @@ def _shared_hook_lines() -> List[str]:
     ]
 
 
-PYTHON_GUET_HOOK = ['#! /usr/bin/env python'] + _shared_hook_lines()
+PYTHON_GUET_HOOK = ['#! /usr/bin/env python'] + shared_hook_lines()
 
-PYTHON3_GUET_HOOK = ['#! /usr/bin/env python3'] + _shared_hook_lines()
+PYTHON3_GUET_HOOK = ['#! /usr/bin/env python3'] + shared_hook_lines()
 
 
 class Hook:
+
     def __init__(self, path_to_hook: Path, *, create: bool = False):
         self.path = path_to_hook
         self.content = self._parse_file_content(create, path_to_hook)

@@ -46,3 +46,5 @@ def main():
 
     command = command_map.get_command(args[0]).build()
     command.play(args[1:])
+
+    file_system.save_all()

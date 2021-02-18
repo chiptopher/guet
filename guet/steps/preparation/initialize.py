@@ -33,7 +33,7 @@ class InitializePreparation(Preparation):
 
     def _create_empty_file(self, path: Path) -> None:
         file = self._file_system.get(path)
-        file.read()
+        file.write([])
         return file
 
     def _create_configuration_folder(self) -> None:
