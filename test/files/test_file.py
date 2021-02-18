@@ -1,3 +1,5 @@
+#pylint: disable=protected-access
+
 from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
@@ -37,10 +39,26 @@ class TestFile(TestCase):
         file.save()
         mock_write_lines.assert_called_with(path, expected)
 
+    def test_write_clears_mark_for_deletion(self):
+        file = File(Path('/absolute/path/to/file'))
+        file.delete()
+        file.write(['lines'])
+        self.assertFalse(file._marked_for_deletion)
+
     @patch('guet.files._file.write_lines')
     def test_save_does_nothing_if_file_has_not_changed(self, mock_write_lines):
         path = Path('/absolute/path/to/file')
         file = File(path)
+        file.save()
+        mock_write_lines.assert_not_called()
+
+    @patch('guet.files._file.remove')
+    @patch('guet.files._file.write_lines')
+    def test_save_does_not_write_lines_if_file_marked_for_deletion(self, mock_write_lines, _1):
+        path = Path('/absolute/path/to/file')
+        file = File(path)
+        file.write(['line'])
+        file.delete()
         file.save()
         mock_write_lines.assert_not_called()
 
@@ -51,6 +69,28 @@ class TestFile(TestCase):
         file.write([])
         file.save()
         mock_write_lines.assert_called_with(path, [])
+
+    @patch('guet.files._file.remove')
+    def test_save_removes_file_if_makred_for_deletion(self, mock_remove):
+        path = Path('/absolute/path/to/file')
+        file = File(path)
+        file.delete()
+        file.save()
+        mock_remove.assert_called()
+
+    @patch('guet.files._file.write_lines')
+    @patch('guet.files._file.read_lines')
+    def test_save_doesnt_write_if_non_existant_file_is_only_read_from(self,
+                                                                      mock_read_lines,
+                                                                      mock_write_lines):
+        path = Path('/absolute/path/to/file')
+        mock_read_lines.side_effect = FileNotFoundError()
+
+        file = File(path)
+        file.read()
+        file.save()
+
+        mock_write_lines.assert_not_called()
 
     @patch('guet.files._file.read_lines')
     def test_overwrite_replaces_content_that_matches_pattern_with_given_line(self, mock_read_lines):
@@ -69,3 +109,9 @@ class TestFile(TestCase):
             'key1=new_value1\n',
             'key2=value2\n'
         ], file.read())
+
+    def test_delete_marks_file_for_deletion(self):
+        file = File(Path('/path/to/file'))
+        file.delete()
+
+        self.assertTrue(file._marked_for_deletion)

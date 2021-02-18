@@ -24,5 +24,5 @@ class YeetCommandFactory(CommandFactory):
             .next(HelpCheck('temp')) \
             .next(InitializePreparation(self.file_system)) \
             .next(GitRequiredCheck(self.git)) \
-            .next(RemoveLocal()) \
+            .next(RemoveLocal(self.git, self.file_system)) \
             .next(RemoveGlobal())

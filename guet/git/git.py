@@ -5,7 +5,7 @@ from guet.committers import CurrentCommittersObserver
 from guet.committers.committer import Committer
 from guet.files.read_lines import read_lines
 from guet.files.write_lines import write_lines
-from guet.git._all_valid_hooks import all_valid_hooks
+from guet.git._all_valid_hooks import all_valid_hooks, valid_hooks
 from guet.git._author_manage import (append_new_author, get_author_lines,
                                      load_author, overwrite_current_author)
 from guet.git._create_strategy import DoCreateStrategy, DontCreateStrategy
@@ -92,6 +92,9 @@ class Git(CurrentCommittersObserver):
         self.hooks = _load_hooks(hook_loader)
         for hook in self.hooks:
             hook.save()
+
+    def guet_hooks(self) -> List[str]:
+        return [hook.path for hook in valid_hooks(self.hooks)]
 
     def on_new_committers(self, committers: List[Committer]):
         author_committer = committers[0]

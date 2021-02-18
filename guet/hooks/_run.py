@@ -22,6 +22,7 @@ def run(hook: str):
     command = _choose_command(hook)
     if command:
         command.play([])
+    FILE_SYSTEM.save_all()
 
 
 def _choose_command(hook: str) -> Union[Step, None]:
