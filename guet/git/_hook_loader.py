@@ -9,12 +9,12 @@ from guet.git.hook import Hook
 
 class HookLoader:
     def __init__(self,
-                 path_to_repository: Path,
+                 hooks_dir: Path,
                  file_name: FileNameStrategy,
                  create: CreateStrategy):
         self.create = create
         self.file_name = file_name
-        self._hooks_directory: Path = path_to_repository.joinpath('hooks')
+        self._hooks_directory: Path = hooks_dir
 
     def _create_hooks_directory_if_not_present(self):
         if not self._hooks_directory.is_dir():
