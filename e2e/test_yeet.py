@@ -11,7 +11,6 @@ class TestYeet(DockerTest):
         self.execute()
         self.assert_text_in_logs(2, 'guet tracking removed from this repository')
 
-
     def test_commit_doesnt_have_co_authored_because_hooks_removed(self):
         self.git_init()
         self.guet_init()

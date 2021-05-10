@@ -11,14 +11,14 @@ from guet.config import CONFIGURATION_DIRECTORY
 class TestRemoveGlobal(TestCase):
     def test_removes_guet_directory_with_dash_f(self, mock_rmtree, mock_print):
         remove_global = RemoveGlobal()
-        remove_global.execute(['-f'])
+        remove_global.execute(['-g'])
 
         mock_rmtree.assert_called_with(Path(CONFIGURATION_DIRECTORY))
         mock_print.assert_called_with('Bye!')
 
     def test_removes_guet_directory_with_force(self, mock_rmtree, mock_print):
         remove_global = RemoveGlobal()
-        remove_global.execute(['--force'])
+        remove_global.execute(['--global'])
 
         mock_rmtree.assert_called_with(Path(CONFIGURATION_DIRECTORY))
         mock_print.assert_called_with('Bye!')
