@@ -21,7 +21,7 @@ max-line-length=100
 max-complexity=5
 max-args=6
 
-disable=R1705,R1722,R0801,C0114,C0116,C0115,R0201,W0108,R0903,R0401,unsubscriptable-object,unbalanced-tuple-unpacking
+disable=R1705,R1722,R0801,C0114,C0116,C0115,R0201,W0108,R0903,R0401,unsubscriptable-object,unbalanced-tuple-unpacking,R0902
 
 min-public-methods=1
 

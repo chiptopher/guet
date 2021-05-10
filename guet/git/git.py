@@ -33,20 +33,20 @@ def _load_commit_msg(path_to_repository: Path) -> List[str]:
 
 
 class Git(CurrentCommittersObserver):
-
     def __init__(self, repository_path: Path):
         super().__init__()
         if not repository_path.is_dir():
             raise NoGitPresentError()
         default = _load_hooks(HookLoader(
-            repository_path, BaseFileNameStrategy(), DontCreateStrategy()))
+            repository_path.joinpath('hooks'), BaseFileNameStrategy(), DontCreateStrategy()))
         alongside = _load_hooks(HookLoader(
-            repository_path, AlongsideFileNameStrategy(), DontCreateStrategy()))
+            repository_path.joinpath('hooks'), AlongsideFileNameStrategy(), DontCreateStrategy()))
         self.hooks = default + alongside
-        self.path_to_repository = repository_path
+        self.path_to_git_folder = repository_path
         self._commit_msg = _load_commit_msg(repository_path)
         self._config_lines = read_lines(repository_path.joinpath('config'))
         self._author: Author = load_author(self._config_lines)
+        self._hooks_destination = None
 
     @property
     def author(self) -> Author:
@@ -60,8 +60,17 @@ class Git(CurrentCommittersObserver):
             overwrite_current_author(new_lines, new_author)
         else:
             append_new_author(new_lines, new_author)
-        write_lines(self.path_to_repository.joinpath('config'), new_lines)
+        write_lines(self.path_to_git_folder.joinpath('config'), new_lines)
         self._author = new_author
+
+    def hooks_destination(self):
+        if self._hooks_destination:
+            return self._hooks_destination
+        else:
+            return self.path_to_git_folder.joinpath('hooks')
+
+    def set_hooks_destination(self, path: Path):
+        self._hooks_destination = path
 
     @property
     def commit_msg(self):
@@ -69,7 +78,7 @@ class Git(CurrentCommittersObserver):
 
     @commit_msg.setter
     def commit_msg(self, lines: List[str]):
-        write_lines(self.path_to_repository.joinpath('COMMIT_EDITMSG'), lines)
+        write_lines(self.path_to_git_folder.joinpath('COMMIT_EDITMSG'), lines)
         self._commit_msg = lines
 
     def hooks_present(self) -> bool:
@@ -83,12 +92,11 @@ class Git(CurrentCommittersObserver):
         return non_guet_hook_found
 
     def create_hooks(self, alongside: bool = False) -> None:
+        path = self.hooks_destination()
         if alongside:
-            hook_loader = HookLoader(
-                self.path_to_repository, AlongsideFileNameStrategy(), DoCreateStrategy())
+            hook_loader = HookLoader(path, AlongsideFileNameStrategy(), DoCreateStrategy())
         else:
-            hook_loader = HookLoader(
-                self.path_to_repository, BaseFileNameStrategy(), DoCreateStrategy())
+            hook_loader = HookLoader(path, BaseFileNameStrategy(), DoCreateStrategy())
         self.hooks = _load_hooks(hook_loader)
         for hook in self.hooks:
             hook.save()

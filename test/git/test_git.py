@@ -288,3 +288,42 @@ class TestGit(TestCase):
 
         self.path_to_git.joinpath.assert_called_with('hooks')
         hooks_directory.mkdir.assert_called()
+
+    def test_hooks_path_returns_git_hooks_folder_by_default(self, _1, _2):
+        git = Git(self.path_to_git)
+        self.assertEqual(self.path_to_git.joinpath('hooks'), git.hooks_destination())
+
+    def test_hooks_path_returns_given_hooks_folder(self, _1, _2):
+        git = Git(self.path_to_git)
+        given = Mock()
+        git.set_hooks_destination(given)
+        self.assertEqual(given, git.hooks_destination())
+
+    def test_uses_given_hooks_folder_if_present(self, mock_hook, _1):
+        git = Git(self.path_to_git)
+        git.hooks = []
+
+        given = Mock()
+
+        mock_hook.reset_mock()
+        pre_commit_hook = Mock()
+        post_commit_hook = Mock()
+        commit_msg_hook = Mock()
+        expected_hooks = [pre_commit_hook, post_commit_hook, commit_msg_hook]
+        mock_hook.side_effect = expected_hooks
+
+        git.set_hooks_destination(given)
+
+        git.create_hooks()
+
+        self.assertListEqual(expected_hooks, git.hooks)
+
+        mock_hook.assert_has_calls([
+            call(given.joinpath('pre-commit'), create=True),
+            call(given.joinpath('post-commit'), create=True),
+            call(given.joinpath('commit-msg'), create=True),
+        ])
+
+        pre_commit_hook.save.assert_called()
+        post_commit_hook.save.assert_called()
+        commit_msg_hook.save.assert_called()
