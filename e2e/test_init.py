@@ -111,3 +111,12 @@ class TestInit(DockerTest):
         self.execute()
         self.assert_text_in_logs(5, 'guet not started.')
         self.assert_text_not_in_logs(6, 'guet successfully started in this repository.')
+
+    def test_can_set_location_for_guet_hooks(self):
+        self.git_init()
+        self.add_command('mkdir .other')
+        self.guet_init(args=['--location', '.other'])
+        self.execute()
+        self.assert_file_exists('test-env/.other/pre-commit')
+        self.assert_file_exists('test-env/.other/post-commit')
+        self.assert_file_exists('test-env/.other/commit-msg')
