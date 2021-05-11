@@ -10,6 +10,7 @@ from guet.steps.preparation import InitializePreparation
 from guet.util import FlagBuilder, FlagsBuilder, HelpMessageBuilder
 
 from ._cancel_create_hook import CancelCreateHooks
+from ._change_hooks_folder import ChangeHooksFolder
 from ._create_hooks_alongside import CreateHooksAlongside
 from ._create_hooks_normally import CreateHooksNormally
 
@@ -68,6 +69,7 @@ class InitCommandFactory(CommandFactory):
             .next(HelpCheck(START_HELP_MESSAGE)) \
             .next(InitializePreparation(self.file_system)) \
             .next(GitRequiredCheck(self.git)) \
+            .next(ChangeHooksFolder(self.git)) \
             .next(OptionStep(
                 [
                     CreateHooksNormally(self.git)
