@@ -18,7 +18,8 @@ ALONGSIDE_FLAG_EXPLANATION = 'Create hooks alongside current hooks with "-guet" 
 SHORT_EXPLANATION = 'Initialize current .git project to use guet.'
 START_HELP_MESSAGE = HelpMessageBuilder('guet start', SHORT_EXPLANATION) \
     .flags(FlagsBuilder([FlagBuilder('-a/--alongside', ALONGSIDE_FLAG_EXPLANATION),
-                         FlagBuilder('-o/--overwrite', 'Overwrite current hooks')])).build()
+                         FlagBuilder('-o/--overwrite', 'Overwrite current hooks'),
+                         FlagBuilder('--location', 'Specify location to create hooks in')])).build()
 
 
 def choose(args: List[str]):
