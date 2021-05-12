@@ -8,7 +8,7 @@ from guet.util import HelpMessageBuilder
 from ._set_committers import SetCommittersAction
 
 SET_HELP_MESSAGE = HelpMessageBuilder(
-    'guet set <initials> [<initials> ...]', 'Get current committers.').build()
+    'guet set <initials> [<initials> ...]', 'Set current committers.').build()
 
 
 class SetCommittersCommand(CommandFactory):
