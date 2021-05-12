@@ -16,73 +16,91 @@ Pair programming is integral part of many software development lifecycles. When 
 pip3 install guet
 ```
 
-### Upgrading
-
-The version of **guet** installed can be upgraded using the following command:
-
-```
-pip3 install guet --upgrade
-```
-
-To see the version releases, changes between them, and upgrade guides, check the [change log](./.github/CHANGELOG.md)
-
-### Installing a Specific Version
-
-Installing a specific version of guet can be done with the following comming:
-
-```
-pip3 install guet==1.0.0
-```
-
-#### Development Version
-
-The most recent development version can be downloaded and installed as well:
-
-```
-git clone https://github.com/chiptopher/guet.git
-python setup.py install
-```
-
 ## Usage
 
-For full usage details, using `guet` will print out all commands and a description of what they do. Some of the ones most basic to the workflow are:
+### init
 
-#### Initialization
-
-`guet init` will initiailze the **guet** config files for the system.
-
-#### Start
-
-`guet start` will start **guet** for the repository at the current directory.
-
-#### Register Committers
-
-`guet add <initials> <"Name"> <email>` will register an available committer with the given initials, name and email.
+Initialize repository for guet tracking.
 
 ```
-$ guet add cb "Chiptopher" chiptopher@chiptopher.com
-$ guet add jh "Jim Halpert" jimothy@dm.com
-$ guet add ds "Dwight Schrute" dwight@dm.com
+$ guet init
 ```
 
-#### Set Committers
+| Flag                        | Description                          |
+| --------------------------- | ------------------------------------ |
+| --location [path to foler]  | Specify directory to create hooks in |
+| --alongside / -a            | Append -guet to hook file names      |
+| --overwrite / -o            | Overwrite existing hooks             |
 
-`guet set [<initials>, ...]` will register the committers with the given initials to have their names attached to all
-following commits.
+
+### add
+
+Add a committer for commit tracking
 
 ```
-$ guet set cb ds
-Committers set to
-cb - Chiptopher <chiptopher@chiptopher.com>
-ds - Dwight Schrute <dwight@dm.com>
+$ guet add p1 "Person 1" person@example.com
 ```
+
+| Flag                        | Description                           |
+| --------------------------- | ------------------------------------  |
+| --local                     | Add users locally to this repository (and create local configuration files |
+
+
+### set
+
+Set committers for current repository
+
+```
+$ guet set p1 p2
+Committers set to:
+p1 - Person 1 <person1@example.com>
+p2 - Person 2 <person2@example.com>
+```
+
+### get
+
+Get committers.
+
+```
+$ guet get all
+All committers
+p1 - Person 1 <person1@example.com>
+p2 - Person 2 <person2@example.com>
+p3 - Person 2 <person2@example.com>
+
+$ guet get current
+Current committers
+p1 - Person 1 <person1@example.com>
+p3 - Person 2 <person2@example.com>
+```
+
+### remove
+
+Remove committer
+
+```
+$ guet remove p1
+```
+
+### yeet
+
+Remove guet configurations.
+
+```
+$ guet yeet
+```
+
+| Flag                        | Description                           |
+| --------------------------- | ------------------------------------  |
+| --global / -g               | Remove guet configuration from home directory
+
 
 ## Questions
 
-There is a [Frequently asked questions](.github/FAQ.md) section with some commonly asked questions.
+There is a [frequently asked questions](.github/FAQ.md) section with some commonly asked questions.
 
 ## Contribution
 
 Guidelines for contributions can be found [here](./.github/CONTRIBUTING.md). Feel free to
-[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** and you want to submit a
+[open an issue](https://github.com/chiptopher/guet/issues) if there are problems with **guet** or you want to submit a
 feature request.

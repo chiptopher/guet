@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0
+### Added Functionality
+* Added `guet yeet` for remove guet tracking from a repository / computer
+* Removed `guet start`, and absorb that functionality into `guet init`.
+* Add --location flag to `guet init` to specify what directory the guet hooks should be saved to.
+* Remove `guet config`
+
 ## 2.4.6
 ### Bugs Fixed
 * When cancelling a guet start, a message saying that the repository was successfully started will no longer appear.
@@ -12,7 +19,7 @@
 ### Added Functionality
 * When setting committers, a message will print the committers that have been set.
 * When starting a repository, a confirmation message will print that tracking is started on the repository.
-* When attempting to start tracking a repository that already has hooks, a clearer prompt will appear. 
+* When attempting to start tracking a repository that already has hooks, a clearer prompt will appear.
 
 
 ## 2.4.3
@@ -65,7 +72,7 @@ Version 2.3.1 makes it so `guet set` cannot be ran in directories where there is
 ## 2.3.0
 Version 2.3.0 introduces the ability to have multiple `guet set` configurations between repositories. A `guet set` in `ProjectA` and `ProjectB` can be ran without one affecting the other. Previously, if committers were set in `ProjectA`, they would be used in `ProjectB` as well. Currently set committers were shared project wide.
 
-The `--version` flag was added to print the current guet version. 
+The `--version` flag was added to print the current guet version.
 
 ## 2.2.0
 
