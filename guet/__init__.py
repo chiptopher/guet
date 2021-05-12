@@ -1,3 +1,3 @@
-__version__ = '2.4.6'
+__version__ = '3.0.0'
 
 from guet.errors import GuetError

@@ -30,4 +30,23 @@ As long as your your `Co-authored-by Name <emai>` lines are in the squashed comm
 
 ### What do I need to do to uninstall guet?
 
-`pip3 uninstall guet` is the command you need to run to remove guet. If you're sure that you'll never want to use guet again, you can also remove `~/.guet/`. Additionally, you will need to remove guet from any repositories that you've run `guet start` in. You can do this by removing `pre-commit`, `post-commit`, and `commit-msg` in that repository's `.git/hooks/` folder.
+`pip3 uninstall guet` is the command you need to run to remove guet. In repositories you've initialized for guet tracking, you can run `guet yeet` to remove its configurations. If you're sure you'll never want to use guet again, `guet yeet --global` will remove its global configurations.
+
+
+### How do I upgrade my version of guet?
+
+The version of guet installed can be upgraded using the following command:
+
+```
+pip3 install guet --upgrade
+```
+
+To see the version releases, changes between them, and upgrade guides, check the [change log](./.github/CHANGELOG.md)
+
+### How do I install a specific version of guet?
+
+Installing a specific version of guet can be done with the following comming:
+
+```
+pip3 install guet==2.4.6
+```
