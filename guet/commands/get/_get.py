@@ -28,7 +28,7 @@ class GetCommandFactory(CommandFactory):
 
     def build(self) -> Step:
         return VersionCheck() \
-            .next(HelpCheck(GET_HELP_MESSAGE)) \
+            .next(HelpCheck(GET_HELP_MESSAGE, stop_on_no_args=True)) \
             .next(InitializePreparation(self.file_system)) \
             .next(SwapToLocal(self.committers)) \
             .next(GetCommittersAction(self.committers, self.current))
