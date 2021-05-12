@@ -12,7 +12,7 @@ from ._action import GetCommittersAction
 GET_HELP_MESSAGE = HelpMessageBuilder('guet get <identifier> [-flag, ...]',
                                       'Get currently set information.') \
     .explanation(('Valid Identifier\n\tcurrent - lists currently set committers'
-                  '\n\tcommitters - lists all committers')) \
+                  '\n\tall - lists all committers')) \
     .build()
 
 
