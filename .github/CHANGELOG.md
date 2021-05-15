@@ -1,12 +1,15 @@
 # Changelog
 
+## 3.0.1
+### Bugs Fixed
+* Removed error where commit messages were being overwritten entirely by Co-Authored lines
+
 ## 3.0.0
 ### Added Functionality
 * Added `guet yeet` for remove guet tracking from a repository / computer.
 * Removed `guet start`, and absorb that functionality into `guet init`.
 * Add --location flag to `guet init` to specify what directory the guet hooks should be saved to.
 * Remove `guet config`
-
 
 ### Notes
 * Repos using git tracing from before 3.0.0 will have to update thier hooks. This can be done with `guet init -o`.
