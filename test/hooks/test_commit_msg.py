@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from guet.committers.committer import Committer
 from guet.hooks._commit_msg import CommitMsg
@@ -15,10 +15,14 @@ class TestCommitMsg(TestCase):
 
         git = Mock()
 
+        git.commit_msg = ['initial commit']
+
         action = CommitMsg(current_committers, git)
         action.execute([])
 
         self.assertEqual(git.commit_msg, [
+            'initial commit',
+            '',
             'Co-authored-by: name1 <email1>',
             'Co-authored-by: name2 <email2>',
         ])
