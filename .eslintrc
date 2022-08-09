@@ -1,0 +1,66 @@
+{
+  parser: "@typescript-eslint/parser",
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    'plugin:@typescript-eslint/recommended',
+    "plugin:prettier/recommended",
+  ],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
+    jest: true,
+  },
+  plugins: [
+    "@typescript-eslint",
+    "react",
+    "typescript-sort-keys",
+    "unused-imports",
+    "import"
+  ],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2018,
+    sourceType: "module",
+  },
+  rules: {
+      "@typescript-eslint/no-empty-interface": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "react/jsx-sort-props": "error",
+    "sort-keys": "error",
+    "typescript-sort-keys/interface": "error",
+    "typescript-sort-keys/string-enum": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "import/order": ["error", {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+            {
+              "pattern": "react",
+              "group": "builtin",
+              "position": "before"
+            },
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+            order: 'asc',
+            caseInsensitive: true
+        },
+        pathGroupsExcludedImportTypes: []
+    }],
+
+  }
+}
