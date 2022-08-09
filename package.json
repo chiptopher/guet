@@ -8,10 +8,12 @@
     "lint": "eslint . --ext .ts,.tsx,.js,json",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,json --fix",
     "test": "jest",
-    "test:e2e": "npm run build && npm run docker:build",
+    "test:e2e": "npm run build && npm run docker:build && npm run docker:run:e2e",
     "test:e2e:execute": "jest ts-e2e --runInBand",
     "test:run": "npm run build && node ./lib/index.js",
     "docker:build": "docker build . -t guettest:0.0.1",
+    "docker:run:e2e":"docker run --rm -it guettest:0.0.1 npm run test:e2e:execute",
+    "docker:run:bash":"docker run --rm -it guettest:0.0.1 /bin/bash",
     "prepare": "husky install"
   },
   "bin": {

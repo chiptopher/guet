@@ -6,7 +6,6 @@ import { config } from 'dotenv';
 import { executeCommand } from './execute-command';
 
 config();
-
 colors.enable();
 
 async function main() {
