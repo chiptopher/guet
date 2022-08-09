@@ -1,0 +1,18 @@
+import fs from 'fs';
+import { homedir } from 'os';
+import path from 'path';
+
+import colors from 'colors';
+
+import { run } from './utils';
+
+colors.enable();
+
+describe('guet yeet', () => {
+    it('removes the ~/.guet file', () => {
+        run('git init');
+        run('guet init');
+        run('guet yeet');
+        expect(fs.existsSync(path.join(homedir(), '.guet'))).toEqual(false);
+    });
+});
