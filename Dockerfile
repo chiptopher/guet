@@ -1,6 +1,5 @@
-FROM python:3.7-buster
-COPY . .
-RUN python ./setup.py install
+FROM node:18-slim
+COPY . ./test
 
-WORKDIR /root/test-env
-
+WORKDIR test
+RUN npm run test:e2e:execute

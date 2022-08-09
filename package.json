@@ -7,8 +7,11 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts,.tsx,.js,json",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,json --fix",
-    "test:run": "npm run build && node ./lib/index.js",
     "test": "jest",
+    "test:e2e": "npm run build && npm run docker:build",
+    "test:e2e:execute": "jest ts-e2e --runInBand",
+    "test:run": "npm run build && node ./lib/index.js",
+    "docker:build": "docker build . -t guettest:0.0.1",
     "prepare": "husky install"
   },
   "bin": {
