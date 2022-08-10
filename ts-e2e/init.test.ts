@@ -1,8 +1,9 @@
 import fs from 'fs';
+import path from 'path';
 
 import colors from 'colors';
 
-import { configPath, readJSONFile } from '../src/utils';
+import { configPath, getGitPath, readJSONFile } from '../src/utils';
 import { assembleOutput, cleanup, run } from './utils';
 
 colors.enable();
@@ -40,5 +41,14 @@ describe('guet init', () => {
 
         const found = readJSONFile(configPath);
         expect(found).toEqual({ committers: [] });
+    });
+
+    it('writes repo config boilerplate into .git/repo.guetrc.json', () => {
+        run('git init');
+        run('guet init');
+
+        expect(
+            fs.existsSync(path.join(getGitPath(), 'repo.guetrc.json'))
+        ).toEqual(true);
     });
 });

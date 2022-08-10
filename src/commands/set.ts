@@ -1,10 +1,13 @@
+import path from 'path';
+
+import { Config } from '../config';
 import { log } from '../native-wrapper';
-import { configPath, readJSONFile } from '../utils';
+import { configPath, getGitPath, readJSONFile, wrtiteJsonFile } from '../utils';
 
 export function setCommitters(args: string[]) {
     const missingInitials = args.filter(
         arg =>
-            !readJSONFile(configPath)
+            !readJSONFile<Config>(configPath)
                 .committers.map(committer => committer.initials)
                 .includes(arg)
     );
@@ -15,4 +18,9 @@ export function setCommitters(args: string[]) {
         );
         process.exit(1);
     }
+
+    const projectConfigPath = path.join(getGitPath(), 'repo.guetrc.json');
+    const projectConfig = readJSONFile(projectConfigPath);
+    projectConfig.currentCommittersInitials = args;
+    wrtiteJsonFile(projectConfigPath, projectConfig);
 }

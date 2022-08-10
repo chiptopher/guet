@@ -9,3 +9,13 @@ export function emptyConfig() {
         committers: [],
     };
 }
+
+export interface RepoInfo {
+    currentCommittersInitials: string[];
+}
+
+export function emptyRepoInfo() {
+    return {
+        currentCommittersInitials: [],
+    };
+}
