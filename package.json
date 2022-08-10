@@ -7,7 +7,7 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts,.tsx,.js,json",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,json --fix",
-    "test": "jest",
+    "test": "jest src",
     "test:e2e": "npm run build && npm run docker:run:e2e",
     "test:e2e:execute": "jest ts-e2e --runInBand",
     "test:run": "npm run build && node ./lib/index.js",
