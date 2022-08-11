@@ -45,3 +45,5 @@ export function writeRepoConfig(data: RepoInfo) {
     const projectConfigPath = path.join(getGitPath(), 'repo.guetrc.json');
     wrtiteJsonFile(projectConfigPath, data);
 }
+
+export type Args = string[];

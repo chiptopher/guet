@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 
-import { configPath } from '../src/utils';
+import { configPath, getGitPath } from '../src/utils';
 
 export function run(command: string): [string, number] {
     try {
@@ -19,5 +19,9 @@ export function assembleOutput(lines: string[]): string {
 export function cleanup() {
     if (fs.existsSync(configPath)) {
         fs.rmSync(configPath);
+    }
+
+    if (fs.existsSync(getGitPath())) {
+        run(`rm -rf ${getGitPath()}`);
     }
 }

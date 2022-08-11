@@ -51,4 +51,45 @@ describe('guet init', () => {
             fs.existsSync(path.join(getGitPath(), 'repo.guetrc.json'))
         ).toEqual(true);
     });
+
+    describe('when given the --withHooks flag', () => {
+        it('should add pre-commit, commit-msg, and post-commit files', () => {
+            run('git init');
+            run('guet init --withHooks');
+            expect(
+                fs.existsSync(path.join(getGitPath(), 'hooks', 'pre-commit'))
+            ).toEqual(true);
+            expect(
+                fs.existsSync(path.join(getGitPath(), 'hooks', 'commit-msg'))
+            ).toEqual(true);
+            expect(
+                fs.existsSync(path.join(getGitPath(), 'hooks', 'post-commit'))
+            ).toEqual(true);
+        });
+        it('should put the apropriate content in each file', () => {
+            run('git init');
+            run('guet init --withHooks');
+
+            const preCommitContent = fs.readFileSync(
+                path.join(getGitPath(), 'hooks', 'pre-commit')
+            );
+            expect(String(preCommitContent)).toEqual(
+                '#!/usr/bin/env sh\nnpx guet hook pre-commit\n'
+            );
+
+            const postCommitContent = fs.readFileSync(
+                path.join(getGitPath(), 'hooks', 'post-commit')
+            );
+            expect(String(postCommitContent)).toEqual(
+                '#!/usr/bin/env sh\nnpx guet hook post-commit\n'
+            );
+
+            const commitMsgContent = fs.readFileSync(
+                path.join(getGitPath(), 'hooks', 'commit-msg')
+            );
+            expect(String(commitMsgContent)).toEqual(
+                '#!/usr/bin/env sh\nnpx guet hook commit-msg\n'
+            );
+        });
+    });
 });
