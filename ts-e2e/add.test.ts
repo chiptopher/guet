@@ -127,4 +127,8 @@ describe('guet add', () => {
             ])
         );
     });
+
+    xit("should create the config file if it deosn'nt already exist", () => {
+        // TODO
+    });
 });

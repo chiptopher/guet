@@ -1,4 +1,5 @@
 import { add } from './commands/add';
+import { hook } from './commands/hook';
 import { init } from './commands/init';
 import { setCommitters } from './commands/set';
 
@@ -10,5 +11,7 @@ export function executeCommand(commandName: string, args: string[]) {
             return add(args);
         case 'set':
             return setCommitters(args);
+        case 'hook':
+            return hook(args);
     }
 }

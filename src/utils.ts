@@ -2,13 +2,15 @@ import fs, { PathLike, readFileSync } from 'fs';
 import { homedir } from 'os';
 import path from 'path';
 
-import { Config } from './config';
+import { Config, RepoInfo } from './config';
 
 export const configPath = path.join(homedir(), '.guetrc.json');
 
 export function getGitPath() {
     return path.join(process.cwd(), '.git');
 }
+
+export const COMMIT_EDITMSG = 'COMMIT_EDITMSG';
 
 export function hasGitInCwd() {
     const gitDir = path.join(process.cwd(), '.git');
@@ -31,4 +33,15 @@ export function readJSONFile<T = any>(path: PathLike): T {
 
 export function wrtiteJsonFile(path: PathLike, data: any) {
     fs.writeFileSync(path, JSON.stringify(data));
+}
+
+export function readRepoConfig(): RepoInfo {
+    const projectConfigPath = path.join(getGitPath(), 'repo.guetrc.json');
+    const projectConfig = readJSONFile(projectConfigPath);
+    return projectConfig;
+}
+
+export function writeRepoConfig(data: RepoInfo) {
+    const projectConfigPath = path.join(getGitPath(), 'repo.guetrc.json');
+    wrtiteJsonFile(projectConfigPath, data);
 }
