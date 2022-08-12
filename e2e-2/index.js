@@ -32,10 +32,15 @@ async function main() {
         const result = await testClient.run(
             'guettest:0.0.1',
             runCommand,
-            process.stdout
+            process.stdout,
+            {
+                rm: true,
+            }
         );
 
         const exitCode = result[0]['StatusCode'];
+        result[1].remove();
+
         if (exitCode > 0) {
             failed = true;
         }
