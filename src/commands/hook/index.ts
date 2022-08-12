@@ -1,8 +1,9 @@
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
-import { getCurrentCommitters } from '../committer';
-import { COMMIT_EDITMSG, getGitPath } from '../utils';
+import { getCurrentCommitters } from '../../committer';
+import { COMMIT_EDITMSG, getGitPath } from '../../utils';
+import { appendCoAuthoredBy } from './util';
 
 export function hook(args: string[]) {
     const [hookName] = args;
@@ -17,13 +18,10 @@ function commitMsg() {
     const committers = getCurrentCommitters();
 
     const [_, ...followingCommitters] = committers;
-    const coAuthoredLines = followingCommitters
-        .map(
-            committer =>
-                `Co-authored-by: ${committer.fullName} <${committer.email}>`
-        )
-        .join('\n');
     const commitMsgPath = path.join(getGitPath(), COMMIT_EDITMSG);
-    const currentMessage = readFileSync(commitMsgPath);
-    writeFileSync(commitMsgPath, currentMessage + '\n' + coAuthoredLines);
+    const currentMessage = String(readFileSync(commitMsgPath));
+    writeFileSync(
+        commitMsgPath,
+        appendCoAuthoredBy(currentMessage, followingCommitters)
+    );
 }
