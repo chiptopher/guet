@@ -1,4 +1,4 @@
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 it('should remove previous Co-authored-by if editing a commit', () => {
     run('git init');

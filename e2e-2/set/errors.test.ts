@@ -1,6 +1,6 @@
 import colors from 'colors';
 
-import { assembleOutput, run } from '../../ts-e2e/utils';
+import { assembleOutput, run } from '../utils';
 
 colors.enable();
 

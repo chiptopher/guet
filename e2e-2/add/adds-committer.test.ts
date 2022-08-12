@@ -1,5 +1,5 @@
 import { configPath, readJSONFile } from '../../src/utils';
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 test('should add the committer', () => {
     run('guet init');

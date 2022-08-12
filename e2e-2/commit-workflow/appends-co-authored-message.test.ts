@@ -1,4 +1,4 @@
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 test('should append the co-authored messages for co-authors', () => {
     run('git init');

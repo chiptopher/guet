@@ -2,7 +2,7 @@ import path from 'path';
 
 import { RepoInfo } from '../../src/config';
 import { getGitPath, readJSONFile } from '../../src/utils';
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 test('should set the current committers initials in the project', () => {
     run('git init');

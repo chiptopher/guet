@@ -1,7 +1,8 @@
 import colors from 'colors';
 
 import { configPath, readJSONFile } from '../../src/utils';
-import { assembleOutput, run } from '../../ts-e2e/utils';
+import { run, assembleOutput } from '../utils';
+
 colors.enable();
 
 test('should fail to add committers when given incorrect args', () => {

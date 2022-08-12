@@ -4,7 +4,7 @@ import path from 'path';
 import colors from 'colors';
 
 import { configPath, getGitPath, readJSONFile } from '../../src/utils';
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 colors.enable();
 

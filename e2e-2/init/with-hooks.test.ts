@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { getGitPath } from '../../src/utils';
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 test('creates pre-commit, commiit-msg, and post-commit files that have appropriate content', () => {
     run('git init');

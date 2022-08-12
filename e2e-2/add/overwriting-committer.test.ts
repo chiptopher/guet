@@ -1,7 +1,8 @@
 import colors from 'colors';
 
 import { configPath, readJSONFile } from '../../src/utils';
-import { assembleOutput, run } from '../../ts-e2e/utils';
+import { assembleOutput, run } from '../utils';
+
 colors.enable();
 
 test("it should alert user that they're overwritting a committer, and give them the option to force it", () => {

@@ -1,4 +1,4 @@
-import { run } from '../../ts-e2e/utils';
+import { run } from '../utils';
 
 test('should append set no Co-authored-by if only one committer is set', () => {
     run('git init');
