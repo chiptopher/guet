@@ -1,6 +1,8 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 
+import Docker from 'dockerode';
+
 import { configPath, getGitPath } from '../src/utils';
 
 export function run(command: string): [string, number] {
@@ -24,4 +26,15 @@ export function cleanup() {
     if (fs.existsSync(getGitPath())) {
         run(`rm -rf ${getGitPath()}`);
     }
+
+    run('rm test-*');
+}
+
+export function testFileName(name: string) {
+    return `test-${name}`;
+}
+
+function dothing() {
+    const h = new Docker();
+    console.log(h);
 }
