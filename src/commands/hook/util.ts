@@ -32,3 +32,14 @@ function stripTrailingEmptyLines(lines: string[]): string[] {
     }
     return copy;
 }
+
+export function shuffleCommitters(committers: Committer[]) {
+    const copy = [...committers];
+    copy.reverse();
+    const first = copy.pop();
+    copy.reverse();
+    if (first) {
+        copy.push(first);
+    }
+    return copy;
+}

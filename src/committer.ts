@@ -1,4 +1,4 @@
-import { readConfig, readRepoConfig } from './utils';
+import { readConfig, readRepoConfig, writeRepoConfig } from './utils';
 
 export interface Committer {
     email: string;
@@ -22,4 +22,11 @@ export function getCurrentCommitters(): Committer[] {
 
 export function getAvailableCommitters(): Committer[] {
     return readConfig().committers;
+}
+
+export function setCurrentCommitters(committers: Committer[]) {
+    writeRepoConfig({
+        ...readRepoConfig(),
+        currentCommittersInitials: committers.map(c => c.initials),
+    });
 }

@@ -5,6 +5,7 @@ import { log } from '../native-wrapper';
 import { configPath, getGitPath, readJSONFile, wrtiteJsonFile } from '../utils';
 
 export function setCommitters(args: string[]) {
+    // TODO refactor to use util methods
     const missingInitials = args.filter(
         arg =>
             !readJSONFile<Config>(configPath)

@@ -1,16 +1,18 @@
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
-import { getCurrentCommitters } from '../../committer';
+import { getCurrentCommitters, setCurrentCommitters } from '../../committer';
 import { COMMIT_EDITMSG, getGitPath } from '../../utils';
-import { appendCoAuthoredBy } from './util';
+import { appendCoAuthoredBy, shuffleCommitters } from './util';
 
 export function hook(args: string[]) {
     const [hookName] = args;
     switch (hookName) {
         case 'commit-msg':
-            commitMsg();
-            break;
+            return commitMsg();
+        case 'post-commit':
+            console.log('Running post-commit hook');
+            return postCommit();
     }
 }
 
@@ -24,4 +26,8 @@ function commitMsg() {
         commitMsgPath,
         appendCoAuthoredBy(currentMessage, followingCommitters)
     );
+}
+
+function postCommit() {
+    setCurrentCommitters(shuffleCommitters(getCurrentCommitters()));
 }
