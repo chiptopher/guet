@@ -34,9 +34,11 @@ async function main() {
             }
         });
 
-    failed = await (parallel
-        ? runInParallel(testFiles)
-        : runSequentially(testFiles));
+    if (parallel) {
+        failed = await runInParallel(testFiles);
+    } else {
+        failed = await runSequentially(testFiles);
+    }
 
     if (failed) {
         process.exit(1);

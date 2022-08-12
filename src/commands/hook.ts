@@ -7,7 +7,7 @@ import { COMMIT_EDITMSG, getGitPath } from '../utils';
 export function hook(args: string[]) {
     const [hookName] = args;
     switch (hookName) {
-        case 'commit_msg':
+        case 'commit-msg':
             commitMsg();
             break;
     }

@@ -8,7 +8,7 @@
     "lint": "eslint . --ext .ts,.tsx,.js,json",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,json --fix",
     "test": "jest src",
-    "test:e2e": "npm run docker:build && node e2e-2/index.js --parallel",
+    "test:e2e": "npm run docker:build && node e2e-2/index.js",
     "test:run": "npm run build && node ./lib/index.js",
     "docker:build": "docker build . -t guettest:0.0.1",
     "docker:run": "npm run docker:build && docker run --rm -e \"TERM=xterm-256color\" -t -i guettest:0.0.1 /bin/bash",
