@@ -18,6 +18,7 @@ export function init(args: Args) {
     }
     if (!hasGitInCwd()) {
         console.log('git not installed in this directory.'.red);
+        process.exit(1);
     } else {
         wrtiteJsonFile(
             path.join(getGitPath(), 'repo.guetrc.json'),
