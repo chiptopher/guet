@@ -2,14 +2,15 @@ import fs, { writeFileSync } from 'fs';
 import { homedir } from 'os';
 import path from 'path';
 
-import { emptyConfig, emptyRepoInfo } from '../config';
+import { emptyConfig, emptyRepoInfo } from '../../config';
 import {
     Args,
     getGitPath,
     hasGitInCwd,
     writeConfig,
     wrtiteJsonFile,
-} from '../utils';
+} from '../../utils';
+import { createGitHookContent } from './util';
 
 export function init(args: Args) {
     const configDir = path.join(homedir(), '.guetrc.json');
@@ -41,7 +42,7 @@ function maybeAddHooks(args: Args) {
 function createHook(name: string) {
     writeFileSync(
         path.join(getGitPath(), 'hooks', name),
-        `#!/usr/bin/env sh\nnpx guet hook ${name}\n`,
+        createGitHookContent(name),
         { mode: 0o0755 }
     );
 }

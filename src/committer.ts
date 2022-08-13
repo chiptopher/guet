@@ -15,9 +15,18 @@ export function removeCommitterWithInitials(
 
 export function getCurrentCommitters(): Committer[] {
     const currentComitterInitials = readRepoConfig().currentCommittersInitials;
-    return getAvailableCommitters().filter(committer =>
-        currentComitterInitials.includes(committer.initials)
-    );
+    const allCommitters = getAvailableCommitters();
+
+    return currentComitterInitials.map(initials => {
+        const found = allCommitters.find(
+            committer => committer.initials === initials
+        );
+        if (!found) {
+            // TODO implement
+            throw new Error('Unexpected');
+        }
+        return found;
+    });
 }
 
 export function getAvailableCommitters(): Committer[] {

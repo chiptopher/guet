@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import { createGitHookContent } from '../../src/commands/init/util';
 import { getGitPath } from '../../src/utils';
 import { run } from '../utils';
 
@@ -14,7 +15,7 @@ test('creates pre-commit, commiit-msg, and post-commit files that have appropria
         path.join(getGitPath(), 'hooks', 'pre-commit')
     );
     expect(String(preCommitContent)).toEqual(
-        '#!/usr/bin/env sh\nnpx guet hook pre-commit\n'
+        createGitHookContent('pre-commit')
     );
 
     expect(
@@ -24,7 +25,7 @@ test('creates pre-commit, commiit-msg, and post-commit files that have appropria
         path.join(getGitPath(), 'hooks', 'commit-msg')
     );
     expect(String(commitMsgContent)).toEqual(
-        '#!/usr/bin/env sh\nnpx guet hook commit-msg\n'
+        createGitHookContent('commit-msg')
     );
 
     expect(
@@ -34,6 +35,6 @@ test('creates pre-commit, commiit-msg, and post-commit files that have appropria
         path.join(getGitPath(), 'hooks', 'post-commit')
     );
     expect(String(postCommitContent)).toEqual(
-        '#!/usr/bin/env sh\nnpx guet hook post-commit\n'
+        createGitHookContent('post-commit')
     );
 });
