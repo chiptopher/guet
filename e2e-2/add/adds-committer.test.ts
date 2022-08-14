@@ -3,7 +3,7 @@ import { run } from '../utils';
 
 test('should add the committer', () => {
     run('guet init');
-    run('guet add fn "full name" fullname@example.com');
+    run('guet add FN "full name" fullname@example.com');
 
     const found = readJSONFile(configPath);
 
@@ -11,6 +11,7 @@ test('should add the committer', () => {
         {
             email: 'fullname@example.com',
             fullName: 'full name',
+            // thier initials should be lowercased when added
             initials: 'fn',
         },
     ]);

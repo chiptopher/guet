@@ -13,7 +13,8 @@ export function add(args: string[]) {
         process.exit(1);
     }
 
-    const [initials, fullName, email] = actualArgs;
+    const [givenInitials, fullName, email] = actualArgs;
+    const initials = givenInitials.toLowerCase();
 
     const config = readConfig();
 
