@@ -8,7 +8,13 @@ export function run(command: string): [string, number] {
         const output = execSync(command, { encoding: 'utf8' });
         return [String(output), 0];
     } catch (e: any) {
-        return [String(e.stdout), 1];
+        let output = '';
+        if (e.stdout) {
+            output = e.stdout;
+        } else if (e.stderr) {
+            output = e.stderr;
+        }
+        return [String(output), 1];
     }
 }
 

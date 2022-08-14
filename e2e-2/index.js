@@ -95,7 +95,10 @@ async function runForFile(fileName, out) {
     const runCommand = ['npx', 'jest', fileName.split('guet/')[1]];
     const result = await testClient.run('guettest:0.0.1', runCommand, out);
 
-    await result[1].remove();
+    await result[1].remove().catch(error => {
+        console.error('Failed to remove container.'.red);
+        console.error(error);
+    });
     return {
         container: result[1],
         exitCode: result[0]['StatusCode'],

@@ -8,10 +8,11 @@ import { appendCoAuthoredBy, shuffleCommitters } from './util';
 export function hook(args: string[]) {
     const [hookName] = args;
     switch (hookName) {
+        case 'pre-commit':
+            return preCommit();
         case 'commit-msg':
             return commitMsg();
         case 'post-commit':
-            console.log('Running post-commit hook');
             return postCommit();
     }
 }
@@ -30,4 +31,10 @@ function commitMsg() {
 
 function postCommit() {
     setCurrentCommitters(shuffleCommitters(getCurrentCommitters()));
+}
+
+function preCommit() {
+    if (getCurrentCommitters().length === 0) {
+        process.exit(1);
+    }
 }
