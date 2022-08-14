@@ -7,6 +7,7 @@ const Docker = require('dockerode');
 const output = execSync(`npx jest e2e-2 --listTests`);
 
 colors.enable();
+
 async function main() {
     let failed = false;
 
@@ -49,7 +50,7 @@ async function runSequentially(testFiles) {
     let failed = false;
     for (let i = 0; i < testFiles.length; i++) {
         const result = await runForFile(testFiles[i], process.stdout);
-        const exitCode = result[0]['StatusCode'];
+        const exitCode = result.exitCode;
 
         if (exitCode > 0) {
             failed = true;
@@ -60,22 +61,31 @@ async function runSequentially(testFiles) {
 
 async function runInParallel(testFiles) {
     console.log('Running in parallel'.green);
-    const failed = Boolean(
-        await Promise.all(
-            testFiles.map(file => runForFile(file, undefined))
-        ).then(results =>
-            results
-                .map(result => {
-                    const exitCode = result[0]['StatusCode'];
-                    return exitCode;
-                })
-                .reduce((a, b) => a + b, 0)
-        )
+    const results = await Promise.all(
+        testFiles.map(file => runForFile(file, undefined))
+    ).then(results =>
+        results.map(result => {
+            return { ...result };
+        })
     );
 
+    const failed = results
+        .map(result => result.exitCode)
+        .reduce((a, b) => a + b, 0);
+
     if (failed) {
-        console.log('Encountered an error'.red);
+        console.log('Test failed. See results below:'.red);
+    } else {
+        console.log('All tests passed :)'.green);
     }
+
+    results.forEach(result => {
+        if (result.exitCode > 0) {
+            console.log(result.fileName.red);
+        } else {
+            console.log(result.fileName.green);
+        }
+    });
 
     return failed;
 }
@@ -85,8 +95,15 @@ async function runForFile(fileName, out) {
     const runCommand = ['npx', 'jest', fileName.split('guet/')[1]];
     const result = await testClient.run('guettest:0.0.1', runCommand, out);
 
-    result[1].remove();
-    return result;
+    await result[1].remove();
+    return {
+        container: result[1],
+        exitCode: result[0]['StatusCode'],
+        fileName,
+    };
 }
 
-main().catch(console.error);
+main().catch(error => {
+    console.error('An unexpected error coccurred:');
+    console.error(error);
+});
