@@ -1,5 +1,11 @@
+import { DateTime } from 'luxon';
+
 import { Committer } from '../../committer';
-import { appendCoAuthoredBy, shuffleCommitters } from './util';
+import {
+    appendCoAuthoredBy,
+    shouldResetCommitters,
+    shuffleCommitters,
+} from './util';
 
 describe('appendCoAuthoredBy', () => {
     it('should add the co-authored-by to the end of a clean commit message', () => {
@@ -57,5 +63,14 @@ describe('shuffleCommitters', () => {
         const result = shuffleCommitters(committers);
 
         expect(result).toEqual([committers[1], committers[2], committers[0]]);
+    });
+});
+
+describe('shouldResetCommitters', () => {
+    it('should return true if then is over 24 before now', () => {
+        const now = DateTime.now();
+        const then = now.minus({ hours: 24, seconds: 3 });
+        const result = shouldResetCommitters(now, then);
+        expect(result).toBe(true);
     });
 });

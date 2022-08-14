@@ -1,8 +1,13 @@
-import path from 'path';
+import { DateTime } from 'luxon';
 
 import { Config } from '../config';
 import { log } from '../native-wrapper';
-import { configPath, getGitPath, readJSONFile, wrtiteJsonFile } from '../utils';
+import {
+    configPath,
+    readJSONFile,
+    readRepoConfig,
+    writeRepoConfig,
+} from '../utils';
 
 export function setCommitters(args: string[]) {
     // TODO refactor to use util methods
@@ -20,8 +25,8 @@ export function setCommitters(args: string[]) {
         process.exit(1);
     }
 
-    const projectConfigPath = path.join(getGitPath(), 'repo.guetrc.json');
-    const projectConfig = readJSONFile(projectConfigPath);
+    const projectConfig = readRepoConfig();
+    projectConfig.setTime = DateTime.now().toISO();
     projectConfig.currentCommittersInitials = args;
-    wrtiteJsonFile(projectConfigPath, projectConfig);
+    writeRepoConfig(projectConfig);
 }

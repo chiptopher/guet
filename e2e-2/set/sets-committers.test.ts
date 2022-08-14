@@ -16,7 +16,6 @@ test('should set the current committers initials in the project', () => {
         path.join(getGitPath(), 'repo.guetrc.json')
     );
 
-    expect(found).toEqual({
-        currentCommittersInitials: ['fn', 'sn'],
-    });
+    expect(found.currentCommittersInitials).toEqual(['fn', 'sn']);
+    expect(found.setTime).not.toEqual('');
 });

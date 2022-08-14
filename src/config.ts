@@ -12,10 +12,12 @@ export function emptyConfig() {
 
 export interface RepoInfo {
     currentCommittersInitials: string[];
+    setTime: string;
 }
 
-export function emptyRepoInfo() {
+export function emptyRepoInfo(): RepoInfo {
     return {
         currentCommittersInitials: [],
+        setTime: '',
     };
 }

@@ -1,9 +1,15 @@
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
+import { DateTime } from 'luxon';
+
 import { getCurrentCommitters, setCurrentCommitters } from '../../committer';
-import { COMMIT_EDITMSG, getGitPath } from '../../utils';
-import { appendCoAuthoredBy, shuffleCommitters } from './util';
+import { COMMIT_EDITMSG, getGitPath, readRepoConfig } from '../../utils';
+import {
+    appendCoAuthoredBy,
+    shouldResetCommitters,
+    shuffleCommitters,
+} from './util';
 
 export function hook(args: string[]) {
     const [hookName] = args;
@@ -35,6 +41,18 @@ function postCommit() {
 
 function preCommit() {
     if (getCurrentCommitters().length === 0) {
+        console.log('No committers set.'.red);
+        process.exit(1);
+    }
+    if (
+        shouldResetCommitters(
+            DateTime.now(),
+            DateTime.fromISO(readRepoConfig().setTime)
+        )
+    ) {
+        console.log(
+            'Committers last let over 24 hours ago. Please reset them.'.red
+        );
         process.exit(1);
     }
 }

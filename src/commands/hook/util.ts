@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 import { Committer } from '../../committer';
 
 export function appendCoAuthoredBy(
@@ -42,4 +44,9 @@ export function shuffleCommitters(committers: Committer[]) {
         copy.push(first);
     }
     return copy;
+}
+
+export function shouldResetCommitters(now: DateTime, then: DateTime) {
+    const t = now.minus({ hours: 24 });
+    return then.toMillis() < t.toMillis();
 }
