@@ -2,6 +2,7 @@ import { add } from './commands/add';
 import { getCommitters } from './commands/get';
 import { hook } from './commands/hook';
 import { init } from './commands/init';
+import { remove } from './commands/remove';
 import { setCommitters } from './commands/set';
 import { version } from './version';
 
@@ -20,5 +21,7 @@ export function executeCommand(commandName: string, args: string[]) {
             return hook(args);
         case 'get':
             return getCommitters(args);
+        case 'remove':
+            return remove(args);
     }
 }
