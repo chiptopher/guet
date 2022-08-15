@@ -49,8 +49,8 @@ export function setCommitters(args: string[]) {
 export const setComand = new Command(
     'set',
     {
-        long: `set the current committers for this repository, but longer`,
-        short: 'set the current committers for this repository',
+        usage: `set the current committers for this repository, but longer`,
+        description: 'set the current committers for this repository',
     },
     new ClosureChainLink(setCommitters)
 );

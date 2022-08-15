@@ -1,3 +1,4 @@
+import { ClosureChainLink, Command } from './command';
 import { CommandExecutor } from './command-executor';
 
 describe('CommandExecutor', () => {
@@ -15,20 +16,19 @@ describe('CommandExecutor', () => {
     it("should call the command's help message when there's a help flag", () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-        const command: any = {
-            execute: jest.fn(),
-            help: {
-                long: 'long help message',
-            },
-            identifier: 'name',
-        };
+        const func = jest.fn();
+        const command = new Command(
+            'name',
+            { description: 'description', usage: 'usage' },
+            new ClosureChainLink(func)
+        );
 
         const commandExecutor = new CommandExecutor([command]);
 
         commandExecutor.evaluate(['name', 'rest', '--help']);
 
-        expect(command.execute).not.toHaveBeenCalled();
-        expect(log).toHaveBeenCalledWith(command.help.long);
+        expect(func).not.toHaveBeenCalled();
+        expect(log).toHaveBeenCalledWith(command.helpMessage('long'));
 
         log.mockReset();
     });

@@ -16,7 +16,7 @@ export class CommandExecutor {
 
         if (found) {
             if (rest.includes('--help')) {
-                console.log(found.help.long);
+                console.log(found.helpMessage('long'));
             } else {
                 found.execute(rest);
             }

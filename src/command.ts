@@ -27,11 +27,20 @@ export class Command {
     public execute(args: string[]) {
         this.links.execute(args);
     }
+
+    public helpMessage(size: 'short' | 'long'): string {
+        switch (size) {
+            case 'short':
+                return this.help.description;
+            case 'long':
+                return `${this.help.description}\n${this.help.usage}`;
+        }
+    }
 }
 
 interface HelpMessage {
-    long: string;
-    short: string;
+    description: string;
+    usage: string;
 }
 
 export class ClosureChainLink extends ChainLink {
