@@ -1,5 +1,8 @@
 type LogLevel = 'info' | 'error';
 
+/**
+ * @deprecated
+ */
 export function log(message: string, level?: LogLevel) {
     switch (level) {
         case 'error':

@@ -1,4 +1,5 @@
 import { separateFlags } from '../args';
+import { ArgCount } from '../chain-links/arg-count';
 import { ClosureChainLink, Command } from '../command';
 import { Committer, removeCommitterWithInitials } from '../committer';
 import { log } from '../native-wrapper';
@@ -6,14 +7,6 @@ import { readConfig, writeConfig } from '../utils';
 
 export function add(args: string[]) {
     const [actualArgs, flags] = separateFlags(args);
-    if (actualArgs.length > 3) {
-        log('Too many arguments.', 'error');
-        process.exit(1);
-    } else if (actualArgs.length < 3) {
-        log('Too few arguments.', 'error');
-        process.exit(1);
-    }
-
     const [givenInitials, fullName, email] = actualArgs;
     const initials = givenInitials.toLowerCase();
 
@@ -62,5 +55,5 @@ export const addCommand = new Command(
         description: 'Add committers for use on commits.',
         usage: '',
     },
-    new ClosureChainLink(add)
+    new ArgCount(3, 3).next(new ClosureChainLink(add))
 );

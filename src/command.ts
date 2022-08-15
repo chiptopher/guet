@@ -1,17 +1,4 @@
-export abstract class ChainLink {
-    following?: ChainLink;
-
-    execute(args: string[]) {
-        this.doExecute(args);
-    }
-
-    public next(link: ChainLink) {
-        this.following = link;
-        return this.following;
-    }
-
-    protected abstract doExecute(args: string[]): void;
-}
+import { ChainLink } from './chain-links';
 
 export class Command {
     public identifier: string;
