@@ -1,8 +1,11 @@
 import { DateTime } from 'luxon';
 
-import { getAvailableCommitters } from '../committer';
+import {
+    Committer,
+    getAvailableCommitters,
+    setCurrentCommitters,
+} from '../committer';
 import { Config } from '../config';
-import { setGitAuthor } from '../git';
 import { log } from '../native-wrapper';
 import {
     configPath,
@@ -27,16 +30,17 @@ export function setCommitters(args: string[]) {
         process.exit(1);
     }
 
-    const projectConfig = readRepoConfig();
-    projectConfig.setTime = DateTime.now().toISO();
-    projectConfig.currentCommittersInitials = args;
-    writeRepoConfig(projectConfig);
+    const committers: Committer[] = args
+        .map(arg => {
+            return getAvailableCommitters().find(
+                committer => committer.initials === arg
+            );
+        })
+        .filter(committer => committer !== undefined) as Committer[];
 
-    const author = getAvailableCommitters().find(
-        committer => committer.initials === args[0]
-    );
-
-    if (author) {
-        setGitAuthor(author);
-    }
+    writeRepoConfig({
+        ...readRepoConfig(),
+        setTime: DateTime.now().toISO(),
+    });
+    setCurrentCommitters(committers);
 }

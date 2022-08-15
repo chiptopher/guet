@@ -1,3 +1,4 @@
+import { setGitAuthor } from './git';
 import { readConfig, readRepoConfig, writeRepoConfig } from './utils';
 
 export interface Committer {
@@ -38,4 +39,6 @@ export function setCurrentCommitters(committers: Committer[]) {
         ...readRepoConfig(),
         currentCommittersInitials: committers.map(c => c.initials),
     });
+
+    setGitAuthor(committers[0]);
 }

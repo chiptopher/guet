@@ -18,7 +18,11 @@ test('committers are rotated after the commit', () => {
 
     const [output] = run('git log');
 
-    expect(output.split('\n')[14]).toEqual(
+    const gitOutput = output.split('\n');
+
+    expect(gitOutput[1]).toEqual('Author: second <second@example.com>');
+    expect(gitOutput[9]).toEqual('Author: first <first@example.com>');
+    expect(gitOutput[14]).toEqual(
         '    Co-authored-by: second <second@example.com>'
     );
 });
