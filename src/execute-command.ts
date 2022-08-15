@@ -3,12 +3,17 @@ import { addCommand } from './commands/add';
 import { getCommand } from './commands/get';
 import { hook } from './commands/hook';
 import { init } from './commands/init';
-import { remove } from './commands/remove';
+import { removeCommand } from './commands/remove';
 import { setComand } from './commands/set';
 import { version } from './version';
 
 export function executeCommand(commandName: string, args: string[]) {
-    const executor = new CommandExecutor([setComand, getCommand, addCommand]);
+    const executor = new CommandExecutor([
+        setComand,
+        getCommand,
+        addCommand,
+        removeCommand,
+    ]);
 
     switch (commandName) {
         case '--version':
@@ -18,8 +23,6 @@ export function executeCommand(commandName: string, args: string[]) {
             return init(args);
         case 'hook':
             return hook(args);
-        case 'remove':
-            return remove(args);
         default:
             executor.evaluate([commandName, ...args]);
     }
