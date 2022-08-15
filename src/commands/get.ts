@@ -1,20 +1,17 @@
+import { ClosureChainLink, Command } from '../command';
 import {
     Committer,
     getAvailableCommitters,
     getCurrentCommitters,
 } from '../committer';
 
-export function getCommitters(args: string[]) {
-    if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
-        console.log(getHelpText);
-    } else {
-        const [which] = args;
-        switch (which) {
-            case 'current':
-                return currentCommitters();
-            case 'all':
-                return allCommitters();
-        }
+function getCommitters(args: string[]) {
+    const [which] = args;
+    switch (which) {
+        case 'current':
+            return currentCommitters();
+        case 'all':
+            return allCommitters();
     }
 }
 
@@ -36,7 +33,13 @@ function mapCommitter({ email, fullName, initials }: Committer) {
     return `${initials} - ${fullName} <${email}>`;
 }
 
-export const getHelpText = `Get information about the available committers.
-usage: guet get <identifier>
+export const getCommand = new Command(
+    'get',
+    {
+        description: 'Get information about the available committers.',
+        usage: `usage: guet get <identifier>
     current - lists currently set comitters
-    all - lists all committers`;
+    all - lists all committers`,
+    },
+    new ClosureChainLink(getCommitters)
+);
