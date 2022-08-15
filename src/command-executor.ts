@@ -12,6 +12,14 @@ export class CommandExecutor {
 
     public evaluate(args: string[]): void {
         const [commandName, ...rest] = args;
+        if (
+            commandName === undefined ||
+            commandName === '--help' ||
+            commandName === '-h'
+        ) {
+            console.log(this.buildHelpMessage());
+            process.exit(0);
+        }
         if (['--version', '-v'].includes(commandName)) {
             const version = readJSONFile(
                 path.join(__dirname, '..', 'package.json')
@@ -29,7 +37,19 @@ export class CommandExecutor {
                 } else {
                     found.execute(rest);
                 }
+            } else {
+                console.log(this.buildHelpMessage());
             }
         }
+    }
+
+    buildHelpMessage(): string {
+        const commandsWithDescriptions = this.commands
+            .map(
+                command =>
+                    `${command.identifier}: ${command.helpMessage('short')}`
+            )
+            .join('\n');
+        return `usage: guet <command>\n\n${commandsWithDescriptions}`;
     }
 }

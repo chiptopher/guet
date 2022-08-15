@@ -63,4 +63,28 @@ describe('CommandExecutor', () => {
         expect(func).not.toHaveBeenCalled();
         expect(log).toHaveBeenCalledWith(version);
     });
+
+    describe('buildHelpMessage', () => {
+        it('concatenates all the descriptions of the commands', () => {
+            const commands = [
+                new Command(
+                    'name1',
+                    { description: 'description1', usage: 'usage1' },
+                    new ClosureChainLink(jest.fn())
+                ),
+                new Command(
+                    'name2',
+                    { description: 'description2', usage: 'usage2' },
+                    new ClosureChainLink(jest.fn())
+                ),
+            ];
+
+            const commandExecutor = new CommandExecutor(commands);
+            expect(commandExecutor.buildHelpMessage())
+                .toEqual(`usage: guet <command>
+
+name1: description1
+name2: description2`);
+        });
+    });
 });
