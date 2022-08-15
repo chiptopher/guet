@@ -1,12 +1,15 @@
+import { CommandExecutor } from './command-executor';
 import { add } from './commands/add';
 import { getCommitters } from './commands/get';
 import { hook } from './commands/hook';
 import { init } from './commands/init';
 import { remove } from './commands/remove';
-import { setCommitters } from './commands/set';
+import { setComand } from './commands/set';
 import { version } from './version';
 
 export function executeCommand(commandName: string, args: string[]) {
+    const executor = new CommandExecutor([setComand]);
+
     switch (commandName) {
         case '--version':
         case '-v':
@@ -15,13 +18,13 @@ export function executeCommand(commandName: string, args: string[]) {
             return init(args);
         case 'add':
             return add(args);
-        case 'set':
-            return setCommitters(args);
         case 'hook':
             return hook(args);
         case 'get':
             return getCommitters(args);
         case 'remove':
             return remove(args);
+        default:
+            executor.evaluate([commandName, ...args]);
     }
 }

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 
+import { ClosureChainLink, Command } from '../command';
 import {
     Committer,
     getAvailableCommitters,
@@ -44,3 +45,12 @@ export function setCommitters(args: string[]) {
     });
     setCurrentCommitters(committers);
 }
+
+export const setComand = new Command(
+    'set',
+    {
+        long: `set the current committers for this repository, but longer`,
+        short: 'set the current committers for this repository',
+    },
+    new ClosureChainLink(setCommitters)
+);

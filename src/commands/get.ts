@@ -5,12 +5,16 @@ import {
 } from '../committer';
 
 export function getCommitters(args: string[]) {
-    const [which] = args;
-    switch (which) {
-        case 'current':
-            return currentCommitters();
-        case 'all':
-            return allCommitters();
+    if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+        console.log(getHelpText);
+    } else {
+        const [which] = args;
+        switch (which) {
+            case 'current':
+                return currentCommitters();
+            case 'all':
+                return allCommitters();
+        }
     }
 }
 
@@ -31,3 +35,8 @@ function allCommitters() {
 function mapCommitter({ email, fullName, initials }: Committer) {
     return `${initials} - ${fullName} <${email}>`;
 }
+
+export const getHelpText = `Get information about the available committers.
+usage: guet get <identifier>
+    current - lists currently set comitters
+    all - lists all committers`;
