@@ -18,4 +18,10 @@ test('should set the current committers initials in the project', () => {
 
     expect(found.currentCommittersInitials).toEqual(['fn', 'sn']);
     expect(found.setTime).not.toEqual('');
+
+    const [nameOutput] = run('git config user.name');
+    const [emailOutput] = run('git config user.email');
+
+    expect(nameOutput).toEqual('first name\n');
+    expect(emailOutput).toEqual('fn@example.com\n');
 });
