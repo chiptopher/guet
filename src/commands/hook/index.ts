@@ -3,6 +3,7 @@ import path from 'path';
 
 import { DateTime } from 'luxon';
 
+import { ClosureChainLink, Command } from '../../command';
 import { getCurrentCommitters, setCurrentCommitters } from '../../committer';
 import { COMMIT_EDITMSG, getGitPath, readRepoConfig } from '../../utils';
 import {
@@ -11,7 +12,7 @@ import {
     shuffleCommitters,
 } from './util';
 
-export function hook(args: string[]) {
+function hook(args: string[]) {
     const [hookName] = args;
     switch (hookName) {
         case 'pre-commit':
@@ -56,3 +57,9 @@ function preCommit() {
         process.exit(1);
     }
 }
+
+export const hookCommand = new Command(
+    'hook',
+    { description: '', usage: '' },
+    new ClosureChainLink(hook)
+);

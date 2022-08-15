@@ -2,6 +2,7 @@ import fs, { writeFileSync } from 'fs';
 import { homedir } from 'os';
 import path from 'path';
 
+import { ClosureChainLink, Command } from '../../command';
 import { emptyConfig, emptyRepoInfo } from '../../config';
 import {
     Args,
@@ -12,7 +13,7 @@ import {
 } from '../../utils';
 import { createGitHookContent } from './util';
 
-export function init(args: Args) {
+function init(args: Args) {
     const configDir = path.join(homedir(), '.guetrc.json');
     if (!fs.existsSync(configDir)) {
         writeConfig(emptyConfig());
@@ -46,3 +47,9 @@ function createHook(name: string) {
         { mode: 0o0755 }
     );
 }
+
+export const initCommand = new Command(
+    'init',
+    { description: '', usage: '' },
+    new ClosureChainLink(init)
+);
