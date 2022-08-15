@@ -92,7 +92,8 @@ async function runInParallel(testFiles) {
 
 async function runForFile(fileName, out) {
     const testClient = new Docker();
-    const runCommand = ['npx', 'jest', fileName.split('guet/')[1]];
+    const runCommand = ['npx', 'jest', fileName.split('e2e-2/')[1]];
+    console.log(`Running: ${runCommand.join(' ')}`);
     const result = await testClient.run('guettest:0.0.1', runCommand, out);
 
     await result[1].remove().catch(error => {
