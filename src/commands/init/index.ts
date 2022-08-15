@@ -3,7 +3,7 @@ import path from 'path';
 
 import { Initialize } from '../../chain-links/initialize';
 import { ClosureChainLink, Command } from '../../command';
-import { emptyRepoInfo } from '../../config';
+import { emptyConfig, emptyRepoInfo } from '../../config';
 import { Args, getGitPath, hasGitInCwd, wrtiteJsonFile } from '../../utils';
 import { createGitHookContent } from './util';
 
@@ -16,6 +16,7 @@ function init(args: Args) {
             path.join(getGitPath(), 'repo.guetrc.json'),
             emptyRepoInfo()
         );
+        maybeAddLocal(args);
         maybeAddHooks(args);
         console.log('guet successfully started in this repository.'.green);
     }
@@ -36,6 +37,12 @@ function createHook(name: string) {
         createGitHookContent(name),
         { mode: 0o0755 }
     );
+}
+
+function maybeAddLocal(args: string[]) {
+    if (args.includes('--local')) {
+        wrtiteJsonFile(path.join(process.cwd(), 'guetrc.json'), emptyConfig());
+    }
 }
 
 export const initCommand = new Command(
