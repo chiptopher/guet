@@ -1,4 +1,5 @@
 import { separateFlags } from '../args';
+import { ClosureChainLink, Command } from '../command';
 import { Committer, removeCommitterWithInitials } from '../committer';
 import { log } from '../native-wrapper';
 import { readConfig, writeConfig } from '../utils';
@@ -54,3 +55,12 @@ export function add(args: string[]) {
     config.committers.push(committer);
     writeConfig(config);
 }
+
+export const addCommand = new Command(
+    'add',
+    {
+        description: 'Add committers for use on commits.',
+        usage: '',
+    },
+    new ClosureChainLink(add)
+);
