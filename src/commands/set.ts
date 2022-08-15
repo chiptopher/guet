@@ -12,10 +12,19 @@ import {
     configPath,
     readJSONFile,
     readRepoConfig,
+    repoConfigExists,
     writeRepoConfig,
 } from '../utils';
 
 export function setCommitters(args: string[]) {
+    if (!repoConfigExists()) {
+        log(
+            'Must run "guet init" to set paired committers for this repo.',
+            'error'
+        );
+        process.exit(1);
+    }
+
     // TODO refactor to use util methods
     const missingInitials = args.filter(
         arg =>
@@ -49,8 +58,8 @@ export function setCommitters(args: string[]) {
 export const setComand = new Command(
     'set',
     {
-        usage: `set the current committers for this repository, but longer`,
         description: 'set the current committers for this repository',
+        usage: `set the current committers for this repository, but longer`,
     },
     new ClosureChainLink(setCommitters)
 );

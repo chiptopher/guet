@@ -1,4 +1,4 @@
-import fs, { PathLike, readFileSync } from 'fs';
+import fs, { existsSync, PathLike, readFileSync } from 'fs';
 import { homedir } from 'os';
 import path from 'path';
 
@@ -33,6 +33,10 @@ export function readJSONFile<T = any>(path: PathLike): T {
 
 export function wrtiteJsonFile(path: PathLike, data: any) {
     fs.writeFileSync(path, JSON.stringify(data));
+}
+
+export function repoConfigExists(): boolean {
+    return existsSync(path.join(getGitPath(), 'repo.guetrc.json'));
 }
 
 export function readRepoConfig(): RepoInfo {
