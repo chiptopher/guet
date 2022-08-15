@@ -1,23 +1,13 @@
-import fs, { writeFileSync } from 'fs';
-import { homedir } from 'os';
+import { writeFileSync } from 'fs';
 import path from 'path';
 
+import { Initialize } from '../../chain-links/initialize';
 import { ClosureChainLink, Command } from '../../command';
-import { emptyConfig, emptyRepoInfo } from '../../config';
-import {
-    Args,
-    getGitPath,
-    hasGitInCwd,
-    writeConfig,
-    wrtiteJsonFile,
-} from '../../utils';
+import { emptyRepoInfo } from '../../config';
+import { Args, getGitPath, hasGitInCwd, wrtiteJsonFile } from '../../utils';
 import { createGitHookContent } from './util';
 
 function init(args: Args) {
-    const configDir = path.join(homedir(), '.guetrc.json');
-    if (!fs.existsSync(configDir)) {
-        writeConfig(emptyConfig());
-    }
     if (!hasGitInCwd()) {
         console.log('git not installed in this directory.'.red);
         process.exit(1);
@@ -51,5 +41,5 @@ function createHook(name: string) {
 export const initCommand = new Command(
     'init',
     { description: '', usage: '' },
-    new ClosureChainLink(init)
+    new Initialize().next(new ClosureChainLink(init))
 );

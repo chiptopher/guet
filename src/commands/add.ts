@@ -1,5 +1,6 @@
 import { separateFlags } from '../args';
 import { ArgCount } from '../chain-links/arg-count';
+import { Initialize } from '../chain-links/initialize';
 import { ClosureChainLink, Command } from '../command';
 import { Committer, removeCommitterWithInitials } from '../committer';
 import { log } from '../native-wrapper';
@@ -55,5 +56,5 @@ export const addCommand = new Command(
         description: 'Add committers for use on commits.',
         usage: '',
     },
-    new ArgCount(3, 3).next(new ClosureChainLink(add))
+    new Initialize().next(new ArgCount(3, 3)).next(new ClosureChainLink(add))
 );

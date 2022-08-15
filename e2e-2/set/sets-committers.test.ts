@@ -7,7 +7,7 @@ import { run } from '../utils';
 test('should set the current committers initials in the project', () => {
     run('git init');
     run('guet init');
-    run('guet add fn "first name" fn@example.com');
+    run('guet add FN "first name" fn@example.com');
     run('guet add sn "second name" sn@example.com');
 
     run('guet set fn sn');
