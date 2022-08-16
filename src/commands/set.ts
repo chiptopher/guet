@@ -6,15 +6,8 @@ import {
     getAvailableCommitters,
     setCurrentCommitters,
 } from '../committer';
-import { Config } from '../config';
 import { log } from '../native-wrapper';
-import {
-    configPath,
-    readJSONFile,
-    readRepoConfig,
-    repoConfigExists,
-    writeRepoConfig,
-} from '../utils';
+import { readRepoConfig, repoConfigExists, writeRepoConfig } from '../utils';
 
 export function setCommitters(args: string[]) {
     if (!repoConfigExists()) {
@@ -28,8 +21,8 @@ export function setCommitters(args: string[]) {
     // TODO refactor to use util methods
     const missingInitials = args.filter(
         arg =>
-            !readJSONFile<Config>(configPath)
-                .committers.map(committer => committer.initials)
+            !getAvailableCommitters()
+                .map(committer => committer.initials)
                 .includes(arg)
     );
 
@@ -52,6 +45,7 @@ export function setCommitters(args: string[]) {
         ...readRepoConfig(),
         setTime: DateTime.now().toISO(),
     });
+
     setCurrentCommitters(committers);
 }
 
