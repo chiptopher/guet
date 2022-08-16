@@ -50,4 +50,19 @@ export function writeRepoConfig(data: RepoInfo) {
     wrtiteJsonFile(projectConfigPath, data);
 }
 
+const localConfigFilePath = path.join(process.cwd(), 'guetrc.json');
+
+export function readLocalConfig(): Config {
+    const projectConfig = readJSONFile(localConfigFilePath);
+    return projectConfig;
+}
+
+export function writeLocalConfig(data: Config) {
+    wrtiteJsonFile(localConfigFilePath, data);
+}
+
+export function localConfigExists(): boolean {
+    return existsSync(localConfigFilePath);
+}
+
 export type Args = string[];

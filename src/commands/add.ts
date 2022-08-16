@@ -2,27 +2,28 @@ import { separateFlags } from '../args';
 import { ArgCount } from '../chain-links/arg-count';
 import { Initialize } from '../chain-links/initialize';
 import { ClosureChainLink, Command } from '../command';
-import { Committer, removeCommitterWithInitials } from '../committer';
+import {
+    addCommitter,
+    Committer,
+    removeCommitterWithInitials,
+} from '../committer';
 import { log } from '../native-wrapper';
-import { readConfig, writeConfig } from '../utils';
+import { readConfig } from '../utils';
 
 export function add(args: string[]) {
     const [actualArgs, flags] = separateFlags(args);
     const [givenInitials, fullName, email] = actualArgs;
     const initials = givenInitials.toLowerCase();
 
-    const config = readConfig();
+    const globalConfig = readConfig();
 
-    const found = config.committers.find(
+    const found = globalConfig.committers.find(
         committer => committer.initials === initials
     );
 
     if (found) {
         if (flags.includes('--force')) {
-            config.committers = removeCommitterWithInitials(
-                initials,
-                config.committers
-            );
+            removeCommitterWithInitials(initials);
             log(
                 `Overwritting previous committer with initials "${found.initials}".`
             );
@@ -46,8 +47,7 @@ export function add(args: string[]) {
         initials,
     };
 
-    config.committers.push(committer);
-    writeConfig(config);
+    addCommitter(committer, flags.includes('--local') ? 'local' : 'global');
 }
 
 export const addCommand = new Command(

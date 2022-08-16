@@ -1,6 +1,6 @@
 import { ClosureChainLink, Command } from '../../command';
 import { removeCommitterWithInitials } from '../../committer';
-import { readConfig, writeConfig } from '../../utils';
+import { readConfig } from '../../utils';
 
 function remove(args: string[]) {
     const config = readConfig();
@@ -24,11 +24,7 @@ function remove(args: string[]) {
     if (invalidInitialsGiven) {
         process.exit(1);
     }
-    config.committers = removeCommitterWithInitials(
-        initialsFormatted[0],
-        config.committers
-    );
-    writeConfig(config);
+    removeCommitterWithInitials(initialsFormatted[0]);
 }
 
 export const removeCommand = new Command(
