@@ -64,6 +64,18 @@ export function getCurrentCommitters(): Committer[] {
     });
 }
 
+export function getGlobalCommitters(): Committer[] {
+    return readConfig().committers;
+}
+
+export function getLocalCommitters(): Committer[] {
+    if (localConfigExists()) {
+        return readLocalConfig().committers;
+    } else {
+        return [];
+    }
+}
+
 export function getAvailableCommitters(): Committer[] {
     const globalCommitters = readConfig().committers;
     let localCommitters: Committer[] = [];

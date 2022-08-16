@@ -1,8 +1,9 @@
 import { ClosureChainLink, Command } from '../command';
 import {
     Committer,
-    getAvailableCommitters,
     getCurrentCommitters,
+    getGlobalCommitters,
+    getLocalCommitters,
 } from '../committer';
 
 function getCommitters(args: string[]) {
@@ -24,9 +25,28 @@ function currentCommitters() {
 
 function allCommitters() {
     console.log('All committers:');
-    getAvailableCommitters()
-        .map(mapCommitter)
+    const globalCommitters = getGlobalCommitters();
+    const localCommitters = getLocalCommitters();
+
+    globalCommitters
+        .map(committer => {
+            if (
+                localCommitters.find(
+                    localCommiter =>
+                        localCommiter.initials === committer.initials
+                )
+            ) {
+                return `${mapCommitter(committer)} (overriden)`;
+            } else {
+                return mapCommitter(committer);
+            }
+        })
         .forEach(line => console.log(line));
+
+    if (localCommitters.length > 0) {
+        console.log('\n(local)');
+        localCommitters.map(mapCommitter).forEach(line => console.log(line));
+    }
 }
 
 function mapCommitter({ email, fullName, initials }: Committer) {

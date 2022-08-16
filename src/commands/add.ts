@@ -8,7 +8,7 @@ import {
     removeCommitterWithInitials,
 } from '../committer';
 import { log } from '../native-wrapper';
-import { localConfigExists, readConfig } from '../utils';
+import { localConfigExists, readConfig, readLocalConfig } from '../utils';
 
 export function add(args: string[]) {
     const [actualArgs, flags] = separateFlags(args);
@@ -23,15 +23,18 @@ export function add(args: string[]) {
         process.exit(1);
     }
 
-    const globalConfig = readConfig();
+    const config = flags.includes('--local') ? readLocalConfig() : readConfig();
 
-    const found = globalConfig.committers.find(
+    const found = config.committers.find(
         committer => committer.initials === initials
     );
 
     if (found) {
         if (flags.includes('--force')) {
-            removeCommitterWithInitials(initials);
+            removeCommitterWithInitials(
+                initials,
+                flags.includes('--local') ? 'local' : 'global'
+            );
             log(
                 `Overwritting previous committer with initials "${found.initials}".`
             );
@@ -47,6 +50,18 @@ export function add(args: string[]) {
 
             process.exit(1);
         }
+    }
+
+    if (
+        flags.includes('--local') &&
+        readConfig().committers.find(
+            committer => committer.initials === initials
+        )
+    ) {
+        console.log(
+            `Added committer will be used over global committer with initials "${initials}" in this repository.`
+                .yellow
+        );
     }
 
     const committer: Committer = {
