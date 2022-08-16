@@ -25,52 +25,54 @@ export function add(args: string[]) {
 
     const config = flags.includes('--local') ? readLocalConfig() : readConfig();
 
-    const found = config.committers.find(
-        committer => committer.initials === initials
-    );
-
-    if (found) {
-        if (flags.includes('--force')) {
-            removeCommitterWithInitials(
-                initials,
-                flags.includes('--local') ? 'local' : 'global'
-            );
-            log(
-                `Overwritting previous committer with initials "${found.initials}".`
-            );
-        } else {
-            log(
-                `Failed to write "${initials}" "${fullName}" "${email}" because it would overwrite already present committer: "${found.initials}" "${found.fullName}" "${found.email}"`,
-                'error'
-            );
-            log(
-                'You can force this overwrite by adding the --force flag.',
-                'error'
-            );
-
-            process.exit(1);
-        }
-    }
-
-    if (
-        flags.includes('--local') &&
-        readConfig().committers.find(
+    if (config) {
+        const found = config.committers.find(
             committer => committer.initials === initials
-        )
-    ) {
-        console.log(
-            `Added committer will be used over global committer with initials "${initials}" in this repository.`
-                .yellow
         );
+
+        if (found) {
+            if (flags.includes('--force')) {
+                removeCommitterWithInitials(
+                    initials,
+                    flags.includes('--local') ? 'local' : 'global'
+                );
+                log(
+                    `Overwritting previous committer with initials "${found.initials}".`
+                );
+            } else {
+                log(
+                    `Failed to write "${initials}" "${fullName}" "${email}" because it would overwrite already present committer: "${found.initials}" "${found.fullName}" "${found.email}"`,
+                    'error'
+                );
+                log(
+                    'You can force this overwrite by adding the --force flag.',
+                    'error'
+                );
+
+                process.exit(1);
+            }
+        }
+
+        if (
+            flags.includes('--local') &&
+            readConfig().committers.find(
+                committer => committer.initials === initials
+            )
+        ) {
+            console.log(
+                `Added committer will be used over global committer with initials "${initials}" in this repository.`
+                    .yellow
+            );
+        }
+
+        const committer: Committer = {
+            email,
+            fullName,
+            initials,
+        };
+
+        addCommitter(committer, flags.includes('--local') ? 'local' : 'global');
     }
-
-    const committer: Committer = {
-        email,
-        fullName,
-        initials,
-    };
-
-    addCommitter(committer, flags.includes('--local') ? 'local' : 'global');
 }
 
 export const addCommand = new Command(

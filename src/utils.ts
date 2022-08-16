@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import fs, { existsSync, PathLike, readFileSync } from 'fs';
 import { homedir } from 'os';
 import path from 'path';
@@ -7,7 +8,12 @@ import { Config, RepoInfo } from './config';
 export const configPath = path.join(homedir(), '.guetrc.json');
 
 export function getGitPath() {
-    return path.join(process.cwd(), '.git');
+    const root = getProjectAbsolutePath();
+    if (root) {
+        return path.join(root, '.git');
+    } else {
+        throw new Error('Expected to find a root path, but none was provided');
+    }
 }
 
 export const COMMIT_EDITMSG = 'COMMIT_EDITMSG';
@@ -50,19 +56,43 @@ export function writeRepoConfig(data: RepoInfo) {
     wrtiteJsonFile(projectConfigPath, data);
 }
 
-const localConfigFilePath = path.join(process.cwd(), 'guetrc.json');
+function localConfigFilePath(): string | null {
+    const root = getProjectAbsolutePath();
+    if (root) {
+        return path.join(root, 'guetrc.json');
+    } else {
+        return null;
+    }
+}
 
-export function readLocalConfig(): Config {
-    const projectConfig = readJSONFile(localConfigFilePath);
-    return projectConfig;
+export function readLocalConfig(): Config | null {
+    const path = localConfigFilePath();
+    if (path === null) {
+        return null;
+    } else {
+        return readJSONFile(path);
+    }
 }
 
 export function writeLocalConfig(data: Config) {
-    wrtiteJsonFile(localConfigFilePath, data);
+    const path = localConfigFilePath();
+    if (path) {
+        wrtiteJsonFile(path, data);
+    }
 }
 
 export function localConfigExists(): boolean {
-    return existsSync(localConfigFilePath);
+    const path = localConfigFilePath();
+    if (!path) return false;
+    return existsSync(path);
 }
 
 export type Args = string[];
+
+export function getProjectAbsolutePath(): null | string {
+    try {
+        return String(execSync('git rev-parse --show-toplevel')).trim();
+    } catch (e: any) {
+        return null;
+    }
+}

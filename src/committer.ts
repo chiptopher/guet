@@ -27,7 +27,11 @@ export function removeCommitterWithInitials(
     if (type === 'global') {
         globalConfig = readConfig();
     } else {
-        globalConfig = readLocalConfig();
+        const found = readLocalConfig();
+        if (!found) {
+            throw new Error('trying to remove local committer when non exists');
+        }
+        globalConfig = found;
     }
 
     let committers = [...globalConfig.committers];
@@ -70,7 +74,7 @@ export function getGlobalCommitters(): Committer[] {
 
 export function getLocalCommitters(): Committer[] {
     if (localConfigExists()) {
-        return readLocalConfig().committers;
+        return getConfig('local').committers;
     } else {
         return [];
     }
@@ -80,7 +84,7 @@ export function getAvailableCommitters(): Committer[] {
     const globalCommitters = readConfig().committers;
     let localCommitters: Committer[] = [];
     if (localConfigExists()) {
-        localCommitters = readLocalConfig().committers;
+        localCommitters = getLocalCommitters();
     }
 
     return localCommitters.concat(
@@ -112,7 +116,7 @@ export function addCommitter(
     if (_type === undefined || _type === 'global') {
         globalConfig = readConfig();
     } else {
-        globalConfig = readLocalConfig();
+        globalConfig = getConfig('local');
     }
 
     const committers = [...globalConfig.committers];
@@ -128,5 +132,20 @@ export function addCommitter(
             ...globalConfig,
             committers,
         });
+    }
+}
+
+function getConfig(type: ConfigType): Config {
+    if (type === undefined || type === 'global') {
+        return readConfig();
+    } else {
+        const found = readLocalConfig();
+        if (!found) {
+            throw new Error(
+                'Attempting to read the local config when none exists'
+            );
+        } else {
+            return found;
+        }
     }
 }
