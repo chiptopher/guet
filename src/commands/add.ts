@@ -8,12 +8,20 @@ import {
     removeCommitterWithInitials,
 } from '../committer';
 import { log } from '../native-wrapper';
-import { readConfig } from '../utils';
+import { localConfigExists, readConfig } from '../utils';
 
 export function add(args: string[]) {
     const [actualArgs, flags] = separateFlags(args);
     const [givenInitials, fullName, email] = actualArgs;
     const initials = givenInitials.toLowerCase();
+
+    if (flags.includes('--local') && !localConfigExists()) {
+        log(
+            'guet not initialized in this repository. Run "guet init --local" to start local tracking in this repository.',
+            'error'
+        );
+        process.exit(1);
+    }
 
     const globalConfig = readConfig();
 

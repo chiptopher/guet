@@ -42,9 +42,3 @@ class TestAddUser(DockerTest):
 
         text = self.get_file_text('test-env/.guet/committers')
         self.assertListEqual(['initials1,name1,email1'], text)
-
-    def test_add_local_requires_git_initialized_before_committing(self):
-        self.guet_add('initials1', 'name1', 'email1', local=True)
-
-        self.execute()
-        self.assert_text_in_logs(0, ("Git not installed in this directory."))
