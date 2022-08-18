@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 
+import { MustHaveGit } from '../chain-links/must-have-git';
 import { ClosureChainLink, Command } from '../command';
 import {
     Committer,
@@ -55,5 +56,7 @@ export const setComand = new Command(
         description: 'set the current committers for this repository',
         usage: `set the current committers for this repository, but longer`,
     },
-    new ClosureChainLink(setCommitters)
+    new MustHaveGit(
+        'Must run "guet init" to set paired committers for this repo.'
+    ).next(new ClosureChainLink(setCommitters))
 );
