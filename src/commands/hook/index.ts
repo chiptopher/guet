@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 
 import { ClosureChainLink, Command } from '../../command';
 import { getCurrentCommitters, setCurrentCommitters } from '../../committer';
+import { log } from '../../native-wrapper';
 import { COMMIT_EDITMSG, getGitPath, readRepoConfig } from '../../utils';
 import {
     appendCoAuthoredBy,
@@ -51,8 +52,9 @@ function preCommit() {
             DateTime.fromISO(readRepoConfig().setTime)
         )
     ) {
-        console.log(
-            'Committers last let over 24 hours ago. Please reset them.'.red
+        log(
+            'Committers last let over 24 hours ago. Please reset them.',
+            'error'
         );
         process.exit(1);
     }
@@ -60,6 +62,9 @@ function preCommit() {
 
 export const hookCommand = new Command(
     'hook',
-    { description: '', usage: '' },
+    {
+        description: 'perform the action at the given hook point',
+        usage: 'guet hook <hook name>',
+    },
     new ClosureChainLink(hook)
 );

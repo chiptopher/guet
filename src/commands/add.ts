@@ -60,9 +60,9 @@ export function add(args: string[]) {
                 committer => committer.initials === initials
             )
         ) {
-            console.log(
-                `Added committer will be used over global committer with initials "${initials}" in this repository.`
-                    .yellow
+            log(
+                `Added committer will be used over global committer with initials "${initials}" in this repository.`,
+                'warn'
             );
         }
 
@@ -79,8 +79,12 @@ export function add(args: string[]) {
 export const addCommand = new Command(
     'add',
     {
-        description: 'Add committers for use on commits.',
-        usage: '',
+        description: 'add committers for use on commits.',
+        usage: `guet add <initials> <"name"> <email>
+
+Flags:
+  --local - save the committer in a local config file.
+`,
     },
     new Initialize().next(new ArgCount(3, 3)).next(new ClosureChainLink(add))
 );

@@ -10,7 +10,10 @@ import { YeetHooks } from './hooks';
 
 export const yeetCommand = new Command(
     'yeet',
-    { description: '', usage: '' },
+    {
+        description: 'remove guet configurations from this repository',
+        usage: 'guet yeet',
+    },
     new Initialize()
         .next(
             new MustHaveGit(

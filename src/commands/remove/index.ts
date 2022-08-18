@@ -1,6 +1,7 @@
 import { Initialize } from '../../chain-links/initialize';
 import { ClosureChainLink, Command } from '../../command';
 import { removeCommitterWithInitials } from '../../committer';
+import { log } from '../../native-wrapper';
 import { readConfig } from '../../utils';
 
 function remove(args: string[]) {
@@ -16,8 +17,9 @@ function remove(args: string[]) {
                     committer => committer.initials === initials
                 )
             ) {
-                console.log(
-                    `No committer exists with initials "${initials}".`.red
+                log(
+                    `No committer exists with initials "${initials}".`,
+                    'error'
                 );
                 invalidInitialsGiven = true;
             }
@@ -31,8 +33,8 @@ function remove(args: string[]) {
 export const removeCommand = new Command(
     'remove',
     {
-        description: '',
-        usage: '',
+        description: 'remove a committer by its initials',
+        usage: 'guet remove <initials>',
     },
     new Initialize().next(new ClosureChainLink(remove))
 );

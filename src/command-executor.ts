@@ -1,6 +1,7 @@
 import path from 'path';
 
 import { Command } from './command';
+import { log } from './native-wrapper';
 import { readJSONFile } from './utils';
 
 export class CommandExecutor {
@@ -17,7 +18,7 @@ export class CommandExecutor {
             commandName === '--help' ||
             commandName === '-h'
         ) {
-            console.log(this.buildHelpMessage());
+            log(this.buildHelpMessage());
             process.exit(0);
         }
         if (['--version', '-v'].includes(commandName)) {
@@ -25,7 +26,7 @@ export class CommandExecutor {
                 path.join(__dirname, '..', 'package.json')
             ).version;
 
-            console.log(version);
+            log(version);
         } else {
             const found = this.commands.find(
                 command => command.identifier === commandName
@@ -33,12 +34,12 @@ export class CommandExecutor {
 
             if (found) {
                 if (rest.includes('--help')) {
-                    console.log(found.helpMessage('long'));
+                    log(found.helpMessage('long'));
                 } else {
                     found.execute(rest);
                 }
             } else {
-                console.log(this.buildHelpMessage());
+                log(this.buildHelpMessage());
             }
         }
     }

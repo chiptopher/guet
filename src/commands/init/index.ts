@@ -50,7 +50,14 @@ function maybeAddLocal(args: string[]) {
 
 export const initCommand = new Command(
     'init',
-    { description: '', usage: '' },
+    {
+        description: 'initialize a repository for tracking',
+        usage: `guet init
+Flags
+  --local - add a local config file
+  --witHooks - create required git hooks
+`,
+    },
     new Initialize()
         .next(new MustHaveGit('git not installed in this directory.'))
         .next(new LocalPresent())

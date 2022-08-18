@@ -54,7 +54,7 @@ export const setComand = new Command(
     'set',
     {
         description: 'set the current committers for this repository',
-        usage: `set the current committers for this repository, but longer`,
+        usage: `guet set [initials, ...]`,
     },
     new MustHaveGit(
         'Must run "guet init" to set paired committers for this repo.'

@@ -5,6 +5,7 @@ import {
     getGlobalCommitters,
     getLocalCommitters,
 } from '../committer';
+import { log } from '../native-wrapper';
 
 function getCommitters(args: string[]) {
     const [which] = args;
@@ -17,14 +18,14 @@ function getCommitters(args: string[]) {
 }
 
 function currentCommitters() {
-    console.log('Current committers:');
+    log('Current committers:');
     getCurrentCommitters()
         .map(mapCommitter)
         .forEach(line => console.log(line));
 }
 
 function allCommitters() {
-    console.log('All committers:');
+    log('All committers:');
     const globalCommitters = getGlobalCommitters();
     const localCommitters = getLocalCommitters();
 
@@ -44,7 +45,7 @@ function allCommitters() {
         .forEach(line => console.log(line));
 
     if (localCommitters.length > 0) {
-        console.log('\n(local)');
+        log('\n(local)');
         localCommitters.map(mapCommitter).forEach(line => console.log(line));
     }
 }
@@ -57,7 +58,7 @@ export const getCommand = new Command(
     'get',
     {
         description: 'Get information about the available committers.',
-        usage: `usage: guet get <identifier>
+        usage: `guet get <identifier>
     current - lists currently set comitters
     all - lists all committers`,
     },

@@ -20,7 +20,7 @@ export class Command {
             case 'short':
                 return this.help.description;
             case 'long':
-                return `${this.help.description}\n${this.help.usage}`;
+                return `${this.help.description}\nusage: ${this.help.usage}`;
         }
     }
 }

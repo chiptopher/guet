@@ -11,7 +11,7 @@ describe('Command', () => {
             const command = new Command('name', help, links);
             expect(command.helpMessage('short')).toEqual(help.description);
             expect(command.helpMessage('long')).toEqual(
-                `${help.description}\n${help.usage}`
+                `${help.description}\nusage: ${help.usage}`
             );
         });
     });
