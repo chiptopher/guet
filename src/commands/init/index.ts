@@ -34,7 +34,7 @@ function maybeAddHooks(args: Args) {
     }
 }
 
-function createHook(name: string) {
+export function createHook(name: string) {
     writeFileSync(
         path.join(getGitPath(), 'hooks', name),
         createGitHookContent(name),

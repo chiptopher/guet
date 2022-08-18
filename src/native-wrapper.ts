@@ -13,7 +13,7 @@ export function log(message: string, level?: LogLevel) {
             break;
         case 'info':
         default:
-            console.log(message.white);
+            console.log(message);
             break;
     }
 }
