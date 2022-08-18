@@ -7,6 +7,7 @@ import { ClosureChainLink, Command } from '../../command';
 import { emptyConfig, emptyRepoInfo } from '../../config';
 import { Args, getGitPath, wrtiteJsonFile } from '../../utils';
 import { HooksCheck } from './hooks-check';
+import { LocalPresent } from './local-preset';
 import { createGitHookContent } from './util';
 
 function init(args: Args) {
@@ -47,6 +48,7 @@ export const initCommand = new Command(
     { description: '', usage: '' },
     new Initialize()
         .next(new MustHaveGit('git not installed in this directory.'))
+        .next(new LocalPresent())
         .next(new HooksCheck())
         .next(new ClosureChainLink(init))
 );
