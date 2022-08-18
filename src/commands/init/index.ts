@@ -8,6 +8,7 @@ import { emptyConfig, emptyRepoInfo } from '../../config';
 import { Args, getGitPath, wrtiteJsonFile } from '../../utils';
 import { HooksCheck } from './hooks-check';
 import { LocalPresent } from './local-preset';
+import { RepoConfigPreset } from './repo-config-present';
 import { createGitHookContent } from './util';
 
 function init(args: Args) {
@@ -49,6 +50,7 @@ export const initCommand = new Command(
     new Initialize()
         .next(new MustHaveGit('git not installed in this directory.'))
         .next(new LocalPresent())
+        .next(new RepoConfigPreset())
         .next(new HooksCheck())
         .next(new ClosureChainLink(init))
 );
