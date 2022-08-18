@@ -1,3 +1,4 @@
+import { Initialize } from '../../chain-links/initialize';
 import { ClosureChainLink, Command } from '../../command';
 import { removeCommitterWithInitials } from '../../committer';
 import { readConfig } from '../../utils';
@@ -33,5 +34,5 @@ export const removeCommand = new Command(
         description: '',
         usage: '',
     },
-    new ClosureChainLink(remove)
+    new Initialize().next(new ClosureChainLink(remove))
 );
