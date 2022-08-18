@@ -13,4 +13,11 @@ async function main() {
     return executeCommand(commandName, rest);
 }
 
-main().catch(err => console.error(err));
+main().catch((err: Error) => {
+    console.error('An unexpected error has occurred:'.red);
+    console.error(err.message.red);
+    if (err.stack) {
+        console.error(String(err.stack).red);
+    }
+    process.exit(1);
+});
