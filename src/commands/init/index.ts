@@ -5,6 +5,7 @@ import { Initialize } from '../../chain-links/initialize';
 import { MustHaveGit } from '../../chain-links/must-have-git';
 import { ClosureChainLink, Command } from '../../command';
 import { emptyConfig, emptyRepoInfo } from '../../config';
+import { log } from '../../native-wrapper';
 import { Args, getGitPath, wrtiteJsonFile } from '../../utils';
 import { HooksCheck } from './hooks-check';
 import { LocalPresent } from './local-preset';
@@ -18,7 +19,7 @@ function init(args: Args) {
     );
     maybeAddLocal(args);
     maybeAddHooks(args);
-    console.log('guet successfully started in this repository.'.green);
+    log('guet successfully started in this repository.', 'success');
 }
 
 function maybeAddHooks(args: Args) {
@@ -26,7 +27,10 @@ function maybeAddHooks(args: Args) {
         createHook('pre-commit');
         createHook('post-commit');
         createHook('commit-msg');
-        console.log('Creating pre-commit, post-commit, and commit-msg hooks.');
+        log(
+            'Creating pre-commit, post-commit, and commit-msg hooks.',
+            'success'
+        );
     }
 }
 

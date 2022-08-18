@@ -37,7 +37,7 @@ test("it should alert user that they're overwritting a committer, and give them 
 
     expect(secondOut).toEqual(
         assembleOutput([
-            'Overwritting previous committer with initials "fn".'.green,
+            'Overwritting previous committer with initials "fn".'.yellow,
         ])
     );
 });

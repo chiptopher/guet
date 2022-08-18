@@ -37,7 +37,8 @@ export function add(args: string[]) {
                     flags.includes('--local') ? 'local' : 'global'
                 );
                 log(
-                    `Overwritting previous committer with initials "${found.initials}".`
+                    `Overwritting previous committer with initials "${found.initials}".`,
+                    'warn'
                 );
             } else {
                 log(
