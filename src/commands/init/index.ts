@@ -2,24 +2,21 @@ import { writeFileSync } from 'fs';
 import path from 'path';
 
 import { Initialize } from '../../chain-links/initialize';
+import { MustHaveGit } from '../../chain-links/must-have-git';
 import { ClosureChainLink, Command } from '../../command';
 import { emptyConfig, emptyRepoInfo } from '../../config';
-import { Args, getGitPath, hasGitInCwd, wrtiteJsonFile } from '../../utils';
+import { Args, getGitPath, wrtiteJsonFile } from '../../utils';
+import { HooksCheck } from './hooks-check';
 import { createGitHookContent } from './util';
 
 function init(args: Args) {
-    if (!hasGitInCwd()) {
-        console.log('git not installed in this directory.'.red);
-        process.exit(1);
-    } else {
-        wrtiteJsonFile(
-            path.join(getGitPath(), 'repo.guetrc.json'),
-            emptyRepoInfo()
-        );
-        maybeAddLocal(args);
-        maybeAddHooks(args);
-        console.log('guet successfully started in this repository.'.green);
-    }
+    wrtiteJsonFile(
+        path.join(getGitPath(), 'repo.guetrc.json'),
+        emptyRepoInfo()
+    );
+    maybeAddLocal(args);
+    maybeAddHooks(args);
+    console.log('guet successfully started in this repository.'.green);
 }
 
 function maybeAddHooks(args: Args) {
@@ -48,5 +45,8 @@ function maybeAddLocal(args: string[]) {
 export const initCommand = new Command(
     'init',
     { description: '', usage: '' },
-    new Initialize().next(new ClosureChainLink(init))
+    new Initialize()
+        .next(new MustHaveGit('git not installed in this directory.'))
+        .next(new HooksCheck())
+        .next(new ClosureChainLink(init))
 );
