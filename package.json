@@ -1,10 +1,13 @@
 {
-  "name": "@chiptopher/guet",
-  "version": "4.0.0",
+  "name": "guet",
+  "version": "4.0.1",
   "description": "",
   "main": "index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf ./lib && tsc",
     "lint": "eslint . --ext .ts,.tsx,.js,json",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,json --fix",
     "test": "jest src",

@@ -12,16 +12,6 @@ import { LocalPresent } from './local-preset';
 import { RepoConfigPreset } from './repo-config-present';
 import { createGitHookContent } from './util';
 
-function init(args: Args) {
-    wrtiteJsonFile(
-        path.join(getGitPath(), 'repo.guetrc.json'),
-        emptyRepoInfo()
-    );
-    maybeAddLocal(args);
-    maybeAddHooks(args);
-    log('guet successfully started in this repository.', 'success');
-}
-
 function maybeAddHooks(args: Args) {
     if (args.includes('--withHooks')) {
         createHook('pre-commit');
@@ -34,7 +24,7 @@ function maybeAddHooks(args: Args) {
     }
 }
 
-export function createHook(name: string) {
+function createHook(name: string) {
     writeFileSync(
         path.join(getGitPath(), 'hooks', name),
         createGitHookContent(name),
@@ -63,5 +53,15 @@ Flags
         .next(new LocalPresent())
         .next(new RepoConfigPreset())
         .next(new HooksCheck())
-        .next(new ClosureChainLink(init))
+        .next(
+            new ClosureChainLink(args => {
+                wrtiteJsonFile(
+                    path.join(getGitPath(), 'repo.guetrc.json'),
+                    emptyRepoInfo()
+                );
+                maybeAddLocal(args);
+                maybeAddHooks(args);
+                log('guet successfully started in this repository.', 'success');
+            })
+        )
 );
