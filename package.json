@@ -1,0 +1,48 @@
+{
+  "name": "@chiptopher/guet",
+  "version": "4.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx,.js,json",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,json --fix",
+    "test": "jest src",
+    "test:e2e": "npm run docker:build && node e2e/index.js",
+    "test:run": "npm run build && node ./lib/index.js",
+    "docker:build": "docker build . -t guettest:0.0.1",
+    "docker:run": "npm run docker:build && docker run --rm -e \"TERM=xterm-256color\" -t -i guettest:0.0.1 /bin/bash",
+    "prepare": "husky install"
+  },
+  "bin": {
+    "guet": "./lib/index.js"
+  },
+  "author": "",
+  "devDependencies": {
+    "@types/dockerode": "^3.3.9",
+    "@types/jest": "^28.1.6",
+    "@types/luxon": "^3.0.0",
+    "@types/node": "^18.6.1",
+    "@types/node-fetch": "^2.6.2",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "dockerode": "^3.3.3",
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-typescript-sort-keys": "^2.1.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.1",
+    "jest": "^28.1.3",
+    "lint-staged": "^13.0.3",
+    "ts-jest": "^28.0.7",
+    "typescript": "^4.7.4",
+    "typescript-eslint-parser": "^22.0.0"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.1",
+    "luxon": "^3.0.1"
+  }
+}
