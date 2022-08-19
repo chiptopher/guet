@@ -4,7 +4,7 @@ const { execSync } = require('child_process');
 const colors = require('colors');
 const Docker = require('dockerode');
 
-const output = execSync(`npx jest e2e-2 --listTests`);
+const output = execSync(`npx jest e2e --listTests`);
 
 colors.enable();
 
@@ -92,7 +92,7 @@ async function runInParallel(testFiles) {
 
 async function runForFile(fileName, out) {
     const testClient = new Docker();
-    const runCommand = ['npx', 'jest', fileName.split('e2e-2/')[1]];
+    const runCommand = ['npx', 'jest', fileName.split('e2e/')[1]];
     console.log(`Running: ${runCommand.join(' ')}`);
     const result = await testClient.run('guettest:0.0.1', runCommand, out);
 
