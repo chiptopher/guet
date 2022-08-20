@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0
+This was a complete rewrite of the application, changing it's implementation from being python based to nodejs based. As such, the steps for downloading and using it have completely changed. Most of the CLI has remained unchanged, but there are a few differences. This is, however, a breaking change. `guet` config files from previous versions will not work with this one.
+
 ## 3.0.1
 ### Bugs Fixed
 * Removed error where commit messages were being overwritten entirely by Co-Authored lines

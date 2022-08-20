@@ -6,8 +6,15 @@ Pair programming is integral part of many software development lifecycles. When 
 
 
 ## Install
+
+To include it in your project:
 ```
 npm install guet -D
+```
+
+To install globally:
+```
+npm install -g guet
 ```
 
 ## Usage
