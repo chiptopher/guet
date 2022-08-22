@@ -6,6 +6,10 @@
   "files": [
     "lib"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chiptopher/guet"
+  },
   "scripts": {
     "build": "rm -rf ./lib && tsc",
     "lint": "eslint . --ext .ts,.tsx,.js,json",
