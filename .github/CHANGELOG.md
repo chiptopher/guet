@@ -3,6 +3,22 @@
 ## 4.0.0
 This was a complete rewrite of the application, changing it's implementation from being python based to nodejs based. As such, the steps for downloading and using it have completely changed. Most of the CLI has remained unchanged, but there are a few differences. This is, however, a breaking change. `guet` config files from previous versions will not work with this one.
 
+To migrate from the python version to the new typescript version, you'll want to do the following steps:
+1. **Uninstall guet.** That cammand chould be `pip3 uninstall guet`
+2. **Remove previous git hooks.** If you were using the raw guet hooks, this should be as simple as removing `pre-commit`, `post-commit`, and `commit-msg` in `.git/hooks`. If you were using it with something like husky, you'll have to remove those files and commands from your other git hooks.
+3. **Install new guet.** If you want it globally available, that'd be `npm install -g guet`.
+4. **Update hooks.** If you want guet to generate your hooks, you'll use the `--withHooks` flags in `guet init`. Otherwise in your `pre-commit`, `post-commit`, and `commit-msg` hooks you'll want to add the following commands respectively
+```
+// .git/hooks/pre-commit
+npx guet hook pre-commit
+
+// .git/hooks/commit-msg
+npx guet hook commit-msg
+
+// .git/hooks/post-commit
+npx guet hook post-commit
+```
+
 ## 3.0.1
 ### Bugs Fixed
 * Removed error where commit messages were being overwritten entirely by Co-Authored lines

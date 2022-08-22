@@ -28,3 +28,18 @@ npm install -g guet
 | remove | remove a committer by its initials |
 | yeet | remove guet configurations |
 | hook | apply guet modifications to the current git commit |
+
+### In pre-existing hooks.
+
+guet can easily integrate with other hook managing systems. In each of `pre-commit`, `commit-msg`, and `post-commit` within `.git/hooks/` you'll want to add each of the following commands respectively
+
+```
+// .git/hooks/pre-commit
+npx guet hook pre-commit
+
+// .git/hooks/commit-msg
+npx guet hook commit-msg
+
+// .git/hooks/post-commit
+npx guet hook post-commit
+```
