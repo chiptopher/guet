@@ -62,5 +62,6 @@ export const getCommand = new Command(
     current - lists currently set comitters
     all - lists all committers`,
     },
-    new ClosureChainLink(getCommitters)
+    new ClosureChainLink(getCommitters),
+    true
 );

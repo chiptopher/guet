@@ -1,17 +1,29 @@
 import { ChainLink } from './chain-links';
+import { log } from './native-wrapper';
 
 export class Command {
-    public identifier: string;
+    public readonly identifier: string;
     help: HelpMessage;
     links: ChainLink;
+    public readonly printHelpOnNoArgs;
 
-    constructor(identifier: string, help: HelpMessage, links: ChainLink) {
+    constructor(
+        identifier: string,
+        help: HelpMessage,
+        links: ChainLink,
+        printHelpOnNoArgs = false
+    ) {
         this.identifier = identifier;
         this.help = help;
         this.links = links;
+        this.printHelpOnNoArgs = printHelpOnNoArgs;
     }
 
     public execute(args: string[]) {
+        if (args.length === 0 && this.printHelpOnNoArgs) {
+            log(this.helpMessage('long'));
+            process.exit(1);
+        }
         this.links.execute(args);
     }
 
