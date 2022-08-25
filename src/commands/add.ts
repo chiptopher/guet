@@ -86,5 +86,6 @@ Flags:
   --local - save the committer in a local config file.
 `,
     },
-    new Initialize().next(new ArgCount(3, 3)).next(new ClosureChainLink(add))
+    new Initialize().next(new ArgCount(3, 3)).next(new ClosureChainLink(add)),
+    true
 );

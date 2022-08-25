@@ -58,5 +58,6 @@ export const setComand = new Command(
     },
     new MustHaveGit(
         'Must run "guet init" to set paired committers for this repo.'
-    ).next(new ClosureChainLink(setCommitters))
+    ).next(new ClosureChainLink(setCommitters)),
+    true
 );

@@ -66,5 +66,6 @@ export const hookCommand = new Command(
         description: 'perform the action at the given hook point',
         usage: 'guet hook <hook name>',
     },
-    new ClosureChainLink(hook)
+    new ClosureChainLink(hook),
+    true
 );

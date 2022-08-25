@@ -36,5 +36,6 @@ export const removeCommand = new Command(
         description: 'remove a committer by its initials',
         usage: 'guet remove <initials>',
     },
-    new Initialize().next(new ClosureChainLink(remove))
+    new Initialize().next(new ClosureChainLink(remove)),
+    true
 );
