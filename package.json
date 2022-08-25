@@ -1,6 +1,6 @@
 {
   "name": "guet",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "",
   "main": "index.js",
   "files": [
@@ -24,7 +24,8 @@
   "bin": {
     "guet": "./lib/index.js"
   },
-  "author": "",
+  "author": "Christopher M. Boyer",
+  "license": "MIT",
   "devDependencies": {
     "@types/dockerode": "^3.3.9",
     "@types/jest": "^28.1.6",
