@@ -18,6 +18,7 @@ npm install -g guet
 ```
 
 ## Usage
+Below are the available commands. For more detailed usage documentation, run `guet <command> --help`.
 
 | Command | Description |
 | ------------ | ---------------------------------|
