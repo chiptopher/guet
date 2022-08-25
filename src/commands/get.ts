@@ -58,7 +58,9 @@ export const getCommand = new Command(
     'get',
     {
         description: 'Get information about the available committers.',
-        usage: `guet get <identifier>
+        usage: `guet get <group>
+
+Groups you can get:
     current - lists currently set comitters
     all - lists all committers`,
     },
